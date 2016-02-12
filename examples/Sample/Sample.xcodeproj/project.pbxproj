@@ -12,7 +12,9 @@
 		3430F6781C45C930007473A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3430F6771C45C930007473A6 /* Assets.xcassets */; };
 		3430F67B1C45C930007473A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3430F6791C45C930007473A6 /* LaunchScreen.storyboard */; };
 		3430F6861C45C930007473A6 /* SampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3430F6851C45C930007473A6 /* SampleTests.swift */; };
-		3467DAED1C4BADB700BA3DB8 /* FileBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3467DAEC1C4BADB700BA3DB8 /* FileBrowser.swift */; };
+		343740671C6E7E9E0090FD6A /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343740641C6E7E910090FD6A /* FileBrowser.framework */; };
+		343740681C6E7E9E0090FD6A /* FileBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 343740641C6E7E910090FD6A /* FileBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3437406C1C6E7ECB0090FD6A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3437406B1C6E7ECB0090FD6A /* ViewController.swift */; };
 		3467DAF31C4BF17900BA3DB8 /* Image1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3467DAEF1C4BF17900BA3DB8 /* Image1.jpg */; };
 		3467DAF41C4BF17900BA3DB8 /* Image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3467DAF01C4BF17900BA3DB8 /* Image2.jpg */; };
 		3467DAF51C4BF17900BA3DB8 /* Image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3467DAF11C4BF17900BA3DB8 /* Image3.jpg */; };
@@ -27,6 +29,27 @@
 			remoteGlobalIDString = 3430F66C1C45C930007473A6;
 			remoteInfo = Sample;
 		};
+		343740631C6E7E910090FD6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3437405E1C6E7E910090FD6A /* FileBrowser.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 344169541C67812400B93D28;
+			remoteInfo = FileBrowser;
+		};
+		343740651C6E7E910090FD6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3437405E1C6E7E910090FD6A /* FileBrowser.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3441695E1C67812400B93D28;
+			remoteInfo = FileBrowserTests;
+		};
+		343740691C6E7E9E0090FD6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3437405E1C6E7E910090FD6A /* FileBrowser.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 344169531C67812400B93D28;
+			remoteInfo = FileBrowser;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +59,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				343740681C6E7E9E0090FD6A /* FileBrowser.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,7 +76,8 @@
 		3430F6811C45C930007473A6 /* SampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3430F6851C45C930007473A6 /* SampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTests.swift; sourceTree = "<group>"; };
 		3430F6871C45C930007473A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3467DAEC1C4BADB700BA3DB8 /* FileBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowser.swift; sourceTree = "<group>"; };
+		3437405E1C6E7E910090FD6A /* FileBrowser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FileBrowser.xcodeproj; path = ../../FileBrowser.xcodeproj; sourceTree = "<group>"; };
+		3437406B1C6E7ECB0090FD6A /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3467DAEF1C4BF17900BA3DB8 /* Image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image1.jpg; sourceTree = "<group>"; };
 		3467DAF01C4BF17900BA3DB8 /* Image2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image2.jpg; sourceTree = "<group>"; };
 		3467DAF11C4BF17900BA3DB8 /* Image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Image3.jpg; sourceTree = "<group>"; };
@@ -64,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				343740671C6E7E9E0090FD6A /* FileBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +106,7 @@
 		3430F6641C45C930007473A6 = {
 			isa = PBXGroup;
 			children = (
+				3437405E1C6E7E910090FD6A /* FileBrowser.xcodeproj */,
 				3430F66F1C45C930007473A6 /* Sample */,
 				3430F6841C45C930007473A6 /* SampleTests */,
 				3430F66E1C45C930007473A6 /* Products */,
@@ -99,7 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				3430F6701C45C930007473A6 /* AppDelegate.swift */,
-				3467DAEC1C4BADB700BA3DB8 /* FileBrowser.swift */,
+				3437406B1C6E7ECB0090FD6A /* ViewController.swift */,
 				3467DAEF1C4BF17900BA3DB8 /* Image1.jpg */,
 				3467DAF01C4BF17900BA3DB8 /* Image2.jpg */,
 				3467DAF11C4BF17900BA3DB8 /* Image3.jpg */,
@@ -121,6 +148,15 @@
 			path = SampleTests;
 			sourceTree = "<group>";
 		};
+		3437405F1C6E7E910090FD6A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				343740641C6E7E910090FD6A /* FileBrowser.framework */,
+				343740661C6E7E910090FD6A /* FileBrowserTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -136,6 +172,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3437406A1C6E7E9E0090FD6A /* PBXTargetDependency */,
 			);
 			name = Sample;
 			productName = Sample;
@@ -190,6 +227,12 @@
 			mainGroup = 3430F6641C45C930007473A6;
 			productRefGroup = 3430F66E1C45C930007473A6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3437405F1C6E7E910090FD6A /* Products */;
+					ProjectRef = 3437405E1C6E7E910090FD6A /* FileBrowser.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				3430F66C1C45C930007473A6 /* Sample */,
@@ -197,6 +240,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		343740641C6E7E910090FD6A /* FileBrowser.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FileBrowser.framework;
+			remoteRef = 343740631C6E7E910090FD6A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		343740661C6E7E910090FD6A /* FileBrowserTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FileBrowserTests.xctest;
+			remoteRef = 343740651C6E7E910090FD6A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3430F66B1C45C930007473A6 /* Resources */ = {
@@ -227,7 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3467DAED1C4BADB700BA3DB8 /* FileBrowser.swift in Sources */,
+				3437406C1C6E7ECB0090FD6A /* ViewController.swift in Sources */,
 				3430F6711C45C930007473A6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +307,11 @@
 			isa = PBXTargetDependency;
 			target = 3430F66C1C45C930007473A6 /* Sample */;
 			targetProxy = 3430F6821C45C930007473A6 /* PBXContainerItemProxy */;
+		};
+		3437406A1C6E7E9E0090FD6A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FileBrowser;
+			targetProxy = 343740691C6E7E9E0090FD6A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -355,6 +420,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Sample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.roymarmelstein.Sample;
@@ -366,6 +432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Sample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.roymarmelstein.Sample;
