@@ -20,11 +20,11 @@ enum FileType: String {
         let bundle =  NSBundle(forClass: FileBrowser.self)
         var fileName = String()
         switch self {
-        case PNG: fileName = "image.png"
-        case JPG: fileName = "image.png"
-        case PDF: fileName = "pdf.png"
-        case ZIP: fileName = "zip.png"
-        case Default: fileName = "file.png"
+        case PNG: fileName = "image@2x.png"
+        case JPG: fileName = "image@2x.png"
+        case PDF: fileName = "pdf@2x.png"
+        case ZIP: fileName = "zip@2x.png"
+        case Default: fileName = "file@2x.png"
         }
         let file = UIImage(named: fileName, inBundle: bundle, compatibleWithTraitCollection: nil)
         return file

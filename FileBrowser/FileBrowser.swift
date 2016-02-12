@@ -135,12 +135,13 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         fileManager.fileExistsAtPath(newPath, isDirectory: &isDirectory)
         cell.textLabel?.text = filePath
         if isDirectory {
-            cell.imageView?.image = UIImage(named: "folder.png", inBundle: bundle, compatibleWithTraitCollection: nil)
+            cell.imageView?.image = UIImage(named: "folder@2x.png", inBundle: bundle, compatibleWithTraitCollection: nil)
         }
         else {
             let fileType = FileType(rawValue: pathURL.pathExtension!) ?? FileType.Default
             if let image = fileType.image() {
                 cell.imageView?.image = image
+                cell.imageView?.frame.size = image.size
             }
         }
         cell.backgroundColor = (selectedFiles.contains(filePath)) ? UIColor(white: 0.9, alpha: 1.0):UIColor.whiteColor()
@@ -148,7 +149,7 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let filePath = files[indexPath.row]
+        let filePath = sections[indexPath.section][indexPath.row]
         if let index = selectedFiles.indexOf(filePath) where selectedFiles.contains(filePath) {
             selectedFiles.removeAtIndex(index)
         }
