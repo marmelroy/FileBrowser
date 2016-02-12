@@ -64,19 +64,58 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
                     tempFiles = ["lib", "libexec", "bin"]
                 }
             }
-            self.files = tempFiles.sort(){$0 < $1}
+            self.objects = tempFiles.sort(){$0 < $1}
             tableView.reloadData()
         }
+    }
+    
+    func localizedTitle() {
+    }
+    
+    let collation = UILocalizedIndexedCollation.currentCollation()
+    var sections: [[String]] = []
+    var objects: [String] = [] {
+        didSet {
+            let selector: Selector = "self"
+            sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
+            
+            if let sortedObjects = collation.sortedArrayFromArray(objects, collationStringSelector: selector) as? [String]{
+            for object in sortedObjects {
+                let sectionNumber = collation.sectionForObject(object, collationStringSelector: selector)
+                sections[sectionNumber].append(object)
+            }
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    // MARK: UITableViewDelegate
+    
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if sections[section].count > 0 {
+            return collation.sectionTitles[section]
+        }
+        else {
+            return nil
+        }
+    }
+    
+    public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        return collation.sectionIndexTitles
+    }
+    
+    public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+        return collation.sectionForSectionIndexTitleAtIndex(index)
     }
     
     //MARK: UITableView Data Source and Delegate
     
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return files.count
+        return sections[section].count
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -89,12 +128,12 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
         cell.selectionStyle = .None
-        let filePath = files[indexPath.row]
+        let filePath = sections[indexPath.section][indexPath.row]
         let pathURL = path.URLByAppendingPathComponent(filePath)
         let newPath = pathURL.path!
         var isDirectory: ObjCBool = false
         fileManager.fileExistsAtPath(newPath, isDirectory: &isDirectory)
-        cell.textLabel?.text = files[indexPath.row]
+        cell.textLabel?.text = filePath
         if isDirectory {
             cell.imageView?.image = UIImage(named: "folder.png", inBundle: bundle, compatibleWithTraitCollection: nil)
         }
