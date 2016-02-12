@@ -46,23 +46,30 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     
     func updateFiles() {
         if let filePath = path {
-            var tempFiles = [String]()
+            var files = [String]()
             do  {
                 self.title = filePath.lastPathComponent
-                tempFiles = try self.fileManager.contentsOfDirectoryAtPath(filePath.path!)
+                files = try self.fileManager.contentsOfDirectoryAtPath(filePath.path!)
             } catch {
                 if path == "/System" {
-                    tempFiles = ["Library"]
+                    files = ["Library"]
                 }
                 if path == "/Library" {
-                    tempFiles = ["Preferences"]
+                    files = ["Preferences"]
                 }
                 if path == "/var" {
-                    tempFiles = ["mobile"]
+                    files = ["mobile"]
                 }
                 if path == "/usr" {
-                    tempFiles = ["lib", "libexec", "bin"]
+                    files = ["lib", "libexec", "bin"]
                 }
+            }
+            var tempFiles = [String]()
+            for file in files {
+                if file.characters.first == ".".characters.first || file.characters.first == "_".characters.first {
+                    continue
+                }
+                tempFiles.append(file)
             }
             self.objects = tempFiles.sort(){$0 < $1}
             tableView.reloadData()
