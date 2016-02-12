@@ -133,7 +133,7 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         let newPath = pathURL.path!
         var isDirectory: ObjCBool = false
         fileManager.fileExistsAtPath(newPath, isDirectory: &isDirectory)
-        cell.textLabel?.text = filePath
+        cell.textLabel?.text = pathURL.lastPathComponent?.stringByReplacingOccurrencesOfString(".\(pathURL.pathExtension!)", withString: "")
         if isDirectory {
             cell.imageView?.image = UIImage(named: "folder@2x.png", inBundle: bundle, compatibleWithTraitCollection: nil)
         }
