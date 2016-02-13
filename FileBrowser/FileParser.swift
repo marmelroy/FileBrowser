@@ -84,7 +84,7 @@ public enum FileType: String {
     case Default = "file"
     
     func image() -> UIImage? {
-        let bundle =  NSBundle(forClass: FileBrowser.self)
+        let bundle =  NSBundle(forClass: FileParser.self)
         var fileName = String()
         switch self {
         case Directory: fileName = "folder@2x.png"

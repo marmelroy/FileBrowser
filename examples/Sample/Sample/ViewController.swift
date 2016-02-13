@@ -25,7 +25,7 @@ class ViewController: UIViewController {
 
     @IBAction func showFileBrowser(sender: AnyObject) {
         let fileBrowser = FileBrowser()
-        self.navigationController?.pushViewController(fileBrowser, animated: true)
+        self.presentViewController(fileBrowser, animated: true, completion: nil)
     }
     /*
     // MARK: - Navigation
