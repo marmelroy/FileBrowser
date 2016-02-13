@@ -34,7 +34,11 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     deinit{
-        searchController = nil
+        if #available(iOS 9.0, *) {
+            searchController?.loadViewIfNeeded()
+        } else {
+            searchController?.loadView()
+        }
     }
     
     convenience init () {
