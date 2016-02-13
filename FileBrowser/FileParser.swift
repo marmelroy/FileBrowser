@@ -86,7 +86,7 @@ public enum FileType: String {
         let bundle =  NSBundle(forClass: FileBrowser.self)
         var fileName = String()
         switch self {
-        case Directory: fileName = "directory@2x.png"
+        case Directory: fileName = "folder@2x.png"
         case JPG: fileName = "image@2x.png"
         case PNG: fileName = "image@2x.png"
         case PDF: fileName = "pdf@2x.png"
