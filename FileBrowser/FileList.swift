@@ -59,7 +59,6 @@ class FileList: UIViewController {
     //MARK: Lifecycle
     
     override func viewDidLoad() {
-        // Setup the Search Controller
         tableView.tableHeaderView = searchController.searchBar
     }
     
@@ -76,6 +75,8 @@ class FileList: UIViewController {
         searchController.searchBar.delegate = self
         self.title = initialPath.lastPathComponent
         files = parser.filesForDirectory(initialPath)
+        let rightBarButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss")
+        self.navigationItem.rightBarButtonItem = rightBarButton
         indexFiles()
     }
     
@@ -86,7 +87,10 @@ class FileList: UIViewController {
             searchController.loadView()
         }
     }
-
+    
+    func dismiss() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
 }
 
