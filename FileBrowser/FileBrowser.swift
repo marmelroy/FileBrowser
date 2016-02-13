@@ -18,7 +18,7 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         
     let parser = FileParser()
     
-    let quickLookManager = QuickLookManager()
+    let previewManager = PreviewManager()
     
     let bundle =  NSBundle(forClass: FileBrowser.self)
     
@@ -194,8 +194,8 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         }
         else {
             let quickLook = QLPreviewController()
-            quickLookManager.filePath = file.filePath
-            quickLook.dataSource = quickLookManager
+            previewManager.filePath = file.filePath
+            quickLook.dataSource = previewManager
             self.navigationController?.pushViewController(quickLook, animated: true)
         }
         updateSelection()
@@ -211,41 +211,6 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         })
         tableView.reloadData()
     }
-
-    
-    //MARK: Search bar delegate
-}
-
-class QuickLookManager: NSObject, QLPreviewControllerDataSource {
-    
-    var filePath: NSURL?
-    
-    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
-        return 1
-    }
-    
-    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-        let item = PreviewItem()
-        if let filePath = filePath {
-            item.filePath = filePath
-        }
-        return item
-    }
-
-}
-
-class PreviewItem: NSObject, QLPreviewItem {
-    
-    var filePath: NSURL?
-    
-    internal var previewItemURL: NSURL {
-        if let filePath = filePath {
-            return filePath
-        }
-        return NSURL()
-    }
-    
-    internal var previewItemTitle: String? 
     
 }
 

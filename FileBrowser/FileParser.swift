@@ -12,6 +12,10 @@ public class FileParser {
     
     let fileManager = NSFileManager.defaultManager()
     
+    func applicationURL() -> NSURL {
+        return fileManager.URLsForDirectory(.LibraryDirectory, inDomains: .UserDomainMask)[0] as NSURL
+    }
+    
     func documentsURL() -> NSURL {
         return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as NSURL
     }
