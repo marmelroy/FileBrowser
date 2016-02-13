@@ -7,15 +7,18 @@
 //
 
 import Foundation
+import QuickLook
 
 public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
-    let searchController = UISearchController(searchResultsController: nil)
+    var searchController: UISearchController?
         
     let parser = FileParser()
+    
+    let quickLookManager = QuickLookManager()
     
     let bundle =  NSBundle(forClass: FileBrowser.self)
     
@@ -30,6 +33,10 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    deinit{
+        searchController = nil
+    }
+    
     convenience init () {
         let parser = FileParser()
         let path = parser.documentsURL()
@@ -38,6 +45,7 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     
     convenience init (initialPath: NSURL) {
         self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileBrowser.self))
+        searchController = UISearchController(searchResultsController: nil)
         self.initialPath = initialPath
         self.title = initialPath.lastPathComponent
         files = parser.filesForDirectory(initialPath)
@@ -65,22 +73,19 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-    
-    var selectedFiles = [File]()
-    
+
     //MARK: Lifecycle
     
     override public func viewDidLoad() {
         
-        searchController.searchBar.searchBarStyle = .Minimal
-        tableView.tableHeaderView = searchController.searchBar
+        searchController?.searchBar.searchBarStyle = .Minimal
+        tableView.tableHeaderView = searchController?.searchBar
 
         // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
+        searchController?.searchResultsUpdater = self
+        searchController?.searchBar.delegate = self
         definesPresentationContext = true
-        searchController.dimsBackgroundDuringPresentation = false
-        
+        searchController?.dimsBackgroundDuringPresentation = false
         updateSelection()
     }
     
@@ -90,6 +95,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: UITableViewDelegate
     
     public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let searchController = searchController else {
+            return nil
+        }
         if searchController.active && searchController.searchBar.text != "" {
             return nil
         }
@@ -102,6 +110,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        guard let searchController = searchController else {
+            return nil
+        }
         if searchController.active && searchController.searchBar.text != "" {
             return nil
         }
@@ -109,6 +120,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+        guard let searchController = searchController else {
+            return 1
+        }
         if searchController.active && searchController.searchBar.text != "" {
             return 0
         }
@@ -118,6 +132,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: UITableView Data Source and Delegate
     
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        guard let searchController = searchController else {
+            return 1
+        }
         if searchController.active && searchController.searchBar.text != "" {
             return 1
         }
@@ -125,6 +142,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let searchController = searchController else {
+            return 1
+        }
         if searchController.active && searchController.searchBar.text != "" {
             return filteredFiles.count
         }
@@ -139,6 +159,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         }
         cell.selectionStyle = .Blue
         var file: File
+        guard let searchController = searchController else {
+            return cell
+        }
         if searchController.active && searchController.searchBar.text != "" {
             file = filteredFiles[indexPath.row]
         }
@@ -152,6 +175,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var file: File
+        guard let searchController = searchController else {
+            return
+        }
         if searchController.active && searchController.searchBar.text != "" {
             file = filteredFiles[indexPath.row]
         }
@@ -162,11 +188,11 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
             let browser = FileBrowser(initialPath: file.filePath)
             self.navigationController?.pushViewController(browser, animated: true)
         }
-        if let index = selectedFiles.indexOf(file) where selectedFiles.contains(file) {
-            selectedFiles.removeAtIndex(index)
-        }
         else {
-            selectedFiles.append(file)
+            let quickLook = QLPreviewController()
+            quickLookManager.filePath = file.filePath
+            quickLook.dataSource = quickLookManager
+            self.navigationController?.pushViewController(quickLook, animated: true)
         }
         updateSelection()
     }
@@ -185,6 +211,40 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: Search bar delegate
 }
+
+class QuickLookManager: NSObject, QLPreviewControllerDataSource {
+    
+    var filePath: NSURL?
+    
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        let item = PreviewItem()
+        if let filePath = filePath {
+            item.filePath = filePath
+        }
+        return item
+    }
+
+}
+
+class PreviewItem: NSObject, QLPreviewItem {
+    
+    var filePath: NSURL?
+    
+    internal var previewItemURL: NSURL {
+        if let filePath = filePath {
+            return filePath
+        }
+        return NSURL()
+    }
+    
+    internal var previewItemTitle: String? 
+    
+}
+
 
 extension FileBrowser: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate

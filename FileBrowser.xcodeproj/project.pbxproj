@@ -16,6 +16,7 @@
 		343740781C6E88A00090FD6A /* zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 343740731C6E88A00090FD6A /* zip@2x.png */; };
 		3437407C1C6E8D7F0090FD6A /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3437407B1C6E8D7F0090FD6A /* pdf@2x.png */; };
 		3439AB681C6F203A0058AF04 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439AB671C6F203A0058AF04 /* FileParser.swift */; };
+		3439AB6A1C6FC6D90058AF04 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3439AB691C6FC6D90058AF04 /* QuickLook.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		344169581C67812400B93D28 /* FileBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 344169571C67812400B93D28 /* FileBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3441695F1C67812400B93D28 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344169541C67812400B93D28 /* FileBrowser.framework */; };
 		344169641C67812400B93D28 /* FileBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344169631C67812400B93D28 /* FileBrowserTests.swift */; };
@@ -41,6 +42,7 @@
 		343740731C6E88A00090FD6A /* zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zip@2x.png"; sourceTree = "<group>"; };
 		3437407B1C6E8D7F0090FD6A /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
 		3439AB671C6F203A0058AF04 /* FileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileParser.swift; sourceTree = "<group>"; };
+		3439AB691C6FC6D90058AF04 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		344169541C67812400B93D28 /* FileBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FileBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		344169571C67812400B93D28 /* FileBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileBrowser.h; sourceTree = "<group>"; };
 		344169591C67812400B93D28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3439AB6A1C6FC6D90058AF04 /* QuickLook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +109,7 @@
 				344169571C67812400B93D28 /* FileBrowser.h */,
 				3437405A1C6E7DA50090FD6A /* FileBrowser.swift */,
 				3439AB671C6F203A0058AF04 /* FileParser.swift */,
+				3439AB691C6FC6D90058AF04 /* QuickLook.framework */,
 				3437406E1C6E888F0090FD6A /* Resources */,
 				344169591C67812400B93D28 /* Info.plist */,
 			);
