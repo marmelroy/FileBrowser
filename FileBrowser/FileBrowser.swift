@@ -13,88 +13,57 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
-    let fileManager = NSFileManager.defaultManager()
+    let parser = FileParser()
     
     let bundle =  NSBundle(forClass: FileBrowser.self)
     
-    var path: NSURL? {
+    var initialPath: NSURL? {
         didSet {
-            updateFiles()
+            if let initialPath = initialPath {
+                files = parser.filesForDirectory(initialPath)
+                self.title = initialPath.lastPathComponent
+            }
         }
     }
     
     convenience init () {
         self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileBrowser.self))
+        let path = parser.documentsURL()
+        initialPath = path
+        self.title = path.lastPathComponent
+        files = parser.filesForDirectory(path)
+        indexFiles()
     }
     
+    var sections: [[File]] = []
     
-    var files = [String]()
-    
-    var selectedFiles = [String]()
-    
-    //MARK: Lifecycle
-    
-    override public func viewDidLoad() {
-        if self.path == nil {
-            let documentsUrl = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as NSURL
-            self.path = documentsUrl
-        }
-        updateSelection()
-    }
-    
-    //MARK: File manager
-    
-    func updateFiles() {
-        if let filePath = path {
-            var files = [String]()
-            do  {
-                self.title = filePath.lastPathComponent
-                files = try self.fileManager.contentsOfDirectoryAtPath(filePath.path!)
-            } catch {
-                if path == "/System" {
-                    files = ["Library"]
-                }
-                if path == "/Library" {
-                    files = ["Preferences"]
-                }
-                if path == "/var" {
-                    files = ["mobile"]
-                }
-                if path == "/usr" {
-                    files = ["lib", "libexec", "bin"]
-                }
-            }
-            var tempFiles = [String]()
-            for file in files {
-                if file.characters.first == ".".characters.first || file.characters.first == "_".characters.first {
-                    continue
-                }
-                tempFiles.append(file)
-            }
-            self.objects = tempFiles.sort(){$0 < $1}
-            tableView.reloadData()
-        }
-    }
-    
-    func localizedTitle() {
-    }
-    
-    let collation = UILocalizedIndexedCollation.currentCollation()
-    var sections: [[String]] = []
-    var objects: [String] = [] {
+    var files = [File]() {
         didSet {
-            let selector: Selector = "self"
-            sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
-            
-            if let sortedObjects = collation.sortedArrayFromArray(objects, collationStringSelector: selector) as? [String]{
+            self.indexFiles()
+        }
+    }
+    
+    func indexFiles() {
+        let selector: Selector = "fileName"
+        sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
+        if let sortedObjects = collation.sortedArrayFromArray(files, collationStringSelector: selector) as? [File]{
             for object in sortedObjects {
                 let sectionNumber = collation.sectionForObject(object, collationStringSelector: selector)
                 sections[sectionNumber].append(object)
             }
-            }
-            self.tableView.reloadData()
         }
     }
+    
+    var selectedFiles = [File]()
+    
+    //MARK: Lifecycle
+    
+    override public func viewDidLoad() {
+        updateSelection()
+    }
+    
+    
+    let collation = UILocalizedIndexedCollation.currentCollation()
     
     // MARK: UITableViewDelegate
     
@@ -131,59 +100,26 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         if let reuseCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) {
             cell = reuseCell
         }
-        guard let path = path else {
-            return cell
-        }
         cell.selectionStyle = .None
-        let filePath = sections[indexPath.section][indexPath.row]
-        let pathURL = path.URLByAppendingPathComponent(filePath)
-        let newPath = pathURL.path!
-        var isDirectory: ObjCBool = false
-        fileManager.fileExistsAtPath(newPath, isDirectory: &isDirectory)
-        cell.textLabel?.text = pathURL.lastPathComponent?.stringByReplacingOccurrencesOfString(".\(pathURL.pathExtension!)", withString: "")
-        if isDirectory {
-            cell.imageView?.image = UIImage(named: "folder@2x.png", inBundle: bundle, compatibleWithTraitCollection: nil)
-        }
-        else {
-            let fileType = FileType(rawValue: pathURL.pathExtension!) ?? FileType.Default
-            if let image = fileType.image() {
-                cell.imageView?.image = image
-                cell.imageView?.frame.size = image.size
-            }
-        }
-        cell.backgroundColor = (selectedFiles.contains(filePath)) ? UIColor(white: 0.9, alpha: 1.0):UIColor.whiteColor()
+        let file = sections[indexPath.section][indexPath.row]
+        cell.textLabel?.text = file.fileName
+        cell.imageView?.image = file.type.image()
         return cell
     }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let filePath = sections[indexPath.section][indexPath.row]
-        if let index = selectedFiles.indexOf(filePath) where selectedFiles.contains(filePath) {
+        let file = sections[indexPath.section][indexPath.row]
+        if let index = selectedFiles.indexOf(file) where selectedFiles.contains(file) {
             selectedFiles.removeAtIndex(index)
         }
         else {
-            selectedFiles.append(filePath)
+            selectedFiles.append(file)
         }
         updateSelection()
     }
     
     func updateSelection() {
         tableView.reloadData()
-//        selectionCounter.title = "\(selectedFiles.count) Selected"
-//        
-//        zipButton.enabled = (selectedFiles.count > 0)
-//        if (selectedFiles.count == 1) {
-//            let filePath = selectedFiles.first
-//            let pathExtension = path!.URLByAppendingPathComponent(filePath!).pathExtension
-//            if pathExtension == "zip" {
-//                unzipButton.enabled = true
-//            }
-//            else {
-//                unzipButton.enabled = false
-//            }
-//        }
-//        else {
-//            unzipButton.enabled = false
-//        }
     }
     
     

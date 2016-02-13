@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FileBrowser" customModule="FileBrowser" customModuleProvider="target">
             <connections>
+                <outlet property="searchDisplayController" destination="PeQ-Mg-Pk1" id="yE4-R6-3fL"/>
                 <outlet property="tableView" destination="DSW-B9-8cg" id="7xS-pS-2d4"/>
                 <outlet property="view" destination="iN0-l3-epB" id="2JG-i3-EEX"/>
             </connections>
@@ -19,6 +20,14 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DSW-B9-8cg">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="N67-LF-9SU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <outlet property="delegate" destination="-1" id="jQm-8G-h79"/>
+                        </connections>
+                    </searchBar>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Hco-nQ-PWA"/>
                         <outlet property="delegate" destination="-1" id="UPO-be-USP"/>
@@ -33,5 +42,14 @@
                 <constraint firstItem="DSW-B9-8cg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zGd-Pj-aV3"/>
             </constraints>
         </view>
+        <searchDisplayController id="PeQ-Mg-Pk1">
+            <connections>
+                <outlet property="delegate" destination="-1" id="FZO-zm-Cla"/>
+                <outlet property="searchBar" destination="N67-LF-9SU" id="TxP-ba-AFb"/>
+                <outlet property="searchContentsController" destination="-1" id="X2x-JD-USC"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="UlF-xb-mdp"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="i6R-6G-3GJ"/>
+            </connections>
+        </searchDisplayController>
     </objects>
 </document>
