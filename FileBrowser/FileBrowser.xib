@@ -7,8 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FileBrowser" customModule="FileBrowser" customModuleProvider="target">
             <connections>
-                <outlet property="searchBar" destination="lo2-hJ-OKn" id="722-98-xCp"/>
-                <outlet property="searchDisplayController" destination="ovA-Zs-GkB" id="ukG-Vt-K5k"/>
                 <outlet property="tableView" destination="DSW-B9-8cg" id="7xS-pS-2d4"/>
                 <outlet property="view" destination="iN0-l3-epB" id="2JG-i3-EEX"/>
             </connections>
@@ -21,14 +19,6 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DSW-B9-8cg">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="lo2-hJ-OKn">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textInputTraits key="textInputTraits"/>
-                        <connections>
-                            <outlet property="delegate" destination="-1" id="dhh-eD-ITK"/>
-                        </connections>
-                    </searchBar>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Hco-nQ-PWA"/>
                         <outlet property="delegate" destination="-1" id="UPO-be-USP"/>
@@ -43,14 +33,5 @@
                 <constraint firstItem="DSW-B9-8cg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zGd-Pj-aV3"/>
             </constraints>
         </view>
-        <searchDisplayController id="ovA-Zs-GkB">
-            <connections>
-                <outlet property="delegate" destination="-1" id="I92-Xq-uUc"/>
-                <outlet property="searchBar" destination="lo2-hJ-OKn" id="Az0-VP-6Kn"/>
-                <outlet property="searchContentsController" destination="-1" id="qJ6-FO-rGc"/>
-                <outlet property="searchResultsDataSource" destination="-1" id="wxc-Yy-ULb"/>
-                <outlet property="searchResultsDelegate" destination="-1" id="u4g-Nc-nP4"/>
-            </connections>
-        </searchDisplayController>
     </objects>
 </document>

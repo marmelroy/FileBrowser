@@ -8,13 +8,13 @@
 
 import Foundation
 
-public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var searchBar: UISearchBar!
-    
+    let searchController = UISearchController(searchResultsController: nil)
+        
     let parser = FileParser()
     
     let bundle =  NSBundle(forClass: FileBrowser.self)
@@ -52,6 +52,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    var filteredFiles = [File]()
+
+    
     func indexFiles() {
         let selector: Selector = "fileName"
         sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
@@ -68,6 +71,16 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: Lifecycle
     
     override public func viewDidLoad() {
+        
+        searchController.searchBar.searchBarStyle = .Minimal
+        tableView.tableHeaderView = searchController.searchBar
+
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        
         updateSelection()
     }
     
@@ -77,6 +90,9 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: UITableViewDelegate
     
     public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchController.active && searchController.searchBar.text != "" {
+            return nil
+        }
         if sections[section].count > 0 {
             return collation.sectionTitles[section]
         }
@@ -86,20 +102,32 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        if searchController.active && searchController.searchBar.text != "" {
+            return nil
+        }
         return collation.sectionIndexTitles
     }
     
     public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return 0
+        }
         return collation.sectionForSectionIndexTitleAtIndex(index)
     }
     
     //MARK: UITableView Data Source and Delegate
     
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return 1
+        }
         return sections.count
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return filteredFiles.count
+        }
         return sections[section].count
     }
     
@@ -110,14 +138,26 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
             cell = reuseCell
         }
         cell.selectionStyle = .Blue
-        let file = sections[indexPath.section][indexPath.row]
+        var file: File
+        if searchController.active && searchController.searchBar.text != "" {
+            file = filteredFiles[indexPath.row]
+        }
+        else {
+            file = sections[indexPath.section][indexPath.row]
+        }
         cell.textLabel?.text = file.fileName
         cell.imageView?.image = file.type.image()
         return cell
     }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let file = sections[indexPath.section][indexPath.row]
+        var file: File
+        if searchController.active && searchController.searchBar.text != "" {
+            file = filteredFiles[indexPath.row]
+        }
+        else {
+            file = sections[indexPath.section][indexPath.row]
+        }
         if file.isDirectory {
             let browser = FileBrowser(initialPath: file.filePath)
             self.navigationController?.pushViewController(browser, animated: true)
@@ -135,5 +175,27 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.reloadData()
     }
     
+    func filterContentForSearchText(searchText: String) {
+        filteredFiles = files.filter({ (file: File) -> Bool in
+            return file.fileName.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
+    }
+
     
+    //MARK: Search bar delegate
+}
+
+extension FileBrowser: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension FileBrowser: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    public func updateSearchResultsForSearchController(searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
 }
