@@ -76,6 +76,7 @@ public class File: NSObject {
 
 public enum FileType: String {
     case Directory = "directory"
+    case GIF = "gif"
     case JPG = "jpg"
     case PDF = "pdf"
     case PNG = "png"
@@ -87,8 +88,7 @@ public enum FileType: String {
         var fileName = String()
         switch self {
         case Directory: fileName = "folder@2x.png"
-        case JPG: fileName = "image@2x.png"
-        case PNG: fileName = "image@2x.png"
+        case JPG, PNG, GIF: fileName = "image@2x.png"
         case PDF: fileName = "pdf@2x.png"
         case ZIP: fileName = "zip@2x.png"
         case Default: fileName = "file@2x.png"

@@ -27,13 +27,19 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     convenience init () {
-        self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileBrowser.self))
+        let parser = FileParser()
         let path = parser.documentsURL()
-        initialPath = path
-        self.title = path.lastPathComponent
-        files = parser.filesForDirectory(path)
+        self.init(initialPath: path)
+    }
+    
+    convenience init (initialPath: NSURL) {
+        self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileBrowser.self))
+        self.initialPath = initialPath
+        self.title = initialPath.lastPathComponent
+        files = parser.filesForDirectory(initialPath)
         indexFiles()
     }
+
     
     var sections: [[File]] = []
     
@@ -109,6 +115,10 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let file = sections[indexPath.section][indexPath.row]
+        if file.isDirectory {
+            let browser = FileBrowser(initialPath: file.filePath)
+            self.navigationController?.pushViewController(browser, animated: true)
+        }
         if let index = selectedFiles.indexOf(file) where selectedFiles.contains(file) {
             selectedFiles.removeAtIndex(index)
         }
