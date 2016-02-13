@@ -8,14 +8,18 @@
 
 import Foundation
 
-public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDelegate {
+public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     let parser = FileParser()
     
     let bundle =  NSBundle(forClass: FileBrowser.self)
+    
+    var isSearching = false
     
     var initialPath: NSURL? {
         didSet {
@@ -39,7 +43,6 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         files = parser.filesForDirectory(initialPath)
         indexFiles()
     }
-
     
     var sections: [[File]] = []
     
@@ -106,7 +109,7 @@ public class FileBrowser: UIViewController, UITableViewDataSource, UITableViewDe
         if let reuseCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) {
             cell = reuseCell
         }
-        cell.selectionStyle = .None
+        cell.selectionStyle = .Blue
         let file = sections[indexPath.section][indexPath.row]
         cell.textLabel?.text = file.fileName
         cell.imageView?.image = file.type.image()
