@@ -9,7 +9,7 @@
 import Foundation
 import QuickLook
 
-public class FileList: UIViewController {
+class FileList: UIViewController {
     
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -58,7 +58,7 @@ public class FileList: UIViewController {
 
     //MARK: Lifecycle
     
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         // Setup the Search Controller
         tableView.tableHeaderView = searchController.searchBar
     }
@@ -93,7 +93,7 @@ public class FileList: UIViewController {
 extension FileList: UITableViewDataSource, UITableViewDelegate {
     //MARK: UITableView Data Source and Delegate
     
-    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if searchController.active && searchController.searchBar.text != "" {
             return nil
         }
@@ -105,14 +105,14 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         if searchController.active && searchController.searchBar.text != "" {
             return nil
         }
         return collation.sectionIndexTitles
     }
     
-    public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         if searchController.active && searchController.searchBar.text != "" {
             return 0
         }
@@ -120,21 +120,21 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if searchController.active && searchController.searchBar.text != "" {
             return 1
         }
         return sections.count
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.active && searchController.searchBar.text != "" {
             return filteredFiles.count
         }
         return sections[section].count
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "FileCell"
         var cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellIdentifier)
         if let reuseCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) {
@@ -153,7 +153,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var file: File
         if searchController.active && searchController.searchBar.text != "" {
             file = filteredFiles[indexPath.row]
@@ -184,14 +184,14 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
 
 extension FileList: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
-    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         filterContentForSearchText(searchBar.text!)
     }
 }
 
 extension FileList: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
-    public func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
 }
