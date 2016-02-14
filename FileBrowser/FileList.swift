@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import QuickLook
 
 class FileList: UIViewController, UIViewControllerPreviewingDelegate {
     
@@ -198,10 +197,8 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
                 didSelectFile(file)
             }
             else {
-                let quickLook = QLPreviewController()
-                previewManager.filePath = file.filePath
-                quickLook.dataSource = previewManager
-                self.navigationController?.pushViewController(quickLook, animated: true)
+                let filePreview = previewManager.previewViewControllerForFile(file)
+                self.navigationController?.pushViewController(filePreview, animated: true)
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -223,10 +220,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
                 if file.isDirectory {
                     return nil
                 }
-                let quickLook = QLPreviewController()
-                previewManager.filePath = file.filePath
-                quickLook.dataSource = previewManager
-                return quickLook
+                return previewManager.previewViewControllerForFile(file)
             }
         }
         return nil

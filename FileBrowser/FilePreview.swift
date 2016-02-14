@@ -13,6 +13,13 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     var filePath: NSURL?
     
+    func previewViewControllerForFile(file: File) -> UIViewController {
+        let quickLook = QLPreviewController()
+        quickLook.dataSource = self
+        self.filePath = file.filePath
+        return quickLook
+    }
+    
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
         return 1
     }
