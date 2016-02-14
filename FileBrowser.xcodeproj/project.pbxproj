@@ -15,6 +15,8 @@
 		344169581C67812400B93D28 /* FileBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 344169571C67812400B93D28 /* FileBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3441695F1C67812400B93D28 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344169541C67812400B93D28 /* FileBrowser.framework */; };
 		344169641C67812400B93D28 /* FileBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344169631C67812400B93D28 /* FileBrowserTests.swift */; };
+		3441DC611C71235C005CC2FA /* 3crBXeO.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3441DC601C71235C005CC2FA /* 3crBXeO.gif */; };
+		3441DC631C712370005CC2FA /* Stitch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3441DC621C712370005CC2FA /* Stitch.jpg */; };
 		349A12241C70725D005435C0 /* FileListSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12231C70725D005435C0 /* FileListSearch.swift */; };
 		349A12261C707317005435C0 /* FlieListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12251C707317005435C0 /* FlieListTableView.swift */; };
 		349A12281C707B1A005435C0 /* FBFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12271C707B1A005435C0 /* FBFile.swift */; };
@@ -49,6 +51,8 @@
 		3441695E1C67812400B93D28 /* FileBrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FileBrowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		344169631C67812400B93D28 /* FileBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowserTests.swift; sourceTree = "<group>"; };
 		344169651C67812400B93D28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3441DC601C71235C005CC2FA /* 3crBXeO.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3crBXeO.gif; sourceTree = "<group>"; };
+		3441DC621C712370005CC2FA /* Stitch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Stitch.jpg; sourceTree = "<group>"; };
 		349A12231C70725D005435C0 /* FileListSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListSearch.swift; sourceTree = "<group>"; };
 		349A12251C707317005435C0 /* FlieListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlieListTableView.swift; sourceTree = "<group>"; };
 		349A12271C707B1A005435C0 /* FBFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBFile.swift; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 		344169621C67812400B93D28 /* FileBrowserTests */ = {
 			isa = PBXGroup;
 			children = (
+				3441DC601C71235C005CC2FA /* 3crBXeO.gif */,
+				3441DC621C712370005CC2FA /* Stitch.jpg */,
 				344169631C67812400B93D28 /* FileBrowserTests.swift */,
 				344169651C67812400B93D28 /* Info.plist */,
 			);
@@ -253,6 +259,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3441DC631C712370005CC2FA /* Stitch.jpg in Resources */,
+				3441DC611C71235C005CC2FA /* 3crBXeO.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

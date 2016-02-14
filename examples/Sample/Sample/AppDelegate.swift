@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstLaunch")
             NSUserDefaults.standardUserDefaults().synchronize()
             let fileManager = NSFileManager.defaultManager()
-            let fileNames = ["Baymax.jpg", "Jakku.jpg", "Stitch.jpg"]
+            let fileNames = ["Baymax.jpg", "BB8.jpg", "Stitch.jpg"]
             let documentsUrl = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as NSURL
             let bundleUrl = NSBundle.mainBundle().resourceURL
             // Copy images to documents folder

@@ -21,16 +21,43 @@ class FileBrowserTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testGifFBFileParse() {
+        let filePath = NSBundle(forClass: FileBrowserTests.self).URLForResource("3crBXeO", withExtension: "gif")!
+        let file = FBFile(filePath: filePath)
+        XCTAssertEqual(file.filePath, filePath)
+        XCTAssertEqual(file.isDirectory, false)
+        XCTAssertEqual(file.type, FBFileType.GIF)
+        XCTAssertEqual(file.fileExtension, "gif")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+    func testJpgFBFileParse() {
+        let filePath = NSBundle(forClass: FileBrowserTests.self).URLForResource("Stitch", withExtension: "jpg")!
+        let file = FBFile(filePath: filePath)
+        XCTAssertEqual(file.filePath, filePath)
+        XCTAssertEqual(file.isDirectory, false)
+        XCTAssertEqual(file.type, FBFileType.JPG)
+        XCTAssertEqual(file.fileExtension, "jpg")
+    }
+    
+    func testDirectoryFBFileParse() {
+        let filePath = NSBundle(forClass: FileBrowserTests.self).bundleURL
+        let file = FBFile(filePath: filePath)
+        XCTAssertEqual(file.type, FBFileType.Directory)
+    }
+    
+    func testDirectoryContentsParse() {
+        let parser = FileParser.sharedInstance
+        let directoryPath = NSBundle(forClass: FileBrowserTests.self).bundleURL
+        let directoryContents = parser.filesForDirectory(directoryPath)
+        for file in directoryContents {
+            print(file.displayName)
+        }
+        XCTAssertTrue(directoryContents.count > 0)
+        let stitchFile = directoryContents.filter({$0.displayName == "Stitch"}).first
+        XCTAssertNotNil(stitchFile)
+        if let stitchFile = stitchFile {
+            XCTAssertEqual(stitchFile.type, FBFileType.JPG)
         }
     }
-    
+
 }
