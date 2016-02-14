@@ -115,7 +115,7 @@
 				3437405A1C6E7DA50090FD6A /* FileList.swift */,
 				3439AB6B1C6FD6650058AF04 /* FilePreview.swift */,
 				3439AB671C6F203A0058AF04 /* FileParser.swift */,
-				3439AB691C6FC6D90058AF04 /* QuickLook.framework */,
+				349A121D1C706601005435C0 /* Frameworks */,
 				3437406E1C6E888F0090FD6A /* Resources */,
 				344169591C67812400B93D28 /* Info.plist */,
 			);
@@ -129,6 +129,14 @@
 				344169651C67812400B93D28 /* Info.plist */,
 			);
 			path = FileBrowserTests;
+			sourceTree = "<group>";
+		};
+		349A121D1C706601005435C0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3439AB691C6FC6D90058AF04 /* QuickLook.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -9,7 +9,7 @@
 import Foundation
 import QuickLook
 
-class FileList: UIViewController {
+class FileList: UIViewController, UIViewControllerPreviewingDelegate {
     
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -59,7 +59,7 @@ class FileList: UIViewController {
             }
         }
     }
-
+    
     //MARK: Lifecycle
     
     override func viewDidLoad() {
@@ -69,6 +69,15 @@ class FileList: UIViewController {
         }
         tableView.tableHeaderView = searchController.searchBar
         self.edgesForExtendedLayout = .None
+        if #available(iOS 9.0, *) {
+            if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+                registerForPreviewingWithDelegate(self, sourceView: tableView)
+            }
+        }
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        //Here's where you commit (pop)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -196,6 +205,28 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let indexPath = tableView.indexPathForRowAtPoint(location) {
+            //This will show the cell clearly and blur the rest of the screen for our peek.
+            if #available(iOS 9.0, *) {
+                previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+                var file: File
+                if searchController.active {
+                    file = filteredFiles[indexPath.row]
+                }
+                else {
+                    file = sections[indexPath.section][indexPath.row]
+                }
+                let quickLook = QLPreviewController()
+                previewManager.filePath = file.filePath
+                quickLook.dataSource = previewManager
+                return quickLook
+            }
+        }
+        return nil
     }
     
     func filterContentForSearchText(searchText: String) {
