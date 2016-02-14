@@ -19,9 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstLaunch")
             NSUserDefaults.standardUserDefaults().synchronize()
             let fileManager = NSFileManager.defaultManager()
-            let fileNames = ["Image1.jpg", "Image2.jpg", "Image3.jpg", "Images.zip"]
+            let fileNames = ["Baymax.jpg", "Jakku.jpg", "Stitch.jpg"]
             let documentsUrl = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as NSURL
             let bundleUrl = NSBundle.mainBundle().resourceURL
+            // Copy images to documents folder
             for file in fileNames {
                 if let srcPath = bundleUrl?.URLByAppendingPathComponent(file).path, let toPath = documentsUrl.URLByAppendingPathComponent(file).path{
                     do {
@@ -29,8 +30,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     } catch {}
                 }
             }
+            
+            // Copy zip file to an images directory
+            let imagesDirectoryURL = documentsUrl.URLByAppendingPathComponent("images")
+            let zipFileName = "Images.zip"
+            if let imagesDirectoryPath = imagesDirectoryURL.path {
+                do {
+                    try fileManager.createDirectoryAtPath(imagesDirectoryPath, withIntermediateDirectories: false, attributes: nil)
+                    if let srcPath = bundleUrl?.URLByAppendingPathComponent(zipFileName).path, let toPath = imagesDirectoryURL.URLByAppendingPathComponent(zipFileName).path{
+                        do {
+                            try fileManager.copyItemAtPath(srcPath, toPath: toPath)
+                        } catch {}
+                    }
+                } catch {}
+            }
         }
-        // Override point for customization after application launch.
         return true
     }
 
