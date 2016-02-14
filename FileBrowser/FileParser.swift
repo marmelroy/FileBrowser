@@ -52,11 +52,11 @@ class FileParser {
 }
 
 public class File: NSObject {
-    let filePath: NSURL
-    let fileName: String
-    let isDirectory: Bool
-    let fileExtension: String?
-    let type: FileType
+    public let filePath: NSURL
+    public let fileName: String
+    public let isDirectory: Bool
+    public let fileExtension: String?
+    public let type: FileType
     
     init(filePath: NSURL) {
         var fileName = filePath.lastPathComponent

@@ -11,6 +11,8 @@ import Foundation
 public class FileBrowser: UINavigationController {
     
     let parser = FileParser.sharedInstance
+    
+    var fileList: FileList?
 
     public var excludesFileTypes: [FileType]? {
         didSet {
@@ -24,7 +26,11 @@ public class FileBrowser: UINavigationController {
         }
     }
     
-    public var didSelectFile: ((File) -> ())?
+    public var didSelectFile: ((File) -> ())? {
+        didSet {
+            fileList?.didSelectFile = didSelectFile
+        }
+    }
     
     public convenience init() {
         let parser = FileParser.sharedInstance
@@ -33,10 +39,9 @@ public class FileBrowser: UINavigationController {
     }
     
     public convenience init(initialPath: NSURL) {
-        let fileList = FileList(initialPath: initialPath)
-        self.init(rootViewController: fileList)
-        parser.excludesFileTypes = excludesFileTypes
-        parser.excludesFilepaths = excludesFilepaths
+        let fileListViewController = FileList(initialPath: initialPath)
+        self.init(rootViewController: fileListViewController)        
+        self.fileList = fileListViewController
     }
     
 }

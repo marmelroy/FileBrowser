@@ -14,6 +14,8 @@ class FileList: UIViewController {
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
+    var didSelectFile: ((File) -> ())?
+    
     let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
     let searchController: UISearchController = {
@@ -169,13 +171,20 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
         searchController.active = false
         if file.isDirectory {
             let browser = FileList(initialPath: file.filePath)
+            browser.didSelectFile = didSelectFile
             self.navigationController?.pushViewController(browser, animated: true)
         }
         else {
-            let quickLook = QLPreviewController()
-            previewManager.filePath = file.filePath
-            quickLook.dataSource = previewManager
-            self.navigationController?.pushViewController(quickLook, animated: true)
+            if let didSelectFile = didSelectFile {
+                self.dismiss()
+                didSelectFile(file)
+            }
+            else {
+                let quickLook = QLPreviewController()
+                previewManager.filePath = file.filePath
+                quickLook.dataSource = previewManager
+                self.navigationController?.pushViewController(quickLook, animated: true)
+            }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
