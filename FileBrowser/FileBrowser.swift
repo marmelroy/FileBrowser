@@ -13,7 +13,7 @@ public class FileBrowser: UINavigationController {
     
     let parser = FileParser.sharedInstance
     
-    var fileList: FileList?
+    var fileList: FileListViewController?
 
     /// File types to exclude from the file browser.
     public var excludesFileTypes: [FileType]? {
@@ -55,7 +55,7 @@ public class FileBrowser: UINavigationController {
      - returns: File browser view controller.
      */
     public convenience init(initialPath: NSURL) {
-        let fileListViewController = FileList(initialPath: initialPath)
+        let fileListViewController = FileListViewController(initialPath: initialPath)
         self.init(rootViewController: fileListViewController)
         self.view.backgroundColor = UIColor.whiteColor()
         self.fileList = fileListViewController

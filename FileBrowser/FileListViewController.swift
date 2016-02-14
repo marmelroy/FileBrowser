@@ -1,5 +1,5 @@
 //
-//  FileList.swift
+//  FileListViewController.swift
 //  FileBrowser
 //
 //  Created by Roy Marmelstein on 12/02/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FileList: UIViewController {
+class FileListViewController: UIViewController {
     
     // TableView
     @IBOutlet weak var tableView: UITableView!
@@ -36,7 +36,7 @@ class FileList: UIViewController {
     //MARK: Lifecycle
     
     convenience init (initialPath: NSURL) {
-        self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileList.self))
+        self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileListViewController.self))
         self.edgesForExtendedLayout = .None
         
         // Set initial path

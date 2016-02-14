@@ -1,5 +1,5 @@
 //
-//  FliterListTableView.swift
+//  FlieListTableView.swift
 //  FileBrowser
 //
 //  Created by Roy Marmelstein on 14/02/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension FileList: UITableViewDataSource, UITableViewDelegate {
+extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: UITableView Data Source and Delegate
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -81,7 +81,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
         }
         searchController.active = false
         if file.isDirectory {
-            let browser = FileList(initialPath: file.filePath)
+            let browser = FileListViewController(initialPath: file.filePath)
             browser.didSelectFile = didSelectFile
             self.navigationController?.pushViewController(browser, animated: true)
         }

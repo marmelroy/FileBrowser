@@ -1,5 +1,5 @@
 //
-//  FilePreview.swift
+//  FileListPreview.swift
 //  FileBrowser
 //
 //  Created by Roy Marmelstein on 13/02/2016.
@@ -48,7 +48,7 @@ class PreviewItem: NSObject, QLPreviewItem {
     internal var previewItemTitle: String?
 }
 
-extension FileList: UIViewControllerPreviewingDelegate {
+extension FileListViewController: UIViewControllerPreviewingDelegate {
     
     func registerFor3DTouch() {
         if #available(iOS 9.0, *) {

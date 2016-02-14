@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension FileList: UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+extension FileListViewController: UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     func filterContentForSearchText(searchText: String) {
         filteredFiles = files.filter({ (file: File) -> Bool in
