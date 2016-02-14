@@ -9,7 +9,56 @@
 import Foundation
 
 extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
-    //MARK: UITableView Data Source and Delegate
+    
+    //MARK: UITableViewDataSource, UITableViewDelegate
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if searchController.active {
+            return 1
+        }
+        return sections.count
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active {
+            return filteredFiles.count
+        }
+        return sections[section].count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cellIdentifier = "FileCell"
+        var cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellIdentifier)
+        if let reuseCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) {
+            cell = reuseCell
+        }
+        cell.selectionStyle = .Blue
+        let selectedFile = fileForIndexPath(indexPath)
+        cell.textLabel?.text = selectedFile.fileName
+        cell.imageView?.image = selectedFile.type.image()
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedFile = fileForIndexPath(indexPath)
+        searchController.active = false
+        if selectedFile.isDirectory {
+            let fileListViewController = FileListViewController(initialPath: selectedFile.filePath)
+            fileListViewController.didSelectFile = didSelectFile
+            self.navigationController?.pushViewController(fileListViewController, animated: true)
+        }
+        else {
+            if let didSelectFile = didSelectFile {
+                self.dismiss()
+                didSelectFile(selectedFile)
+            }
+            else {
+                let filePreview = previewManager.previewViewControllerForFile(selectedFile)
+                self.navigationController?.pushViewController(filePreview, animated: true)
+            }
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if searchController.active {
@@ -38,74 +87,4 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if searchController.active {
-            return 1
-        }
-        return sections.count
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active {
-            return filteredFiles.count
-        }
-        return sections[section].count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellIdentifier = "FileCell"
-        var cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellIdentifier)
-        if let reuseCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) {
-            cell = reuseCell
-        }
-        cell.selectionStyle = .Blue
-        var file: File
-        if searchController.active {
-            file = filteredFiles[indexPath.row]
-        }
-        else {
-            file = sections[indexPath.section][indexPath.row]
-        }
-        cell.textLabel?.text = file.fileName
-        cell.imageView?.image = file.type.image()
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var file: File
-        if searchController.active {
-            file = filteredFiles[indexPath.row]
-        }
-        else {
-            file = sections[indexPath.section][indexPath.row]
-        }
-        searchController.active = false
-        if file.isDirectory {
-            let browser = FileListViewController(initialPath: file.filePath)
-            browser.didSelectFile = didSelectFile
-            self.navigationController?.pushViewController(browser, animated: true)
-        }
-        else {
-            if let didSelectFile = didSelectFile {
-                self.dismiss()
-                didSelectFile(file)
-            }
-            else {
-                let filePreview = previewManager.previewViewControllerForFile(file)
-                self.navigationController?.pushViewController(filePreview, animated: true)
-            }
-        }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
-    
-    func indexFiles() {
-        let selector: Selector = "fileName"
-        sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
-        if let sortedObjects = collation.sortedArrayFromArray(files, collationStringSelector: selector) as? [File]{
-            for object in sortedObjects {
-                let sectionNumber = collation.sectionForObject(object, collationStringSelector: selector)
-                sections[sectionNumber].append(object)
-            }
-        }
-    }
 }

@@ -9,11 +9,42 @@
 import Foundation
 import QuickLook
 
+extension FileListViewController: UIViewControllerPreviewingDelegate {
+    
+    //MARK: UIViewControllerPreviewingDelegate
+    
+    func registerFor3DTouch() {
+        if #available(iOS 9.0, *) {
+            if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+                registerForPreviewingWithDelegate(self, sourceView: tableView)
+            }
+        }
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if #available(iOS 9.0, *) {
+            if let indexPath = tableView.indexPathForRowAtPoint(location) {
+                let selectedFile = fileForIndexPath(indexPath)
+                previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+                if selectedFile.isDirectory == false {
+                    return previewManager.previewViewControllerForFile(selectedFile)
+                }
+            }
+        }
+        return nil
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+    }
+    
+    
+}
+
 class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     var filePath: NSURL?
     
-    func previewViewControllerForFile(file: File) -> UIViewController {
+    func previewViewControllerForFile(file: FBFile) -> UIViewController {
         let quickLook = QLPreviewController()
         quickLook.dataSource = self
         self.filePath = file.filePath
@@ -44,42 +75,7 @@ class PreviewItem: NSObject, QLPreviewItem {
         }
         return NSURL()
     }
-    
-    internal var previewItemTitle: String?
-}
-
-extension FileListViewController: UIViewControllerPreviewingDelegate {
-    
-    func registerFor3DTouch() {
-        if #available(iOS 9.0, *) {
-            if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
-                registerForPreviewingWithDelegate(self, sourceView: tableView)
-            }
-        }
-    }
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-    }
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        if let indexPath = tableView.indexPathForRowAtPoint(location) {
-            //This will show the cell clearly and blur the rest of the screen for our peek.
-            if #available(iOS 9.0, *) {
-                previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
-                var file: File
-                if searchController.active {
-                    file = filteredFiles[indexPath.row]
-                }
-                else {
-                    file = sections[indexPath.section][indexPath.row]
-                }
-                if file.isDirectory {
-                    return nil
-                }
-                return previewManager.previewViewControllerForFile(file)
-            }
-        }
-        return nil
-    }
 
 }
+
+

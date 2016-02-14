@@ -15,15 +15,15 @@ class FileListViewController: UIViewController {
     let collation = UILocalizedIndexedCollation.currentCollation()
     
     /// Data
-    var didSelectFile: ((File) -> ())?
-    var files = [File]()
+    var didSelectFile: ((FBFile) -> ())?
+    var files = [FBFile]()
     var initialPath: NSURL?
     let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
-    var sections: [[File]] = []
+    var sections: [[FBFile]] = []
 
     // Search controller
-    var filteredFiles = [File]()
+    var filteredFiles = [FBFile]()
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.searchBarStyle = .Minimal
@@ -81,16 +81,48 @@ class FileListViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Scroll to hide search bar
         self.tableView.contentOffset = CGPointMake(0, searchController.searchBar.frame.size.height)
+        
+        // Make sure navigation bar is visible
         self.navigationController?.navigationBarHidden = false
     }
     
     func dismiss() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
     
+    //MARK: Data
     
+    func indexFiles() {
+        let selector: Selector = "fileName"
+        sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
+        if let sortedObjects = collation.sortedArrayFromArray(files, collationStringSelector: selector) as? [FBFile]{
+            for object in sortedObjects {
+                let sectionNumber = collation.sectionForObject(object, collationStringSelector: selector)
+                sections[sectionNumber].append(object)
+            }
+        }
+    }
+    
+    func fileForIndexPath(indexPath: NSIndexPath) -> FBFile {
+        var file: FBFile
+        if searchController.active {
+            file = filteredFiles[indexPath.row]
+        }
+        else {
+            file = sections[indexPath.section][indexPath.row]
+        }
+        return file
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredFiles = files.filter({ (file: FBFile) -> Bool in
+            return file.fileName.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
+    }
 
 }
 

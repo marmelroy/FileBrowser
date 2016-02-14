@@ -16,7 +16,7 @@ public class FileBrowser: UINavigationController {
     var fileList: FileListViewController?
 
     /// File types to exclude from the file browser.
-    public var excludesFileTypes: [FileType]? {
+    public var excludesFileTypes: [FBFileType]? {
         didSet {
             parser.excludesFileTypes = excludesFileTypes
         }
@@ -30,7 +30,7 @@ public class FileBrowser: UINavigationController {
     }
     
     /// Override default preview and actionsheet behaviour in favour of custom file handling.
-    public var didSelectFile: ((File) -> ())? {
+    public var didSelectFile: ((FBFile) -> ())? {
         didSet {
             fileList?.didSelectFile = didSelectFile
         }

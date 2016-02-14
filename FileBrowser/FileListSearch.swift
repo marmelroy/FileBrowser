@@ -9,15 +9,8 @@
 import Foundation
 
 extension FileListViewController: UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    
-    func filterContentForSearchText(searchText: String) {
-        filteredFiles = files.filter({ (file: File) -> Bool in
-            return file.fileName.lowercaseString.containsString(searchText.lowercaseString)
-        })
-        tableView.reloadData()
-    }
-    
-    // MARK: UISearchController Delegate
+        
+    // MARK: UISearchControllerDelegate
     func willPresentSearchController(searchController: UISearchController) {
         self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
     }
@@ -26,12 +19,12 @@ extension FileListViewController: UISearchBarDelegate, UISearchControllerDelegat
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
     }
     
-    // MARK: UISearchBar Delegate
+    // MARK: UISearchBarDelegate
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         filterContentForSearchText(searchBar.text!)
     }
     
-    // MARK: UISearchResultsUpdating Delegate
+    // MARK: UISearchResultsUpdating
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }

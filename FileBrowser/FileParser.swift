@@ -12,7 +12,7 @@ class FileParser {
     
     static let sharedInstance = FileParser()
     
-    var excludesFileTypes: [FileType]?
+    var excludesFileTypes: [FBFileType]?
     
     var excludesFilepaths: [NSURL]?
     
@@ -22,8 +22,8 @@ class FileParser {
         return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as NSURL
     }
     
-    func filesForDirectory(directoryPath: NSURL) -> [File]  {
-        var files = [File]()
+    func filesForDirectory(directoryPath: NSURL) -> [FBFile]  {
+        var files = [FBFile]()
         var filePaths = [NSURL]()
         // Get contents
         do  {
@@ -33,7 +33,7 @@ class FileParser {
         }
         // Parse
         for filePath in filePaths {
-            let file = File(filePath: filePath)
+            let file = FBFile(filePath: filePath)
             if let excludesFileTypes = excludesFileTypes where excludesFileTypes.contains(file.type) {
                 continue
             }
@@ -51,12 +51,12 @@ class FileParser {
 
 }
 
-public class File: NSObject {
+public class FBFile: NSObject {
     public let filePath: NSURL
     public let fileName: String
     public let isDirectory: Bool
     public let fileExtension: String?
-    public let type: FileType
+    public let type: FBFileType
     
     init(filePath: NSURL) {
         var fileName = filePath.lastPathComponent
@@ -70,7 +70,7 @@ public class File: NSObject {
         else {
             self.fileExtension = self.filePath.pathExtension
             if let fileExtension = fileExtension {
-                self.type = FileType(rawValue: fileExtension) ?? .Default
+                self.type = FBFileType(rawValue: fileExtension) ?? .Default
                 fileName = fileName?.stringByReplacingOccurrencesOfString(".\(fileExtension)", withString: "")
             }
             else {
@@ -86,7 +86,7 @@ public class File: NSObject {
     }
 }
 
-public enum FileType: String {
+public enum FBFileType: String {
     case Directory = "directory"
     case GIF = "gif"
     case JPG = "jpg"
