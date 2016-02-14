@@ -51,6 +51,12 @@ fileBrowser.excludesFileTypes = [.ZIP]
 fileBrowser.excludesFilepaths = [secretFile]
 ```
 
+### Setting up with [CocoaPods](http://cocoapods.org/?q=FileBrowser)
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+pod 'FileBrowser', '~> 0.1'
+```
+
 ### Setting up with Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
@@ -66,10 +72,4 @@ To integrate Format into your Xcode project using Carthage, specify it in your `
 
 ```ogdl
 github "marmelroy/FileBrowser"
-```
-
-### Setting up with [CocoaPods](http://cocoapods.org/?q=FileBrowser)
-```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-pod 'FileBrowser', '~> 0.1'
 ```
