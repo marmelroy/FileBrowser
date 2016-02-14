@@ -6,7 +6,7 @@
 # FileBrowser
 iOS Finder-style file browser in Swift. Simple and quick to use.
 
-|  Features
+              |  Features
 --------------------------|------------------------------------------------------------
 :iphone: | Browse files and folders with a familiar UI on iOS.
 :mag: | Pull down to search.
