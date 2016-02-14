@@ -21,6 +21,8 @@ class FileList: UIViewController {
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.searchBarStyle = .Minimal
+        searchController.searchBar.backgroundColor = UIColor.whiteColor()
+
         searchController.dimsBackgroundDuringPresentation = false
         return searchController
     }()
@@ -108,7 +110,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
     //MARK: UITableView Data Source and Delegate
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             return nil
         }
         if sections[section].count > 0 {
@@ -120,14 +122,14 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             return nil
         }
         return collation.sectionIndexTitles
     }
     
     func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             return 0
         }
         return collation.sectionForSectionIndexTitleAtIndex(index)
@@ -135,14 +137,14 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
     
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             return 1
         }
         return sections.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             return filteredFiles.count
         }
         return sections[section].count
@@ -156,7 +158,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
         }
         cell.selectionStyle = .Blue
         var file: File
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             file = filteredFiles[indexPath.row]
         }
         else {
@@ -169,7 +171,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var file: File
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.active {
             file = filteredFiles[indexPath.row]
         }
         else {
