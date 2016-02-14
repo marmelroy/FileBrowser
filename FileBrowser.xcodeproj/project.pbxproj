@@ -22,6 +22,8 @@
 		344169581C67812400B93D28 /* FileBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 344169571C67812400B93D28 /* FileBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3441695F1C67812400B93D28 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344169541C67812400B93D28 /* FileBrowser.framework */; };
 		344169641C67812400B93D28 /* FileBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344169631C67812400B93D28 /* FileBrowserTests.swift */; };
+		349A12241C70725D005435C0 /* FileListSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12231C70725D005435C0 /* FileListSearch.swift */; };
+		349A12261C707317005435C0 /* FliterListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12251C707317005435C0 /* FliterListTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		3441695E1C67812400B93D28 /* FileBrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FileBrowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		344169631C67812400B93D28 /* FileBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowserTests.swift; sourceTree = "<group>"; };
 		344169651C67812400B93D28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		349A12231C70725D005435C0 /* FileListSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListSearch.swift; sourceTree = "<group>"; };
+		349A12251C707317005435C0 /* FliterListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FliterListTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 				344169571C67812400B93D28 /* FileBrowser.h */,
 				3439AB6F1C6FF68C0058AF04 /* FileBrowser.swift */,
 				3437405A1C6E7DA50090FD6A /* FileList.swift */,
+				349A12251C707317005435C0 /* FliterListTableView.swift */,
+				349A12231C70725D005435C0 /* FileListSearch.swift */,
 				3439AB6B1C6FD6650058AF04 /* FilePreview.swift */,
 				3439AB671C6F203A0058AF04 /* FileParser.swift */,
 				349A121D1C706601005435C0 /* Frameworks */,
@@ -255,8 +261,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,
+				349A12261C707317005435C0 /* FliterListTableView.swift in Sources */,
 				3439AB681C6F203A0058AF04 /* FileParser.swift in Sources */,
 				3437405B1C6E7DA50090FD6A /* FileList.swift in Sources */,
+				349A12241C70725D005435C0 /* FileListSearch.swift in Sources */,
 				3439AB6C1C6FD6650058AF04 /* FilePreview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

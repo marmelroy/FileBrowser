@@ -46,5 +46,40 @@ class PreviewItem: NSObject, QLPreviewItem {
     }
     
     internal var previewItemTitle: String?
+}
+
+extension FileList: UIViewControllerPreviewingDelegate {
     
+    func registerFor3DTouch() {
+        if #available(iOS 9.0, *) {
+            if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+                registerForPreviewingWithDelegate(self, sourceView: tableView)
+            }
+        }
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let indexPath = tableView.indexPathForRowAtPoint(location) {
+            //This will show the cell clearly and blur the rest of the screen for our peek.
+            if #available(iOS 9.0, *) {
+                previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+                var file: File
+                if searchController.active {
+                    file = filteredFiles[indexPath.row]
+                }
+                else {
+                    file = sections[indexPath.section][indexPath.row]
+                }
+                if file.isDirectory {
+                    return nil
+                }
+                return previewManager.previewViewControllerForFile(file)
+            }
+        }
+        return nil
+    }
+
 }
