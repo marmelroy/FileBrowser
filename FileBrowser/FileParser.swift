@@ -8,7 +8,13 @@
 
 import Foundation
 
-public class FileParser {
+class FileParser {
+    
+    static let sharedInstance = FileParser()
+    
+    var excludesFileTypes: [FileType]?
+    
+    var excludesFilepaths: [NSURL]?
     
     let fileManager = NSFileManager.defaultManager()
     
@@ -28,6 +34,12 @@ public class FileParser {
         // Parse
         for filePath in filePaths {
             let file = File(filePath: filePath)
+            if let excludesFileTypes = excludesFileTypes where excludesFileTypes.contains(file.type) {
+                continue
+            }
+            if let excludesFilepaths = excludesFilepaths where excludesFilepaths.contains(file.filePath) {
+                continue
+            }
             if file.fileName.isEmpty == false {
                 files.append(file)
             }

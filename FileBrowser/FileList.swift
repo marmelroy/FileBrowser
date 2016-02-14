@@ -14,7 +14,7 @@ class FileList: UIViewController {
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
-    let parser = FileParser()
+    let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -59,6 +59,10 @@ class FileList: UIViewController {
     //MARK: Lifecycle
     
     override func viewDidLoad() {
+        if let initialPath = initialPath {
+            files = parser.filesForDirectory(initialPath)
+            indexFiles()
+        }
         tableView.tableHeaderView = searchController.searchBar
     }
     
@@ -66,23 +70,15 @@ class FileList: UIViewController {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBarHidden = false
     }
-    
-    convenience init () {
-        let parser = FileParser()
-        let path = parser.documentsURL()
-        self.init(initialPath: path)
-    }
-    
+        
     convenience init (initialPath: NSURL) {
         self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileList.self))
         self.initialPath = initialPath
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         self.title = initialPath.lastPathComponent
-        files = parser.filesForDirectory(initialPath)
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss")
         self.navigationItem.rightBarButtonItem = rightBarButton
-        indexFiles()
     }
     
     deinit{
