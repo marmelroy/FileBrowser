@@ -62,6 +62,11 @@ class FileList: UIViewController {
         tableView.tableHeaderView = searchController.searchBar
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBarHidden = false
+    }
+    
     convenience init () {
         let parser = FileParser()
         let path = parser.documentsURL()
@@ -165,6 +170,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
         else {
             file = sections[indexPath.section][indexPath.row]
         }
+        searchController.active = false
         if file.isDirectory {
             let browser = FileList(initialPath: file.filePath)
             self.navigationController?.pushViewController(browser, animated: true)
@@ -175,6 +181,7 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
             quickLook.dataSource = previewManager
             self.navigationController?.pushViewController(quickLook, animated: true)
         }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func filterContentForSearchText(searchText: String) {
