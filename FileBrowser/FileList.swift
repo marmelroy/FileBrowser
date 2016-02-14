@@ -220,6 +220,9 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
                 else {
                     file = sections[indexPath.section][indexPath.row]
                 }
+                if file.isDirectory {
+                    return nil
+                }
                 let quickLook = QLPreviewController()
                 previewManager.filePath = file.filePath
                 quickLook.dataSource = previewManager
