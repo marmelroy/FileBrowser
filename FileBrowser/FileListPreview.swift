@@ -37,7 +37,6 @@ extension FileListViewController: UIViewControllerPreviewingDelegate {
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
     }
     
-    
 }
 
 class PreviewManager: NSObject, QLPreviewControllerDataSource {
@@ -77,5 +76,3 @@ class PreviewItem: NSObject, QLPreviewItem {
     }
 
 }
-
-

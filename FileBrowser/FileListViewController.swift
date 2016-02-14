@@ -96,7 +96,7 @@ class FileListViewController: UIViewController {
     //MARK: Data
     
     func indexFiles() {
-        let selector: Selector = "fileName"
+        let selector: Selector = "displayName"
         sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
         if let sortedObjects = collation.sortedArrayFromArray(files, collationStringSelector: selector) as? [FBFile]{
             for object in sortedObjects {
@@ -119,7 +119,7 @@ class FileListViewController: UIViewController {
     
     func filterContentForSearchText(searchText: String) {
         filteredFiles = files.filter({ (file: FBFile) -> Bool in
-            return file.fileName.lowercaseString.containsString(searchText.lowercaseString)
+            return file.displayName.lowercaseString.containsString(searchText.lowercaseString)
         })
         tableView.reloadData()
     }

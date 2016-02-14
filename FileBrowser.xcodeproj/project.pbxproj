@@ -24,6 +24,7 @@
 		344169641C67812400B93D28 /* FileBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344169631C67812400B93D28 /* FileBrowserTests.swift */; };
 		349A12241C70725D005435C0 /* FileListSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12231C70725D005435C0 /* FileListSearch.swift */; };
 		349A12261C707317005435C0 /* FlieListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12251C707317005435C0 /* FlieListTableView.swift */; };
+		349A12281C707B1A005435C0 /* FBFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12271C707B1A005435C0 /* FBFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		344169651C67812400B93D28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		349A12231C70725D005435C0 /* FileListSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListSearch.swift; sourceTree = "<group>"; };
 		349A12251C707317005435C0 /* FlieListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlieListTableView.swift; sourceTree = "<group>"; };
+		349A12271C707B1A005435C0 /* FBFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				349A12231C70725D005435C0 /* FileListSearch.swift */,
 				3439AB6B1C6FD6650058AF04 /* FileListPreview.swift */,
 				3439AB671C6F203A0058AF04 /* FileParser.swift */,
+				349A12271C707B1A005435C0 /* FBFile.swift */,
 				349A121D1C706601005435C0 /* Frameworks */,
 				3437406E1C6E888F0090FD6A /* Resources */,
 				344169591C67812400B93D28 /* Info.plist */,
@@ -263,6 +266,7 @@
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,
 				349A12261C707317005435C0 /* FlieListTableView.swift in Sources */,
 				3439AB681C6F203A0058AF04 /* FileParser.swift in Sources */,
+				349A12281C707B1A005435C0 /* FBFile.swift in Sources */,
 				3437405B1C6E7DA50090FD6A /* FileListViewController.swift in Sources */,
 				349A12241C70725D005435C0 /* FileListSearch.swift in Sources */,
 				3439AB6C1C6FD6650058AF04 /* FileListPreview.swift in Sources */,
