@@ -40,7 +40,8 @@ public class FileBrowser: UINavigationController {
     
     public convenience init(initialPath: NSURL) {
         let fileListViewController = FileList(initialPath: initialPath)
-        self.init(rootViewController: fileListViewController)        
+        self.init(rootViewController: fileListViewController)
+        self.view.backgroundColor = UIColor.whiteColor()
         self.fileList = fileListViewController
     }
     

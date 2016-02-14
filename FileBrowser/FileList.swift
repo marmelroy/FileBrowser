@@ -66,18 +66,25 @@ class FileList: UIViewController {
             indexFiles()
         }
         tableView.tableHeaderView = searchController.searchBar
+        self.edgesForExtendedLayout = .None
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.contentOffset = CGPointMake(0, searchController.searchBar.frame.size.height)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBarHidden = false
     }
-        
+    
     convenience init (initialPath: NSURL) {
         self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileList.self))
         self.initialPath = initialPath
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
+        searchController.delegate = self
         self.title = initialPath.lastPathComponent
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss")
         self.navigationItem.rightBarButtonItem = rightBarButton
@@ -198,16 +205,24 @@ extension FileList: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-extension FileList: UISearchBarDelegate {
-    // MARK: - UISearchBar Delegate
+extension FileList: UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    // MARK: UISearchController Delegate
+    func willPresentSearchController(searchController: UISearchController) {
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
+    }
+    
+    func willDismissSearchController(searchController: UISearchController) {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+    }
+    
+    // MARK: UISearchBar Delegate
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         filterContentForSearchText(searchBar.text!)
     }
-}
-
-extension FileList: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
+    
+    // MARK: UISearchResultsUpdating Delegate
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
+    
 }

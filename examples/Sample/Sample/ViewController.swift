@@ -26,9 +26,9 @@ class ViewController: UIViewController {
     @IBAction func showFileBrowser(sender: AnyObject) {
         let fileBrowser = FileBrowser()
         fileBrowser.excludesFileTypes = [.ZIP]
-        fileBrowser.didSelectFile = { (file: File) -> Void in
-            print("file \(file.filePath)")
-        }
+//        fileBrowser.didSelectFile = { (file: File) -> Void in
+//            print("file \(file.filePath)")
+//        }
         self.presentViewController(fileBrowser, animated: true, completion: nil)
     }
     /*
