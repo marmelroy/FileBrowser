@@ -47,7 +47,7 @@ fileBrowser.didSelectFile = { (file: FBFile) -> Void in
 
 To exclude a certain file type or a specific file path:
 ```swift
-fileBrowser.excludesFileTypes = [.ZIP]
+fileBrowser.excludesFileExtensions = ["zip"]
 fileBrowser.excludesFilepaths = [secretFile]
 ```
 
