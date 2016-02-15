@@ -12,18 +12,17 @@ class FileParser {
     
     static let sharedInstance = FileParser()
     
-    var _excludesFileExtensions: [String]?
+    var _excludesFileExtensions = [String]()
     
     /// Mapped for case insensitivity
     var excludesFileExtensions: [String]? {
         get {
-            if let excludesFileExtensions = _excludesFileExtensions {
-                return excludesFileExtensions.map({$0.lowercaseString})
-            }
-            return self.excludesFileExtensions
+            return _excludesFileExtensions.map({$0.lowercaseString})
         }
         set {
-            _excludesFileExtensions = newValue
+            if let newValue = newValue {
+                _excludesFileExtensions = newValue
+            }
         }
     }
     
