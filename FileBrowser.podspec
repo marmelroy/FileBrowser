@@ -30,8 +30,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc = true
 
-  s.source_files = "FileBrowser/"
-  s.resources = "FileBrowser/Resources/"
+  s.source_files = "FileBrowser"
+  s.resources = "FileBrowser/Resources/*.*"
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'QuickLook'
