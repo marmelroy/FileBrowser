@@ -4,7 +4,12 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 # FileBrowser
-iOS Finder-style file browser in Swift. Simple and quick to use.
+iOS Finder-style file browser in Swift with search, file previews and 3D touch. Simple and quick to use.
+
+<p align="center"><img src="http://i.giphy.com/3o6gaY6yLQkhjiok5W.gif" width="242" height="425"/></p>
+
+## Features
+
 
               |  Features
 --------------------------|------------------------------------------------------------
@@ -13,6 +18,7 @@ iOS Finder-style file browser in Swift. Simple and quick to use.
 :eyeglasses: | Preview most file types with QuickLook.
 :point_up_2: | 3D touch support for faster previews.
 :white_flower: | Fully customizable.
+
 
 ## Usage
 
