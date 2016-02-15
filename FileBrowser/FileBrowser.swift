@@ -16,9 +16,9 @@ public class FileBrowser: UINavigationController {
     var fileList: FileListViewController?
 
     /// File types to exclude from the file browser.
-    public var excludesFileTypes: [FBFileType]? {
+    public var excludesFileExtensions: [String]? {
         didSet {
-            parser.excludesFileTypes = excludesFileTypes
+            parser.excludesFileExtensions = excludesFileExtensions
         }
     }
     

@@ -12,7 +12,7 @@ class FileParser {
     
     static let sharedInstance = FileParser()
     
-    var excludesFileTypes: [FBFileType]?
+    var excludesFileExtensions: [String]?
     
     var excludesFilepaths: [NSURL]?
     
@@ -34,7 +34,7 @@ class FileParser {
         // Parse
         for filePath in filePaths {
             let file = FBFile(filePath: filePath)
-            if let excludesFileTypes = excludesFileTypes where excludesFileTypes.contains(file.type) {
+            if let excludesFileExtensions = excludesFileExtensions, let fileExtensions = file.fileExtension where excludesFileExtensions.contains(fileExtensions) {
                 continue
             }
             if let excludesFilepaths = excludesFilepaths where excludesFilepaths.contains(file.filePath) {
