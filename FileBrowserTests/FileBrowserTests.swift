@@ -49,9 +49,6 @@ class FileBrowserTests: XCTestCase {
         let parser = FileParser.sharedInstance
         let directoryPath = NSBundle(forClass: FileBrowserTests.self).bundleURL
         let directoryContents = parser.filesForDirectory(directoryPath)
-        for file in directoryContents {
-            print(file.displayName)
-        }
         XCTAssertTrue(directoryContents.count > 0)
         let stitchFile = directoryContents.filter({$0.displayName == "Stitch"}).first
         XCTAssertNotNil(stitchFile)
@@ -60,4 +57,17 @@ class FileBrowserTests: XCTestCase {
         }
     }
 
+    func testCaseSensitiveExclusion() {
+        let parser = FileParser.sharedInstance
+        parser.excludesFileExtensions = ["gIf"]
+        let directoryPath = NSBundle(forClass: FileBrowserTests.self).bundleURL
+        let directoryContents = parser.filesForDirectory(directoryPath)
+        for file in directoryContents {
+            if let fileExtension = file.fileExtension {
+                XCTAssertFalse(fileExtension == "gif")
+            }
+        }
+    }
+
+    
 }
