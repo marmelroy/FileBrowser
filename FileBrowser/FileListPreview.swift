@@ -45,7 +45,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     var filePath: NSURL?
     
     func previewViewControllerForFile(file: FBFile) -> UIViewController {
-        let quickLook = QLPreviewController()
+        let quickLook = FilePreviewController()
         quickLook.dataSource = self
         self.filePath = file.filePath
         return quickLook
@@ -63,6 +63,17 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
         return item
     }
     
+}
+
+/// Subclassing QLPreviewController to override presentingViewController and fix unbalanced calls for presentation.
+class FilePreviewController: QLPreviewController {
+
+    override var presentingViewController: UIViewController? {
+        get {
+            return nil
+        }
+    }
+   
 }
 
 class PreviewItem: NSObject, QLPreviewItem {
