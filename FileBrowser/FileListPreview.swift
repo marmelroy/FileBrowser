@@ -35,56 +35,10 @@ extension FileListViewController: UIViewControllerPreviewingDelegate {
     }
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
-    
-}
-
-class PreviewManager: NSObject, QLPreviewControllerDataSource {
-    
-    var filePath: NSURL?
-    
-    func previewViewControllerForFile(file: FBFile) -> UIViewController {
-        let quickLook = FilePreviewController()
-        quickLook.dataSource = self
-        self.filePath = file.filePath
-        return quickLook
-    }
-    
-    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
-        return 1
-    }
-    
-    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-        let item = PreviewItem()
-        if let filePath = filePath {
-            item.filePath = filePath
-        }
-        return item
-    }
-    
-}
-
-/// Subclassing QLPreviewController to override presentingViewController and fix unbalanced calls for presentation.
-class FilePreviewController: QLPreviewController {
-
-    override var presentingViewController: UIViewController? {
-        get {
-            return nil
+        if let previewTransitionViewController = viewControllerToCommit as? PreviewTransitionViewController {
+            self.navigationController?.pushViewController(previewTransitionViewController.quickLookPreviewController, animated: true)
         }
     }
-   
+    
 }
 
-class PreviewItem: NSObject, QLPreviewItem {
-    
-    var filePath: NSURL?
-    
-    internal var previewItemURL: NSURL {
-        if let filePath = filePath {
-            return filePath
-        }
-        return NSURL()
-    }
-
-}
