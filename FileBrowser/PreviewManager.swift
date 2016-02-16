@@ -13,7 +13,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     var filePath: NSURL?
     
-    func previewViewControllerForFile(file: FBFile) -> UIViewController {
+    func previewViewControllerForFile(file: FBFile, fromNavigation: Bool) -> UIViewController {
         
         if file.type == .PLIST || file.type == .JSON{
             let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: NSBundle(forClass: WebviewPreviewViewContoller.self))
@@ -23,10 +23,15 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
         else {
             let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: NSBundle(forClass: PreviewTransitionViewController.self))
             previewTransitionViewController.quickLookPreviewController.dataSource = self
+
             self.filePath = file.filePath
+            if fromNavigation == true {
+                return previewTransitionViewController.quickLookPreviewController
+            }
             return previewTransitionViewController
         }
     }
+    
     
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
         return 1
