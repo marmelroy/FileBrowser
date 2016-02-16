@@ -34,7 +34,7 @@ let fileBrowser = FileBrowser()
 self.presentViewController(fileBrowser, animated: true, completion: nil)
 ```
 
-By default, the file browser will open in your app's documents directory. When users select a file, a QuickLook preview will be displayed - offering an action sheet of options based on the file type.
+By default, the file browser will open in your app's documents directory. When users select a file, a preview will be displayed - offering an action sheet of options based on the file type.
 
 ## Advanced Usage
 
@@ -42,7 +42,6 @@ You can open FileBrowser in a different root folder by initialising with an NSUR
 ```swift
 let fileBrowser = FileBrowser(initialPath: customPath)
 ```
-
 
 Use the didSelectFile closure to change FileBrowser's behaviour when a file is selected.
 ```swift
