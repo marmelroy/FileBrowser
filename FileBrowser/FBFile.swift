@@ -66,8 +66,12 @@ public enum FBFileType: String {
     case GIF = "gif"
     /// JPG file
     case JPG = "jpg"
+    /// PLIST file
+    case JSON = "json"
     /// PDF file
     case PDF = "pdf"
+    /// PLIST file
+    case PLIST = "plist"
     /// PNG file
     case PNG = "png"
     /// ZIP file
@@ -88,7 +92,7 @@ public enum FBFileType: String {
         case JPG, PNG, GIF: fileName = "image@2x.png"
         case PDF: fileName = "pdf@2x.png"
         case ZIP: fileName = "zip@2x.png"
-        case Default: fileName = "file@2x.png"
+        default: fileName = "file@2x.png"
         }
         let file = UIImage(named: fileName, inBundle: bundle, compatibleWithTraitCollection: nil)
         return file

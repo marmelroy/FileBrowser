@@ -9,12 +9,15 @@
 /* Begin PBXBuildFile section */
 		3437405B1C6E7DA50090FD6A /* FileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3437405A1C6E7DA50090FD6A /* FileListViewController.swift */; };
 		3439AB681C6F203A0058AF04 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439AB671C6F203A0058AF04 /* FileParser.swift */; };
-		3439AB6A1C6FC6D90058AF04 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3439AB691C6FC6D90058AF04 /* QuickLook.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		3439AB6A1C6FC6D90058AF04 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3439AB691C6FC6D90058AF04 /* QuickLook.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		3439AB6C1C6FD6650058AF04 /* FileListPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439AB6B1C6FD6650058AF04 /* FileListPreview.swift */; };
 		3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439AB6F1C6FF68C0058AF04 /* FileBrowser.swift */; };
 		343C44631C73CC8100D874FB /* PreviewTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343C44611C73CC8100D874FB /* PreviewTransitionViewController.swift */; };
 		343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343C44651C73CD3200D874FB /* PreviewManager.swift */; };
 		343C44681C73CD8700D874FB /* PreviewTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 343C44671C73CD8700D874FB /* PreviewTransitionViewController.xib */; };
+		343C447A1C73CFC400D874FB /* WebviewPreviewViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343C44781C73CFC400D874FB /* WebviewPreviewViewContoller.swift */; };
+		343C447D1C73CFD900D874FB /* WebviewPreviewViewContoller.xib in Resources */ = {isa = PBXBuildFile; fileRef = 343C447C1C73CFD900D874FB /* WebviewPreviewViewContoller.xib */; };
+		343C447F1C73D06200D874FB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343C447E1C73D06200D874FB /* WebKit.framework */; };
 		344169581C67812400B93D28 /* FileBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 344169571C67812400B93D28 /* FileBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3441695F1C67812400B93D28 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344169541C67812400B93D28 /* FileBrowser.framework */; };
 		344169641C67812400B93D28 /* FileBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344169631C67812400B93D28 /* FileBrowserTests.swift */; };
@@ -50,7 +53,10 @@
 		3439AB6F1C6FF68C0058AF04 /* FileBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowser.swift; sourceTree = "<group>"; };
 		343C44611C73CC8100D874FB /* PreviewTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTransitionViewController.swift; sourceTree = "<group>"; };
 		343C44651C73CD3200D874FB /* PreviewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewManager.swift; sourceTree = "<group>"; };
-		343C44671C73CD8700D874FB /* PreviewTransitionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreviewTransitionViewController.xib; path = Resources/PreviewTransitionViewController.xib; sourceTree = "<group>"; };
+		343C44671C73CD8700D874FB /* PreviewTransitionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewTransitionViewController.xib; sourceTree = "<group>"; };
+		343C44781C73CFC400D874FB /* WebviewPreviewViewContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebviewPreviewViewContoller.swift; sourceTree = "<group>"; };
+		343C447C1C73CFD900D874FB /* WebviewPreviewViewContoller.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebviewPreviewViewContoller.xib; sourceTree = "<group>"; };
+		343C447E1C73D06200D874FB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		344169541C67812400B93D28 /* FileBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FileBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		344169571C67812400B93D28 /* FileBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileBrowser.h; sourceTree = "<group>"; };
 		344169591C67812400B93D28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				343C447F1C73D06200D874FB /* WebKit.framework in Frameworks */,
 				3439AB6A1C6FC6D90058AF04 /* QuickLook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,7 +123,7 @@
 			children = (
 				343C44611C73CC8100D874FB /* PreviewTransitionViewController.swift */,
 				343C44651C73CD3200D874FB /* PreviewManager.swift */,
-				343C44671C73CD8700D874FB /* PreviewTransitionViewController.xib */,
+				343C44781C73CFC400D874FB /* WebviewPreviewViewContoller.swift */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -145,9 +152,9 @@
 				344169571C67812400B93D28 /* FileBrowser.h */,
 				3439AB6F1C6FF68C0058AF04 /* FileBrowser.swift */,
 				343C445E1C73CB9600D874FB /* Data */,
+				349A121D1C706601005435C0 /* Frameworks */,
 				343C445F1C73CBA900D874FB /* FileList */,
 				343C44601C73CC3C00D874FB /* Preview */,
-				349A121D1C706601005435C0 /* Frameworks */,
 				349A122A1C707E86005435C0 /* Resources */,
 				344169591C67812400B93D28 /* Info.plist */,
 			);
@@ -169,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				3439AB691C6FC6D90058AF04 /* QuickLook.framework */,
+				343C447E1C73D06200D874FB /* WebKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -182,6 +190,8 @@
 				349A122E1C707E86005435C0 /* folder@2x.png */,
 				349A122F1C707E86005435C0 /* image@2x.png */,
 				349A12301C707E86005435C0 /* pdf@2x.png */,
+				343C44671C73CD8700D874FB /* PreviewTransitionViewController.xib */,
+				343C447C1C73CFD900D874FB /* WebviewPreviewViewContoller.xib */,
 				349A12311C707E86005435C0 /* zip@2x.png */,
 			);
 			path = Resources;
@@ -281,6 +291,7 @@
 				343C44681C73CD8700D874FB /* PreviewTransitionViewController.xib in Resources */,
 				349A12331C707E86005435C0 /* file@2x.png in Resources */,
 				349A12341C707E86005435C0 /* FileBrowser.xib in Resources */,
+				343C447D1C73CFD900D874FB /* WebviewPreviewViewContoller.xib in Resources */,
 				349A12361C707E86005435C0 /* image@2x.png in Resources */,
 				349A12371C707E86005435C0 /* pdf@2x.png in Resources */,
 				349A12351C707E86005435C0 /* folder@2x.png in Resources */,
@@ -305,6 +316,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				343C447A1C73CFC400D874FB /* WebviewPreviewViewContoller.swift in Sources */,
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,
 				349A12261C707317005435C0 /* FlieListTableView.swift in Sources */,
 				343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */,

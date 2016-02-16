@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   s.resources = "FileBrowser/Resources/*.*"
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'QuickLook'
+  s.frameworks = 'QuickLook', 'WebKit'
   # s.dependency 'AFNetworking', '~> 2.3'
 
 end
