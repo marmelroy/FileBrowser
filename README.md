@@ -73,7 +73,7 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate Format into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate FileBrowser into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
 github "marmelroy/FileBrowser"
