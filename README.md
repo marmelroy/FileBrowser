@@ -13,7 +13,7 @@ iOS Finder-style file browser in Swift with search, file previews and 3D touch. 
 
               |  Features
 --------------------------|------------------------------------------------------------
-:iphone: | Browse files and folders with a familiar UI on iOS.
+:iphone: | Browse and select files and folders with a familiar UI on iOS.
 :mag: | Pull down to search.
 :eyeglasses: | Preview most file types. Including plist and json.
 :point_up_2: | 3D touch support for faster previews with Peek & Pop.
