@@ -16,6 +16,8 @@ public class FBFile: NSObject {
     public let isDirectory: Bool
     /// File extension.
     public let fileExtension: String?
+    /// File attributes (including size, creation date etc).
+    public let fileAttributes: NSDictionary?
     /// NSURL file path.
     public let filePath: NSURL
     // FBFileType
@@ -34,10 +36,12 @@ public class FBFile: NSObject {
         let isDirectory = checkDirectory(filePath)
         self.isDirectory = isDirectory
         if self.isDirectory {
+            self.fileAttributes = nil
             self.fileExtension = nil
             self.type = .Directory
         }
         else {
+            self.fileAttributes = getFileAttributes(self.filePath)
             self.fileExtension = self.filePath.pathExtension
             if let fileExtension = fileExtension {
                 self.type = FBFileType(rawValue: fileExtension) ?? .Default
@@ -117,4 +121,16 @@ func checkDirectory(filePath: NSURL) -> Bool {
     }
     catch { }
     return isDirectory
+}
+
+func getFileAttributes(filePath: NSURL) -> NSDictionary? {
+    guard let path = filePath.path else {
+        return nil
+    }
+    let fileManager = FileParser.sharedInstance.fileManager
+    do {
+        let attributes = try fileManager.attributesOfItemAtPath(path) as NSDictionary
+        return attributes
+    } catch {}
+    return nil
 }
