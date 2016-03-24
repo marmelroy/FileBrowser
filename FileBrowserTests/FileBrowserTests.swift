@@ -50,7 +50,7 @@ class FileBrowserTests: XCTestCase {
         let directoryPath = NSBundle(forClass: FileBrowserTests.self).bundleURL
         let directoryContents = parser.filesForDirectory(directoryPath)
         XCTAssertTrue(directoryContents.count > 0)
-        let stitchFile = directoryContents.filter({$0.displayName == "Stitch"}).first
+        let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
         XCTAssertNotNil(stitchFile)
         if let stitchFile = stitchFile {
             XCTAssertEqual(stitchFile.type, FBFileType.JPG)
