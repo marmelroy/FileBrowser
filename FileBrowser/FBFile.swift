@@ -45,7 +45,6 @@ public class FBFile: NSObject {
             self.fileExtension = self.filePath.pathExtension
             if let fileExtension = fileExtension {
                 self.type = FBFileType(rawValue: fileExtension) ?? .Default
-                displayName = displayName?.stringByReplacingOccurrencesOfString(".\(fileExtension)", withString: "")
             }
             else {
                 self.type = .Default
