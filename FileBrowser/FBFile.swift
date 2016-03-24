@@ -31,7 +31,6 @@ public class FBFile: NSObject {
      - returns: FBFile object.
      */
     init(filePath: NSURL) {
-        var displayName = filePath.lastPathComponent
         self.filePath = filePath
         let isDirectory = checkDirectory(filePath)
         self.isDirectory = isDirectory
@@ -42,7 +41,7 @@ public class FBFile: NSObject {
         }
         else {
             self.fileAttributes = getFileAttributes(self.filePath)
-            self.fileExtension = self.filePath.pathExtension
+            self.fileExtension = filePath.pathExtension
             if let fileExtension = fileExtension {
                 self.type = FBFileType(rawValue: fileExtension) ?? .Default
             }
@@ -50,12 +49,7 @@ public class FBFile: NSObject {
                 self.type = .Default
             }
         }
-        if let displayName = displayName {
-            self.displayName = displayName
-        }
-        else {
-            self.displayName = String()
-        }
+        self.displayName = filePath.lastPathComponent ?? String()
     }
 }
 
