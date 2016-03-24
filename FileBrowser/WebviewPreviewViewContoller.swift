@@ -28,7 +28,7 @@ class WebviewPreviewViewContoller: UIViewController {
         self.view.addSubview(webView)
         
         // Add share button
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "shareFile")
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile))
         self.navigationItem.rightBarButtonItem = shareButton
     }
     

@@ -49,7 +49,7 @@ class FileListViewController: UIViewController {
         searchController.delegate = self
         
         // Add dismiss button
-        let dismissButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss")
+        let dismissButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(FileListViewController.dismiss))
         self.navigationItem.rightBarButtonItem = dismissButton
         
     }
@@ -96,7 +96,7 @@ class FileListViewController: UIViewController {
     //MARK: Data
     
     func indexFiles() {
-        let selector: Selector = "displayName"
+        let selector: Selector = Selector("displayName")
         sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
         if let sortedObjects = collation.sortedArrayFromArray(files, collationStringSelector: selector) as? [FBFile]{
             for object in sortedObjects {
