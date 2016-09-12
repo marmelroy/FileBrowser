@@ -51,7 +51,7 @@ class PreviewItem: NSObject, QLPreviewItem {
     
     var filePath: NSURL?
     
-    internal var previewItemURL: NSURL {
+    internal var previewItemURL: NSURL? {
         if let filePath = filePath {
             return filePath
         }

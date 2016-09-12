@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let bundleUrl = NSBundle.mainBundle().resourceURL
             // Copy images to documents folder
             for file in fileNames {
-                if let srcPath = bundleUrl?.URLByAppendingPathComponent(file).path, let toPath = documentsUrl.URLByAppendingPathComponent(file).path{
+                if let srcPath = bundleUrl?.URLByAppendingPathComponent(file)!.path, let toPath = documentsUrl.URLByAppendingPathComponent(file)!.path{
                     do {
                         try fileManager.copyItemAtPath(srcPath, toPath: toPath)
                     } catch {}
@@ -34,10 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Copy zip file to an images directory
             let imagesDirectoryURL = documentsUrl.URLByAppendingPathComponent("images")
             let zipFileName = "Images.zip"
-            if let imagesDirectoryPath = imagesDirectoryURL.path {
+            if let imagesDirectoryPath = imagesDirectoryURL!.path {
                 do {
                     try fileManager.createDirectoryAtPath(imagesDirectoryPath, withIntermediateDirectories: false, attributes: nil)
-                    if let srcPath = bundleUrl?.URLByAppendingPathComponent(zipFileName).path, let toPath = imagesDirectoryURL.URLByAppendingPathComponent(zipFileName).path{
+                    if let srcPath = bundleUrl?.URLByAppendingPathComponent(zipFileName)!.path, let toPath = imagesDirectoryURL!.URLByAppendingPathComponent(zipFileName)!.path{
                         do {
                             try fileManager.copyItemAtPath(srcPath, toPath: toPath)
                         } catch {}
