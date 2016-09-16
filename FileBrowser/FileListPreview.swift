@@ -15,17 +15,17 @@ extension FileListViewController: UIViewControllerPreviewingDelegate {
     
     func registerFor3DTouch() {
         if #available(iOS 9.0, *) {
-            if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
-                registerForPreviewingWithDelegate(self, sourceView: tableView)
+            if self.traitCollection.forceTouchCapability == UIForceTouchCapability.available {
+                registerForPreviewing(with: self, sourceView: tableView)
             }
         }
     }
     
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         if #available(iOS 9.0, *) {
-            if let indexPath = tableView.indexPathForRowAtPoint(location) {
+            if let indexPath = tableView.indexPathForRow(at: location) {
                 let selectedFile = fileForIndexPath(indexPath)
-                previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+                previewingContext.sourceRect = tableView.rectForRow(at: indexPath)
                 if selectedFile.isDirectory == false {
                     return previewManager.previewViewControllerForFile(selectedFile, fromNavigation: false)
                 }
@@ -34,7 +34,7 @@ extension FileListViewController: UIViewControllerPreviewingDelegate {
         return nil
     }
     
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         if let previewTransitionViewController = viewControllerToCommit as? PreviewTransitionViewController {
             self.navigationController?.pushViewController(previewTransitionViewController.quickLookPreviewController, animated: true)
         }

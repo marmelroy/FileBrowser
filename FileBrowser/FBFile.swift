@@ -9,19 +9,19 @@
 import Foundation
 
 /// FBFile is a class representing a file in FileBrowser
-public class FBFile: NSObject {
+open class FBFile: NSObject {
     /// Display name. String.
-    public let displayName: String
+    open let displayName: String
     // is Directory. Bool.
-    public let isDirectory: Bool
+    open let isDirectory: Bool
     /// File extension.
-    public let fileExtension: String?
+    open let fileExtension: String?
     /// File attributes (including size, creation date etc).
-    public let fileAttributes: NSDictionary?
+    open let fileAttributes: NSDictionary?
     /// NSURL file path.
-    public let filePath: NSURL
+    open let filePath: URL
     // FBFileType
-    public let type: FBFileType
+    open let type: FBFileType
     
     /**
      Initialize an FBFile object with a filePath
@@ -30,7 +30,7 @@ public class FBFile: NSObject {
      
      - returns: FBFile object.
      */
-    init(filePath: NSURL) {
+    init(filePath: URL) {
         self.filePath = filePath
         let isDirectory = checkDirectory(filePath)
         self.isDirectory = isDirectory
@@ -49,7 +49,7 @@ public class FBFile: NSObject {
                 self.type = .Default
             }
         }
-        self.displayName = filePath.lastPathComponent ?? String()
+        self.displayName = filePath.lastPathComponent 
     }
 }
 
@@ -82,16 +82,16 @@ public enum FBFileType: String {
      - returns: UIImage for file type
      */
     public func image() -> UIImage? {
-        let bundle =  NSBundle(forClass: FileParser.self)
+        let bundle =  Bundle(for: FileParser.self)
         var fileName = String()
         switch self {
-        case Directory: fileName = "folder@2x.png"
-        case JPG, PNG, GIF: fileName = "image@2x.png"
-        case PDF: fileName = "pdf@2x.png"
-        case ZIP: fileName = "zip@2x.png"
+        case .Directory: fileName = "folder@2x.png"
+        case .JPG, .PNG, .GIF: fileName = "image@2x.png"
+        case .PDF: fileName = "pdf@2x.png"
+        case .ZIP: fileName = "zip@2x.png"
         default: fileName = "file@2x.png"
         }
-        let file = UIImage(named: fileName, inBundle: bundle, compatibleWithTraitCollection: nil)
+        let file = UIImage(named: fileName, in: bundle, compatibleWith: nil)
         return file
     }
 }
@@ -103,12 +103,12 @@ public enum FBFileType: String {
  
  - returns: isDirectory Bool.
  */
-func checkDirectory(filePath: NSURL) -> Bool {
+func checkDirectory(_ filePath: URL) -> Bool {
     var isDirectory = false
     do {
         var resourceValue: AnyObject?
-        try filePath.getResourceValue(&resourceValue, forKey: NSURLIsDirectoryKey)
-        if let number = resourceValue as? NSNumber where number == true {
+        try (filePath as NSURL).getResourceValue(&resourceValue, forKey: URLResourceKey.isDirectoryKey)
+        if let number = resourceValue as? NSNumber , number == true {
             isDirectory = true
         }
     }
@@ -116,13 +116,11 @@ func checkDirectory(filePath: NSURL) -> Bool {
     return isDirectory
 }
 
-func getFileAttributes(filePath: NSURL) -> NSDictionary? {
-    guard let path = filePath.path else {
-        return nil
-    }
+func getFileAttributes(_ filePath: URL) -> NSDictionary? {
+    let path = filePath.path
     let fileManager = FileParser.sharedInstance.fileManager
     do {
-        let attributes = try fileManager.attributesOfItemAtPath(path) as NSDictionary
+        let attributes = try fileManager.attributesOfItem(atPath: path) as NSDictionary
         return attributes
     } catch {}
     return nil
