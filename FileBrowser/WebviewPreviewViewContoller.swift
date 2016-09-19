@@ -28,7 +28,7 @@ class WebviewPreviewViewContoller: UIViewController {
         self.view.addSubview(webView)
         
         // Add share button
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile))
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile))
         self.navigationItem.rightBarButtonItem = shareButton
     }
     
@@ -44,14 +44,14 @@ class WebviewPreviewViewContoller: UIViewController {
             return
         }
         let activityViewController = UIActivityViewController(activityItems: [file.filePath], applicationActivities: nil)
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        self.present(activityViewController, animated: true, completion: nil)
 
     }
 
     //MARK: Processing
     
     func processForDisplay() {
-        guard let file = file, let data = NSData(contentsOfURL: file.filePath) else {
+        guard let file = file, let data = try? Data(contentsOf: file.filePath as URL) else {
             return
         }
         var rawString: String?
@@ -59,7 +59,7 @@ class WebviewPreviewViewContoller: UIViewController {
         // Prepare plist for display
         if file.type == .PLIST {
             do {
-                if let plistDescription = try NSPropertyListSerialization.propertyListWithData(data, options: [], format: nil).description {
+                if let plistDescription = try (PropertyListSerialization.propertyList(from: data, options: [], format: nil) as AnyObject).description {
                     rawString = plistDescription
                 }
             } catch {}
@@ -68,12 +68,12 @@ class WebviewPreviewViewContoller: UIViewController {
         // Prepare json file for display
         else if file.type == .JSON {
             do {
-                let jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-                if NSJSONSerialization.isValidJSONObject(jsonObject) {
-                    let prettyJSON = try NSJSONSerialization.dataWithJSONObject(jsonObject, options: .PrettyPrinted)
-                    var jsonString = String(data: prettyJSON, encoding: NSUTF8StringEncoding)
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                if JSONSerialization.isValidJSONObject(jsonObject) {
+                    let prettyJSON = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+                    var jsonString = String(data: prettyJSON, encoding: String.Encoding.utf8)
                     // Unescape forward slashes
-                    jsonString = jsonString?.stringByReplacingOccurrencesOfString("\\/", withString: "/")
+                    jsonString = jsonString?.replacingOccurrences(of: "\\/", with: "/")
                     rawString = jsonString
                 }
             } catch {}
@@ -81,7 +81,7 @@ class WebviewPreviewViewContoller: UIViewController {
         
         // Default prepare for display
         if rawString == nil {
-            rawString = String(data: data, encoding: NSUTF8StringEncoding)
+            rawString = String(data: data, encoding: String.Encoding.utf8)
         }
         
         // Convert and display string
@@ -95,7 +95,7 @@ class WebviewPreviewViewContoller: UIViewController {
 
     // Make sure we convert HTML special characters
     // Code from https://gist.github.com/mikesteele/70ae98d04fdc35cb1d5f
-    func convertSpecialCharacters(string: String?) -> String? {
+    func convertSpecialCharacters(_ string: String?) -> String? {
         guard let string = string else {
             return nil
         }
@@ -108,7 +108,7 @@ class WebviewPreviewViewContoller: UIViewController {
             "&apos;": "'"
         ];
         for (escaped_char, unescaped_char) in char_dictionary {
-            newString = newString.stringByReplacingOccurrencesOfString(escaped_char, withString: unescaped_char, options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+            newString = newString.replacingOccurrences(of: escaped_char, with: unescaped_char, options: NSString.CompareOptions.regularExpression, range: nil)
         }
         return newString
     }
