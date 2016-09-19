@@ -11,21 +11,21 @@ import Foundation
 extension FileListViewController: UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
         
     // MARK: UISearchControllerDelegate
-    func willPresentSearchController(searchController: UISearchController) {
+    func willPresentSearchController(_ searchController: UISearchController) {
         self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
     }
     
-    func willDismissSearchController(searchController: UISearchController) {
+    func willDismissSearchController(_ searchController: UISearchController) {
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
     }
     
     // MARK: UISearchBarDelegate
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterContentForSearchText(searchBar.text!)
     }
     
     // MARK: UISearchResultsUpdating
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
 }

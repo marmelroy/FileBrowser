@@ -12,36 +12,36 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     
     //MARK: UITableViewDataSource, UITableViewDelegate
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if searchController.active {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if searchController.isActive {
             return 1
         }
         return sections.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive {
             return filteredFiles.count
         }
         return sections[section].count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FileCell"
-        var cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellIdentifier)
-        if let reuseCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) {
+        var cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+        if let reuseCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) {
             cell = reuseCell
         }
-        cell.selectionStyle = .Blue
+        cell.selectionStyle = .blue
         let selectedFile = fileForIndexPath(indexPath)
         cell.textLabel?.text = selectedFile.displayName
         cell.imageView?.image = selectedFile.type.image()
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedFile = fileForIndexPath(indexPath)
-        searchController.active = false
+        searchController.isActive = false
         if selectedFile.isDirectory {
             let fileListViewController = FileListViewController(initialPath: selectedFile.filePath)
             fileListViewController.didSelectFile = didSelectFile
@@ -57,11 +57,11 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
                 self.navigationController?.pushViewController(filePreview, animated: true)
             }
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if searchController.active {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchController.isActive {
             return nil
         }
         if sections[section].count > 0 {
@@ -72,18 +72,18 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        if searchController.active {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        if searchController.isActive {
             return nil
         }
         return collation.sectionIndexTitles
     }
     
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        if searchController.active {
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        if searchController.isActive {
             return 0
         }
-        return collation.sectionForSectionIndexTitleAtIndex(index)
+        return collation.section(forSectionIndexTitle: index)
     }
     
     

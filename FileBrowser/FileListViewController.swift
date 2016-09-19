@@ -12,12 +12,12 @@ class FileListViewController: UIViewController {
     
     // TableView
     @IBOutlet weak var tableView: UITableView!
-    let collation = UILocalizedIndexedCollation.currentCollation()
+    let collation = UILocalizedIndexedCollation.current()
     
     /// Data
     var didSelectFile: ((FBFile) -> ())?
     var files = [FBFile]()
-    var initialPath: NSURL?
+    var initialPath: URL?
     let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
     var sections: [[FBFile]] = []
@@ -26,8 +26,8 @@ class FileListViewController: UIViewController {
     var filteredFiles = [FBFile]()
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.searchBarStyle = .Minimal
-        searchController.searchBar.backgroundColor = UIColor.whiteColor()
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.backgroundColor = UIColor.white
         searchController.dimsBackgroundDuringPresentation = false
         return searchController
     }()
@@ -35,9 +35,9 @@ class FileListViewController: UIViewController {
     
     //MARK: Lifecycle
     
-    convenience init (initialPath: NSURL) {
-        self.init(nibName: "FileBrowser", bundle: NSBundle(forClass: FileListViewController.self))
-        self.edgesForExtendedLayout = .None
+    convenience init (initialPath: URL) {
+        self.init(nibName: "FileBrowser", bundle: Bundle(for: FileListViewController.self))
+        self.edgesForExtendedLayout = UIRectEdge()
         
         // Set initial path
         self.initialPath = initialPath
@@ -49,7 +49,7 @@ class FileListViewController: UIViewController {
         searchController.delegate = self
         
         // Add dismiss button
-        let dismissButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(FileListViewController.dismiss))
+        let dismissButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:)))
         self.navigationItem.rightBarButtonItem = dismissButton
         
     }
@@ -79,47 +79,47 @@ class FileListViewController: UIViewController {
         self.registerFor3DTouch()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Scroll to hide search bar
-        self.tableView.contentOffset = CGPointMake(0, searchController.searchBar.frame.size.height)
+        self.tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.size.height)
         
         // Make sure navigation bar is visible
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
-    func dismiss() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @objc func dismiss(button: UIBarButtonItem = UIBarButtonItem()) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     //MARK: Data
     
     func indexFiles() {
-        let selector: Selector = Selector("displayName")
-        sections = Array(count: collation.sectionTitles.count, repeatedValue: [])
-        if let sortedObjects = collation.sortedArrayFromArray(files, collationStringSelector: selector) as? [FBFile]{
+        let selector: Selector = #selector(getter: UIPrinter.displayName)
+        sections = Array(repeating: [], count: collation.sectionTitles.count)
+        if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
             for object in sortedObjects {
-                let sectionNumber = collation.sectionForObject(object, collationStringSelector: selector)
+                let sectionNumber = collation.section(for: object, collationStringSelector: selector)
                 sections[sectionNumber].append(object)
             }
         }
     }
     
-    func fileForIndexPath(indexPath: NSIndexPath) -> FBFile {
+    func fileForIndexPath(_ indexPath: IndexPath) -> FBFile {
         var file: FBFile
-        if searchController.active {
-            file = filteredFiles[indexPath.row]
+        if searchController.isActive {
+            file = filteredFiles[(indexPath as NSIndexPath).row]
         }
         else {
-            file = sections[indexPath.section][indexPath.row]
+            file = sections[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
         }
         return file
     }
     
-    func filterContentForSearchText(searchText: String) {
+    func filterContentForSearchText(_ searchText: String) {
         filteredFiles = files.filter({ (file: FBFile) -> Bool in
-            return file.displayName.lowercaseString.containsString(searchText.lowercaseString)
+            return file.displayName.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()
     }

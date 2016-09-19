@@ -9,28 +9,28 @@
 import Foundation
 
 /// File browser containing navigation controller.
-public class FileBrowser: UINavigationController {
+open class FileBrowser: UINavigationController {
     
     let parser = FileParser.sharedInstance
     
     var fileList: FileListViewController?
 
     /// File types to exclude from the file browser.
-    public var excludesFileExtensions: [String]? {
+    open var excludesFileExtensions: [String]? {
         didSet {
             parser.excludesFileExtensions = excludesFileExtensions
         }
     }
     
     /// File paths to exclude from the file browser.
-    public var excludesFilepaths: [NSURL]? {
+    open var excludesFilepaths: [URL]? {
         didSet {
             parser.excludesFilepaths = excludesFilepaths
         }
     }
     
     /// Override default preview and actionsheet behaviour in favour of custom file handling.
-    public var didSelectFile: ((FBFile) -> ())? {
+    open var didSelectFile: ((FBFile) -> ())? {
         didSet {
             fileList?.didSelectFile = didSelectFile
         }
@@ -44,7 +44,7 @@ public class FileBrowser: UINavigationController {
     public convenience init() {
         let parser = FileParser.sharedInstance
         let path = parser.documentsURL()
-        self.init(initialPath: path)
+        self.init(initialPath: path as URL)
     }
     
     /**
@@ -54,10 +54,10 @@ public class FileBrowser: UINavigationController {
      
      - returns: File browser view controller.
      */
-    public convenience init(initialPath: NSURL) {
+    public convenience init(initialPath: URL) {
         let fileListViewController = FileListViewController(initialPath: initialPath)
         self.init(rootViewController: fileListViewController)
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         self.fileList = fileListViewController
     }
     

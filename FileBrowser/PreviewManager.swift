@@ -11,20 +11,20 @@ import QuickLook
 
 class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
-    var filePath: NSURL?
+    var filePath: URL?
     
-    func previewViewControllerForFile(file: FBFile, fromNavigation: Bool) -> UIViewController {
+    func previewViewControllerForFile(_ file: FBFile, fromNavigation: Bool) -> UIViewController {
         
         if file.type == .PLIST || file.type == .JSON{
-            let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: NSBundle(forClass: WebviewPreviewViewContoller.self))
+            let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: WebviewPreviewViewContoller.self))
             webviewPreviewViewContoller.file = file
             return webviewPreviewViewContoller
         }
         else {
-            let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: NSBundle(forClass: PreviewTransitionViewController.self))
+            let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
             previewTransitionViewController.quickLookPreviewController.dataSource = self
 
-            self.filePath = file.filePath
+            self.filePath = file.filePath as URL
             if fromNavigation == true {
                 return previewTransitionViewController.quickLookPreviewController
             }
@@ -33,11 +33,11 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     }
     
     
-    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
     
-    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         let item = PreviewItem()
         if let filePath = filePath {
             item.filePath = filePath
@@ -49,13 +49,17 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
 
 class PreviewItem: NSObject, QLPreviewItem {
     
-    var filePath: NSURL?
+    /*!
+     * @abstract The URL of the item to preview.
+     * @discussion The URL must be a file URL.
+     */
     
-    internal var previewItemURL: NSURL? {
+    var filePath: URL?
+    public var previewItemURL: URL? {
         if let filePath = filePath {
             return filePath
         }
-        return NSURL()
+        return nil
     }
     
 }
