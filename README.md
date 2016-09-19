@@ -31,7 +31,7 @@ import FileBrowser
 To show the file browser, all you need to do is:
 ```swift
 let fileBrowser = FileBrowser()
-self.presentViewController(fileBrowser, animated: true, completion: nil)
+present(file, animated: true, completion: nil)
 ```
 
 By default, the file browser will open in your app's documents directory. When users select a file, a preview will be displayed - offering an action sheet of options based on the file type.
@@ -59,7 +59,7 @@ fileBrowser.excludesFilepaths = [secretFile]
 ### Setting up with [CocoaPods](http://cocoapods.org/?q=FileBrowser)
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-pod 'FileBrowser', '~> 0.1'
+pod 'FileBrowser', '~> 0.2'
 ```
 
 ### Setting up with Carthage
