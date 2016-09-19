@@ -22,7 +22,7 @@ class FileBrowserTests: XCTestCase {
     }
     
     func testGifFBFileParse() {
-        let filePath = NSBundle(forClass: FileBrowserTests.self).URLForResource("3crBXeO", withExtension: "gif")!
+        let filePath = Bundle(for: FileBrowserTests.self).url(forResource: "3crBXeO", withExtension: "gif")!
         let file = FBFile(filePath: filePath)
         XCTAssertEqual(file.filePath, filePath)
         XCTAssertEqual(file.isDirectory, false)
@@ -31,7 +31,7 @@ class FileBrowserTests: XCTestCase {
     }
     
     func testJpgFBFileParse() {
-        let filePath = NSBundle(forClass: FileBrowserTests.self).URLForResource("Stitch", withExtension: "jpg")!
+        let filePath = Bundle(for: FileBrowserTests.self).url(forResource: "Stitch", withExtension: "jpg")!
         let file = FBFile(filePath: filePath)
         XCTAssertEqual(file.filePath, filePath)
         XCTAssertEqual(file.isDirectory, false)
@@ -40,14 +40,14 @@ class FileBrowserTests: XCTestCase {
     }
     
     func testDirectoryFBFileParse() {
-        let filePath = NSBundle(forClass: FileBrowserTests.self).bundleURL
+        let filePath = Bundle(for: FileBrowserTests.self).bundleURL
         let file = FBFile(filePath: filePath)
         XCTAssertEqual(file.type, FBFileType.Directory)
     }
     
     func testDirectoryContentsParse() {
         let parser = FileParser.sharedInstance
-        let directoryPath = NSBundle(forClass: FileBrowserTests.self).bundleURL
+        let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
         let directoryContents = parser.filesForDirectory(directoryPath)
         XCTAssertTrue(directoryContents.count > 0)
         let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
@@ -60,7 +60,7 @@ class FileBrowserTests: XCTestCase {
     func testCaseSensitiveExclusion() {
         let parser = FileParser.sharedInstance
         parser.excludesFileExtensions = ["gIf"]
-        let directoryPath = NSBundle(forClass: FileBrowserTests.self).bundleURL
+        let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
         let directoryContents = parser.filesForDirectory(directoryPath)
         for file in directoryContents {
             if let fileExtension = file.fileExtension {
