@@ -31,7 +31,7 @@ import FileBrowser
 To show the file browser, all you need to do is:
 ```swift
 let fileBrowser = FileBrowser()
-present(file, animated: true, completion: nil)
+present(fileBrowser, animated: true, completion: nil)
 ```
 
 By default, the file browser will open in your app's documents directory. When users select a file, a preview will be displayed - offering an action sheet of options based on the file type.
