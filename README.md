@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/marmelroy/FileBrowser.svg?branch=master)](https://travis-ci.org/marmelroy/FileBrowser) [![Version](http://img.shields.io/cocoapods/v/FileBrowser.svg)](http://cocoapods.org/?q=FileBrowser)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![codebeat](https://codebeat.co/badges/67e58b6d-bc89-4f22-ba8f-7668a9c15c5a)](https://codebeat.co/projects/github-com-mozilla-firefox-ios)
 
 # FileBrowser
 iOS Finder-style file browser in Swift with search, file previews and 3D touch. Simple and quick to use.
