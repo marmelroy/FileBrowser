@@ -46,26 +46,34 @@ class FileBrowserTests: XCTestCase {
     }
     
     func testDirectoryContentsParse() {
-        let parser = FileParser.sharedInstance
+        let parser = LocalFileParser()
         let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
-        let directoryContents = parser.filesForDirectory(directoryPath)
-        XCTAssertTrue(directoryContents.count > 0)
-        let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
-        XCTAssertNotNil(stitchFile)
-        if let stitchFile = stitchFile {
-            XCTAssertEqual(stitchFile.type, FBFileType.JPG)
+        do {
+            let directoryContents = try parser.contents(ofDirectoryWithURL: directoryPath)
+            XCTAssertTrue(directoryContents.count > 0)
+            let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
+            XCTAssertNotNil(stitchFile)
+            if let stitchFile = stitchFile {
+                XCTAssertEqual(stitchFile.type, FBFileType.JPG)
+            }
+        } catch let error {
+            XCTFail(error.localizedDescription)
         }
     }
 
     func testCaseSensitiveExclusion() {
-        let parser = FileParser.sharedInstance
+        let parser = LocalFileParser()
         parser.excludesFileExtensions = ["gIf"]
         let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
-        let directoryContents = parser.filesForDirectory(directoryPath)
-        for file in directoryContents {
-            if let fileExtension = file.fileExtension {
-                XCTAssertFalse(fileExtension == "gif")
+        do {
+            let directoryContents = try parser.contents(ofDirectoryWithURL: directoryPath)
+            for file in directoryContents {
+                if let fileExtension = file.fileExtension {
+                    XCTAssertFalse(fileExtension == "gif")
+                }
             }
+        } catch let error {
+            XCTFail(error.localizedDescription)
         }
     }
 
