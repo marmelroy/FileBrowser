@@ -14,6 +14,7 @@ class WebviewPreviewViewContoller: UIViewController {
     
     var webView = WKWebView()
 
+    var dataSource: FileBrowserDataSource!
     var file: FBFile? {
         didSet {
             self.title = file?.displayName
@@ -40,7 +41,8 @@ class WebviewPreviewViewContoller: UIViewController {
     //MARK: Share
     
     func shareFile() {
-        guard let file = file else {
+        guard let file = file,
+            let url = try? dataSource.dataURL(forFile: file) else {
             return
         }
         let activityViewController = UIActivityViewController(activityItems: [file.filePath], applicationActivities: nil)
@@ -51,7 +53,7 @@ class WebviewPreviewViewContoller: UIViewController {
     //MARK: Processing
     
     func processForDisplay() {
-        guard let file = file, let data = try? Data(contentsOf: file.filePath as URL) else {
+        guard let file = file, let data = try? dataSource.data(forFile: file) else {
             return
         }
         var rawString: String?

@@ -17,7 +17,7 @@ open class FBFile: NSObject {
     /// File extension.
     open let fileExtension: String?
     /// File attributes (including size, creation date etc).
-    open let fileAttributes: NSDictionary?
+    //open let fileAttributes: NSDictionary? = nil
     /// NSURL file path.
     open let filePath: URL
     // FBFileType
@@ -30,17 +30,15 @@ open class FBFile: NSObject {
      
      - returns: FBFile object.
      */
-    init(filePath: URL) {
+    public init(filePath: URL) {
         self.filePath = filePath
-        let isDirectory = checkDirectory(filePath)
-        self.isDirectory = isDirectory
+        self.isDirectory = checkDirectory(filePath)
+        
         if self.isDirectory {
-            self.fileAttributes = nil
             self.fileExtension = nil
             self.type = .Directory
         }
         else {
-            self.fileAttributes = getFileAttributes(self.filePath)
             self.fileExtension = filePath.pathExtension
             if let fileExtension = fileExtension {
                 self.type = FBFileType(rawValue: fileExtension) ?? .Default
@@ -82,7 +80,7 @@ public enum FBFileType: String {
      - returns: UIImage for file type
      */
     public func image() -> UIImage? {
-        let bundle =  Bundle(for: FileParser.self)
+        let bundle = Bundle(for: FBFile.self)
         var fileName = String()
         switch self {
         case .Directory: fileName = "folder@2x.png"
@@ -104,6 +102,9 @@ public enum FBFileType: String {
  - returns: isDirectory Bool.
  */
 func checkDirectory(_ filePath: URL) -> Bool {
+    if #available(iOS 9.0, *) {
+        return filePath.hasDirectoryPath
+    }
     var isDirectory = false
     do {
         var resourceValue: AnyObject?
@@ -114,14 +115,4 @@ func checkDirectory(_ filePath: URL) -> Bool {
     }
     catch { }
     return isDirectory
-}
-
-func getFileAttributes(_ filePath: URL) -> NSDictionary? {
-    let path = filePath.path
-    let fileManager = FileParser.sharedInstance.fileManager
-    do {
-        let attributes = try fileManager.attributesOfItem(atPath: path) as NSDictionary
-        return attributes
-    } catch {}
-    return nil
 }

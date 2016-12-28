@@ -11,20 +11,24 @@ import QuickLook
 
 class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
-    var filePath: URL?
+    var file: FBFile?
+    var dataSource: FileBrowserDataSource?
     
-    func previewViewControllerForFile(_ file: FBFile, fromNavigation: Bool) -> UIViewController {
+    func previewViewControllerForFile(_ file: FBFile, dataSource: FileBrowserDataSource, fromNavigation: Bool) -> UIViewController {
         
-        if file.type == .PLIST || file.type == .JSON{
+        if file.type == .PLIST || file.type == .JSON {
             let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: WebviewPreviewViewContoller.self))
+            webviewPreviewViewContoller.dataSource = dataSource
             webviewPreviewViewContoller.file = file
             return webviewPreviewViewContoller
         }
         else {
             let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
+            self.file = file
+            self.dataSource = dataSource
+            
             previewTransitionViewController.quickLookPreviewController.dataSource = self
 
-            self.filePath = file.filePath as URL
             if fromNavigation == true {
                 return previewTransitionViewController.quickLookPreviewController
             }
@@ -32,19 +36,18 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
         }
     }
     
-    
+    // MARK: delegate methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         let item = PreviewItem()
-        if let filePath = filePath {
+        if let file = file, let filePath = try? dataSource?.dataURL(forFile: file) {
             item.filePath = filePath
         }
         return item
     }
-    
 }
 
 class PreviewItem: NSObject, QLPreviewItem {

@@ -15,10 +15,11 @@ class FileListViewController: UIViewController {
     let collation = UILocalizedIndexedCollation.current()
     
     /// Data
+    var directoryPath: URL!
+    var dataSource: FileBrowserDataSource!
+    
     var didSelectFile: ((FBFile) -> ())?
     var files = [FBFile]()
-    var initialPath: URL?
-    let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
     var sections: [[FBFile]] = []
 
@@ -35,13 +36,15 @@ class FileListViewController: UIViewController {
     
     //MARK: Lifecycle
     
-    convenience init (initialPath: URL) {
+    convenience init (dataSource: FileBrowserDataSource, withDirectory directoryPath: URL) {
         self.init(nibName: "FileBrowser", bundle: Bundle(for: FileListViewController.self))
         self.edgesForExtendedLayout = UIRectEdge()
         
-        // Set initial path
-        self.initialPath = initialPath
-        self.title = initialPath.lastPathComponent
+        // Set implicitly unwrapped optionals
+        self.dataSource = dataSource
+        self.directoryPath = directoryPath
+        
+        self.title = directoryPath.lastPathComponent
         
         // Set search controller delegates
         searchController.searchResultsUpdater = self
@@ -67,9 +70,12 @@ class FileListViewController: UIViewController {
     override func viewDidLoad() {
         
         // Prepare data
-        if let initialPath = initialPath {
-            files = parser.filesForDirectory(initialPath)
+        do {
+            files = try dataSource.contents(ofDirectoryWithURL: self.directoryPath)
             indexFiles()
+        } catch let error {
+            // TODO: error handling
+            print(error.localizedDescription)
         }
         
         // Set search bar

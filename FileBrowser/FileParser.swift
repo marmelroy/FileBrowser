@@ -8,57 +8,61 @@
 
 import Foundation
 
-class FileParser {
+class LocalFileParser: FileBrowserDataSource {
     
-    static let sharedInstance = FileParser()
+    var excludesFileExtensions: [String]? = nil
+    var excludesFilepaths: [URL]? = nil
+    var excludesWithEmptyFilenames = false
     
-    var _excludesFileExtensions = [String]()
-    
-    /// Mapped for case insensitivity
-    var excludesFileExtensions: [String]? {
-        get {
-            return _excludesFileExtensions.map({$0.lowercased()})
-        }
-        set {
-            if let newValue = newValue {
-                _excludesFileExtensions = newValue
-            }
-        }
-    }
-    
-    var excludesFilepaths: [URL]?
     
     let fileManager = FileManager.default
     
-    func documentsURL() -> URL {
+    var customRootUrl: URL?
+    var defaultRootUrl: URL {
         return fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0] as URL
     }
     
-    func filesForDirectory(_ directoryPath: URL) -> [FBFile]  {
-        var files = [FBFile]()
-        var filePaths = [URL]()
+    var rootURL: URL {
+        return customRootUrl ?? defaultRootUrl
+    }
+    
+    func contents(ofDirectoryWithURL directoryURL: URL) throws -> [FBFile] {
+        
         // Get contents
-        do  {
-            filePaths = try self.fileManager.contentsOfDirectory(at: directoryPath, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
-        } catch {
-            return files
+        
+        let filePaths = try self.fileManager.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
+        
+        // Filter
+        var files = filePaths.map(FBFile.init)
+        if let excludesFileExtensions = excludesFileExtensions {
+            let lowercased = excludesFileExtensions.map { $0.lowercased() }
+            files = files.filter { !lowercased.contains($0.fileExtension?.lowercased() ?? "") }
         }
-        // Parse
-        for filePath in filePaths {
-            let file = FBFile(filePath: filePath)
-            if let excludesFileExtensions = excludesFileExtensions, let fileExtensions = file.fileExtension , excludesFileExtensions.contains(fileExtensions) {
-                continue
-            }
-            if let excludesFilepaths = excludesFilepaths , excludesFilepaths.contains(file.filePath) {
-                continue
-            }
-            if file.displayName.isEmpty == false {
-                files.append(file)
-            }
+        if let excludesFilepaths = excludesFilepaths {
+            files = files.filter { !excludesFilepaths.contains($0.filePath) }
         }
+        if excludesWithEmptyFilenames {
+            files = files.filter { !$0.displayName.isEmpty }
+        }
+        
         // Sort
         files = files.sorted(){$0.displayName < $1.displayName}
         return files
     }
+    
+    func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary? {
+        let path = fileUrl.path
+        do {
+            let attributes = try fileManager.attributesOfItem(atPath: path) as NSDictionary
+            return attributes
+        } catch {
+            return nil
+        }
+    }
+    
+    func dataURL(forFile file: FBFile) throws -> URL {
+        return file.filePath
+    }
+
 
 }
