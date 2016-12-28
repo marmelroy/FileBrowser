@@ -26,7 +26,12 @@ class MainViewController: UIViewController {
     @IBAction func showFileBrowser(sender: AnyObject) {
         let file = FileBrowser()
         present(file, animated: true, completion: nil)
-        //self.present(fileBrowser, animated: true, completion: nil)
+    }
+    
+    @IBAction func showCustomFileBrowser(_ sender: Any) {
+        let dataSource = CustomDataSource()
+        let browser = FileBrowser(dataSource: dataSource)
+        present(browser, animated: true, completion: nil)
     }
 }
 
