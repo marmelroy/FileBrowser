@@ -2,6 +2,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, "8.0"
 use_frameworks!
 
+workspace 'FileBrowser' #'../../FileBrowserWorkspace'
+
 target 'Sample' do
   pod 'FileBrowser', :path => '../..'
 end
