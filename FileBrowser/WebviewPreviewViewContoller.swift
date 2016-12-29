@@ -14,13 +14,14 @@ class WebviewPreviewViewContoller: UIViewController {
     
     var webView = WKWebView()
 
-    var dataSource: FileBrowserDataSource!
     var file: FBFile? {
         didSet {
             self.title = file?.displayName
             self.processForDisplay()
         }
     }
+    
+    var fileData: Data?
 
     //MARK: Lifecycle
     
@@ -41,11 +42,20 @@ class WebviewPreviewViewContoller: UIViewController {
     //MARK: Share
     
     func shareFile() {
-        guard let file = file,
-            let url = try? dataSource.dataURL(forFile: file) else {
+        guard let file = file else {
             return
         }
-        let activityViewController = UIActivityViewController(activityItems: [file.filePath], applicationActivities: nil)
+        
+        let activityItems: [Any]
+        if let data = fileData {
+            activityItems = [data]
+        } else if let url = file.fileLocation {
+            activityItems = [url]
+        } else {
+            return
+        }
+        
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         self.present(activityViewController, animated: true, completion: nil)
 
     }
@@ -53,9 +63,21 @@ class WebviewPreviewViewContoller: UIViewController {
     //MARK: Processing
     
     func processForDisplay() {
-        guard let file = file, let data = try? dataSource.data(forFile: file) else {
+        guard let file = file else {
             return
         }
+        
+        let data: Data
+        if let fileData = fileData {
+            data = fileData
+        } else if let localFileUrl = file.fileLocation,
+            localFileUrl.scheme == "file",
+            let fileData = try? Data(contentsOf: localFileUrl) {
+            data = fileData
+        } else {
+            return
+        }
+        
         var rawString: String?
         
         // Prepare plist for display

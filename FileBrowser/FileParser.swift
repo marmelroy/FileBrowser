@@ -24,14 +24,14 @@ class LocalFileParser: FileBrowserDataSource {
     
     var rootDirectory: FBFile {
         let url = customRootUrl ?? defaultRootUrl
-        return FBFile(filePath: url)
+        return FBFile(path: url)
     }
     
     func contents(ofDirectory directory: FBFile) throws -> [FBFile] {
         
         // Get contents
         
-        let filePaths = try self.fileManager.contentsOfDirectory(at: directory.filePath, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
+        let filePaths = try self.fileManager.contentsOfDirectory(at: directory.path, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
         
         // Filter
         var files = filePaths.map(FBFile.init)
@@ -40,7 +40,7 @@ class LocalFileParser: FileBrowserDataSource {
             files = files.filter { !lowercased.contains($0.fileExtension?.lowercased() ?? "") }
         }
         if let excludesFilepaths = excludesFilepaths {
-            files = files.filter { !excludesFilepaths.contains($0.filePath) }
+            files = files.filter { !excludesFilepaths.contains($0.path) }
         }
         if excludesWithEmptyFilenames {
             files = files.filter { !$0.displayName.isEmpty }
@@ -62,7 +62,7 @@ class LocalFileParser: FileBrowserDataSource {
     }
     
     func dataURL(forFile file: FBFile) throws -> URL {
-        return file.filePath
+        return file.path
     }
 
 

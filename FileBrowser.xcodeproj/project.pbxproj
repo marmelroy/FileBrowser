@@ -34,6 +34,8 @@
 		349A12371C707E86005435C0 /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12301C707E86005435C0 /* pdf@2x.png */; };
 		349A12381C707E86005435C0 /* zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12311C707E86005435C0 /* zip@2x.png */; };
 		C3BF0DFC1E13F4A80009D12C /* FileBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */; };
+		C3BF0E001E1534070009D12C /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */; };
+		C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */; };
 		EF625EC2B40CCCD7D8AE971D /* Pods_FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF06627E7F943CB447A98B0 /* Pods_FileBrowser.framework */; };
 		F3C66B149062BD5D82C379DC /* Pods_FileBrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BE57F81A542CF1F59ECC5E /* Pods_FileBrowserTests.framework */; };
 /* End PBXBuildFile section */
@@ -84,6 +86,8 @@
 		4E57A3FC58731598296113AA /* Pods-FileBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FileBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-FileBrowser/Pods-FileBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		9D627F86DA38E02397C44242 /* Pods-FileBrowserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FileBrowserTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FileBrowserTests/Pods-FileBrowserTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserDataSource.swift; sourceTree = "<group>"; };
+		C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
+		C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		E6FDD9CBB6EE93AE14F27395 /* Pods-FileBrowserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FileBrowserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FileBrowserTests/Pods-FileBrowserTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,6 +138,7 @@
 		343C44601C73CC3C00D874FB /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */,
 				343C44611C73CC8100D874FB /* PreviewTransitionViewController.swift */,
 				343C44651C73CD3200D874FB /* PreviewManager.swift */,
 				343C44781C73CFC400D874FB /* WebviewPreviewViewContoller.swift */,
@@ -202,6 +207,7 @@
 				349A122B1C707E86005435C0 /* documents@2x.png */,
 				349A122C1C707E86005435C0 /* file@2x.png */,
 				349A122D1C707E86005435C0 /* FileBrowser.xib */,
+				C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */,
 				349A122E1C707E86005435C0 /* folder@2x.png */,
 				349A122F1C707E86005435C0 /* image@2x.png */,
 				349A12301C707E86005435C0 /* pdf@2x.png */,
@@ -334,6 +340,7 @@
 				343C44681C73CD8700D874FB /* PreviewTransitionViewController.xib in Resources */,
 				349A12331C707E86005435C0 /* file@2x.png in Resources */,
 				349A12341C707E86005435C0 /* FileBrowser.xib in Resources */,
+				C3BF0E001E1534070009D12C /* LoadingViewController.xib in Resources */,
 				343C447D1C73CFD900D874FB /* WebviewPreviewViewContoller.xib in Resources */,
 				349A12361C707E86005435C0 /* image@2x.png in Resources */,
 				349A12371C707E86005435C0 /* pdf@2x.png in Resources */,
@@ -448,6 +455,7 @@
 				3437405B1C6E7DA50090FD6A /* FileListViewController.swift in Sources */,
 				349A12241C70725D005435C0 /* FileListSearch.swift in Sources */,
 				3439AB6C1C6FD6650058AF04 /* FileListPreview.swift in Sources */,
+				C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

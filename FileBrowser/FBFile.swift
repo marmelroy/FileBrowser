@@ -11,17 +11,20 @@ import Foundation
 /// FBFile is a class representing a file in FileBrowser
 open class FBFile: NSObject {
     /// Display name. String.
-    open let displayName: String
+    open var displayName: String
     // is Directory. Bool.
     open let isDirectory: Bool
     /// File extension.
     open let fileExtension: String?
     /// File attributes (including size, creation date etc).
     //open let fileAttributes: NSDictionary? = nil
-    /// NSURL file path.
-    open let filePath: URL
+    
+    /// Describes where the resource can be found. May be a file:// or http[s]:// URL
+    open var fileLocation: URL?
     // FBFileType
-    open let type: FBFileType
+    open var type: FBFileType
+    
+    open let path: URL
     
     /**
      Initialize an FBFile object with a filePath
@@ -30,24 +33,28 @@ open class FBFile: NSObject {
      
      - returns: FBFile object.
      */
-    public init(filePath: URL) {
-        self.filePath = filePath
-        self.isDirectory = checkDirectory(filePath)
+    public init(path: URL) {
+        self.path = path
+        self.isDirectory = checkDirectory(path)
         
         if self.isDirectory {
             self.fileExtension = nil
             self.type = .Directory
         }
         else {
-            self.fileExtension = filePath.pathExtension
-            if let fileExtension = fileExtension {
-                self.type = FBFileType(rawValue: fileExtension) ?? .Default
-            }
-            else {
+            if path.pathExtension != "" {
+                self.fileExtension = path.pathExtension
+                self.type = FBFileType(rawValue: fileExtension!) ?? .Default
+            } else {
+                self.fileExtension = nil
                 self.type = .Default
             }
         }
-        self.displayName = filePath.lastPathComponent 
+        self.displayName = path.lastPathComponent
+    }
+    
+    public var isRemoteFile: Bool {
+        return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
     }
 }
 

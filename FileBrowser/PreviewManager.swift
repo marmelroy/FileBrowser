@@ -12,20 +12,23 @@ import QuickLook
 class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     var file: FBFile?
-    var dataSource: FileBrowserDataSource?
+    var fileData: Data?
     
-    func previewViewControllerForFile(_ file: FBFile, dataSource: FileBrowserDataSource, fromNavigation: Bool) -> UIViewController {
+    func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool) -> UIViewController {
+        if data == nil && file.isRemoteFile {
+            return LoadingViewController(file: file)
+        }
         
         if file.type == .PLIST || file.type == .JSON {
             let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: WebviewPreviewViewContoller.self))
-            webviewPreviewViewContoller.dataSource = dataSource
+            webviewPreviewViewContoller.fileData = data
             webviewPreviewViewContoller.file = file
             return webviewPreviewViewContoller
         }
         else {
             let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
             self.file = file
-            self.dataSource = dataSource
+            self.fileData = data
             
             previewTransitionViewController.quickLookPreviewController.dataSource = self
 
@@ -43,10 +46,32 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         let item = PreviewItem()
-        if let file = file, let filePath = try? dataSource?.dataURL(forFile: file) {
-            item.filePath = filePath
+        
+        if let file = file,
+            let fileData = fileData,
+            let url = copyDataToTemporaryDirectory(fileData, file: file) {
+            item.filePath = url
+        } else if let file = file, let url = file.fileLocation, url.scheme == "file" {
+            item.filePath = url
         }
+        
         return item
+    }
+    
+    func copyDataToTemporaryDirectory(_ data: Data, file: FBFile) -> URL?
+    {
+        let tempDirectoryURL = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
+        let fileExtension = file.fileExtension ?? file.type.rawValue
+        let targetURL = tempDirectoryURL.appendingPathComponent("\(file.displayName).\(fileExtension)")  // TODO: better file extensions
+        
+        // Copy the file.
+        do {
+            try data.write(to: targetURL)
+            return targetURL
+        } catch let error {
+            print("Unable to copy file: \(error)")
+            return nil
+        }
     }
 }
 
