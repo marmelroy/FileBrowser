@@ -23,8 +23,8 @@ class FileBrowserTests: XCTestCase {
     
     func testGifFBFileParse() {
         let filePath = Bundle(for: FileBrowserTests.self).url(forResource: "3crBXeO", withExtension: "gif")!
-        let file = FBFile(filePath: filePath)
-        XCTAssertEqual(file.filePath, filePath)
+        let file = FBFile(path: filePath)
+        XCTAssertEqual(file.path, filePath)
         XCTAssertEqual(file.isDirectory, false)
         XCTAssertEqual(file.type, FBFileType.GIF)
         XCTAssertEqual(file.fileExtension, "gif")
@@ -32,8 +32,8 @@ class FileBrowserTests: XCTestCase {
     
     func testJpgFBFileParse() {
         let filePath = Bundle(for: FileBrowserTests.self).url(forResource: "Stitch", withExtension: "jpg")!
-        let file = FBFile(filePath: filePath)
-        XCTAssertEqual(file.filePath, filePath)
+        let file = FBFile(path: filePath)
+        XCTAssertEqual(file.path, filePath)
         XCTAssertEqual(file.isDirectory, false)
         XCTAssertEqual(file.type, FBFileType.JPG)
         XCTAssertEqual(file.fileExtension, "jpg")
@@ -41,15 +41,16 @@ class FileBrowserTests: XCTestCase {
     
     func testDirectoryFBFileParse() {
         let filePath = Bundle(for: FileBrowserTests.self).bundleURL
-        let file = FBFile(filePath: filePath)
+        let file = FBFile(path: filePath)
         XCTAssertEqual(file.type, FBFileType.Directory)
     }
     
     func testDirectoryContentsParse() {
         let parser = LocalFileParser()
         let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
+        let directory = FBFile(path: directoryPath)
         do {
-            let directoryContents = try parser.contents(ofDirectoryWithURL: directoryPath)
+            let directoryContents = try parser.contents(ofDirectory: directory)
             XCTAssertTrue(directoryContents.count > 0)
             let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
             XCTAssertNotNil(stitchFile)
@@ -65,8 +66,9 @@ class FileBrowserTests: XCTestCase {
         let parser = LocalFileParser()
         parser.excludesFileExtensions = ["gIf"]
         let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
+        let directory = FBFile(path: directoryPath)
         do {
-            let directoryContents = try parser.contents(ofDirectoryWithURL: directoryPath)
+            let directoryContents = try parser.contents(ofDirectory: directory)
             for file in directoryContents {
                 if let fileExtension = file.fileExtension {
                     XCTAssertFalse(fileExtension == "gif")
