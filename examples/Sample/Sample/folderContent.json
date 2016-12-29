@@ -1,0 +1,39 @@
+{
+    "type": "directory",
+    "content": {
+        "Random image": {
+            "type": "jpg",
+            "location": "https://unsplash.it/200/300/?random"
+        },
+        "Larger random image": {
+            "type": "jpg",
+            "location": "https://unsplash.it/1200/1800/?random"
+        },
+        "More images": {
+            "type": "directory",
+            "content": {
+                "Random square image": {
+                    "type": "jpg",
+                    "location": "https://unsplash.it/200/?random"
+                },
+                "Yet another random image": {
+                    "type": "jpg",
+                    "location": "https://unsplash.it/200/300/?random"
+                },
+                "Very small and blurry image": {
+                    "type": "jpg",
+                    "location": "https://unsplash.it/16/16/?random"
+                }
+            }
+        },
+        "Documents": {
+            "type": "directory",
+            "content": {
+                "users.json": {
+                    "location": "https://jsonplaceholder.typicode.com/users"
+                }
+            }
+        }
+    }
+}
+

@@ -16,9 +16,10 @@
 		48A199CE1D8C546000C443D3 /* BB8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48A199CA1D8C546000C443D3 /* BB8.jpg */; };
 		48A199CF1D8C546000C443D3 /* Images.zip in Resources */ = {isa = PBXBuildFile; fileRef = 48A199CB1D8C546000C443D3 /* Images.zip */; };
 		48A199D01D8C546000C443D3 /* Stitch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48A199CC1D8C546000C443D3 /* Stitch.jpg */; };
-		48A24C331D8C59250044C697 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A24C321D8C59250044C697 /* FileBrowser.framework */; };
 		C3BF0DFE1E13F5340009D12C /* CustomDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0DFD1E13F5340009D12C /* CustomDataSource.swift */; };
 		C3BF0E061E1563F10009D12C /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C3BF0E051E1563F10009D12C /* Podfile */; };
+		C3BF0E0C1E15723A0009D12C /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3BF0E0B1E15723A0009D12C /* FileBrowser.framework */; };
+		C3BF0E101E1591DC0009D12C /* folderContent.json in Resources */ = {isa = PBXBuildFile; fileRef = C3BF0E0F1E1591DC0009D12C /* folderContent.json */; };
 		CA1A267CE65797AC47128D97 /* Pods_Sample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4492ECEB106C60695FBD72D5 /* Pods_Sample.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		C3BF0E091E156C0A0009D12C /* Pods_FileBrowser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_FileBrowser.framework; path = "/Users/carl/Developer/FileBrowser/Pods/../build/Debug-iphoneos/Pods_FileBrowser.framework"; sourceTree = "<absolute>"; };
 		C3BF0E0B1E15723A0009D12C /* FileBrowser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileBrowser.framework; path = "../../build/Debug-iphoneos/FileBrowser.framework"; sourceTree = "<group>"; };
 		C3BF0E0D1E1572530009D12C /* Pods_FileBrowser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_FileBrowser.framework; path = "/Users/carl/Developer/FileBrowser/Pods/../build/Debug-iphoneos/Pods_FileBrowser.framework"; sourceTree = "<absolute>"; };
+		C3BF0E0F1E1591DC0009D12C /* folderContent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = folderContent.json; sourceTree = "<group>"; };
 		E0892FCFB758A36A235DCF55 /* Pods-Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,6 +131,7 @@
 				48A199CA1D8C546000C443D3 /* BB8.jpg */,
 				48A199CB1D8C546000C443D3 /* Images.zip */,
 				48A199CC1D8C546000C443D3 /* Stitch.jpg */,
+				C3BF0E0F1E1591DC0009D12C /* folderContent.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 				48A199CD1D8C546000C443D3 /* Baymax.jpg in Resources */,
 				48A199D01D8C546000C443D3 /* Stitch.jpg in Resources */,
 				48A199CE1D8C546000C443D3 /* BB8.jpg in Resources */,
+				C3BF0E101E1591DC0009D12C /* folderContent.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
