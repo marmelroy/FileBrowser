@@ -11,12 +11,14 @@ import FileBrowser
 
 open class CustomDataSource: FileBrowserDataSource {
     
+
+    
     public var excludesFileExtensions: [String]? = nil
     public var excludesFilepaths: [URL]? = nil
     public var excludesWithEmptyFilenames = false
     
-    public var rootURL: URL {
-        return Directory.root.url()
+    public var rootDirectory: FBFile {
+        return FBFile(filePath: Directory.root.url())
     }
     
     let fileManager = FileManager.default
@@ -52,9 +54,9 @@ open class CustomDataSource: FileBrowserDataSource {
         }
     }
     
-    public func contents(ofDirectoryWithURL directoryURL: URL) throws -> [FBFile] {
+    public func contents(ofDirectory directory: FBFile) throws -> [FBFile] {
         
-        switch(directoryURL) {
+        switch(directory.filePath) {
         case Directory.root.url():
             return Directory.root.contents()
         case Directory.imagesFolder.url():

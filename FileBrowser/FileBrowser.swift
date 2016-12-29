@@ -69,7 +69,7 @@ open class FileBrowser: UINavigationController {
     */
     
     public convenience init(dataSource: FileBrowserDataSource) {
-        let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: dataSource.rootURL)
+        let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: dataSource.rootDirectory)
         self.init(rootViewController: fileListViewController)
         self.dataSource = dataSource
         self.view.backgroundColor = UIColor.white

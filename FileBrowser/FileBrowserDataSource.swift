@@ -9,8 +9,8 @@
 import Foundation
 
 public protocol FileBrowserDataSource {
-    var rootURL: URL { get }
-    func contents(ofDirectoryWithURL directoryURL: URL) throws -> [FBFile]
+    var rootDirectory: FBFile { get }
+    func contents(ofDirectory directory: FBFile) throws -> [FBFile]
     func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary?
     func data(forFile file: FBFile) throws -> Data
     func dataURL(forFile file: FBFile) throws -> URL

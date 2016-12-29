@@ -22,15 +22,16 @@ class LocalFileParser: FileBrowserDataSource {
         return fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0] as URL
     }
     
-    var rootURL: URL {
-        return customRootUrl ?? defaultRootUrl
+    var rootDirectory: FBFile {
+        let url = customRootUrl ?? defaultRootUrl
+        return FBFile(filePath: url)
     }
     
-    func contents(ofDirectoryWithURL directoryURL: URL) throws -> [FBFile] {
+    func contents(ofDirectory directory: FBFile) throws -> [FBFile] {
         
         // Get contents
         
-        let filePaths = try self.fileManager.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
+        let filePaths = try self.fileManager.contentsOfDirectory(at: directory.filePath, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
         
         // Filter
         var files = filePaths.map(FBFile.init)
