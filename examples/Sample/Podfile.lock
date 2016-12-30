@@ -4,16 +4,16 @@ PODS:
     - Alamofire (~> 4.0)
 
 DEPENDENCIES:
-  - FileBrowser (from `../..`)
+  - FileBrowser (from `../../FileBrowser.podspec`)
 
 EXTERNAL SOURCES:
   FileBrowser:
-    :path: "../.."
+    :path: "../../FileBrowser.podspec"
 
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
   FileBrowser: f4e75766110f2cce2f68de8fcd4a3bc821748c80
 
-PODFILE CHECKSUM: 57f48c9221084d5581049b0789375ff710d2d560
+PODFILE CHECKSUM: ca61a48c4a562caf636cf07a5f677bfee5b56184
 
 COCOAPODS: 1.1.1
