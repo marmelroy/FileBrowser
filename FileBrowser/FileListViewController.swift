@@ -72,15 +72,16 @@ class FileListViewController: UIViewController {
         showActivityIndicator()
         
         // Prepare data
-        dataSource.provideContents(ofDirectory: self.directory) { result, error in
+        dataSource.provideContents(ofDirectory: self.directory) { result in
             self.hideActivityIndicator()
-            if let files = result {
+            switch result {
+            case .success(let files):
                 self.files = files
                 self.indexFiles()
                 self.tableView.reloadData()
-            } else {
+            case .error(let error):
                 // TODO: display errors
-                print(error?.localizedDescription)
+                print(error.localizedDescription)
             }
         }
         

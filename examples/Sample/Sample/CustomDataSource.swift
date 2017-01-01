@@ -34,7 +34,7 @@ open class CustomDataSource: FileBrowserDataSource {
     let fileManager = FileManager.default
     
     
-    open func provideContents(ofDirectory directory: FBFile, callback: @escaping ([FBFile]?, Error?) -> ()) {
+    open func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
         // traverse the file tree outlined in the JSON file to find the directory
         let pathComponents = Array(directory.path.pathComponents.dropFirst())   // we're already in the root directory at the root of our json document
         let directoryDescription = pathComponents.reduce(json) { currentFolder, subfolderName -> KeyValue in
@@ -58,7 +58,7 @@ open class CustomDataSource: FileBrowserDataSource {
         
         // simulate loading of remote content
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-            callback(files, nil)
+            callback(.success(files))
         })
         
         return

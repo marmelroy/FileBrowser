@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Result
 
 class LocalFileParser: FileBrowserDataSource {
     
@@ -28,7 +27,7 @@ class LocalFileParser: FileBrowserDataSource {
         return FBFile(path: url)
     }
     
-    func provideContents(ofDirectory directory: FBFile, callback: @escaping ([FBFile]?, Error?) -> ()) {
+    func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
         
         // Get contents
         do {
@@ -50,9 +49,9 @@ class LocalFileParser: FileBrowserDataSource {
             
             // Sort
             files = files.sorted(){$0.displayName < $1.displayName}
-            callback(files, nil)
+            callback(.success(files))
         } catch let error {
-            callback(nil, error)
+            callback(.error(error))
             return
         }
     }

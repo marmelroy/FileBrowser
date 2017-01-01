@@ -38,6 +38,7 @@
 		C3BF0DFC1E13F4A80009D12C /* FileBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */; };
 		C3BF0E001E1534070009D12C /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */; };
 		C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */; };
+		C3D983CD1E195B9600A8CC06 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D983CC1E195B9600A8CC06 /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserDataSource.swift; sourceTree = "<group>"; };
 		C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
 		C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		C3D983CC1E195B9600A8CC06 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		D8256F4951A29AA08EEE848D /* Pods_FileBrowserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FileBrowserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -121,6 +123,7 @@
 				3439AB671C6F203A0058AF04 /* FileParser.swift */,
 				349A12271C707B1A005435C0 /* FBFile.swift */,
 				C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */,
+				C3D983CC1E195B9600A8CC06 /* Result.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				343C447A1C73CFC400D874FB /* WebviewPreviewViewContoller.swift in Sources */,
+				C3D983CD1E195B9600A8CC06 /* Result.swift in Sources */,
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,
 				349A12261C707317005435C0 /* FileListTableView.swift in Sources */,
 				343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */,
