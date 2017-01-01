@@ -106,6 +106,7 @@
 			children = (
 				48A199D11D8C546500C443D3 /* Resources */,
 				48A199C31D8C53DB00C443D3 /* AppDelegate.swift */,
+				C3BF0DFD1E13F5340009D12C /* CustomDataSource.swift */,
 				48A199C41D8C53DB00C443D3 /* Info.plist */,
 				48A199B41D8C53AC00C443D3 /* Main.storyboard */,
 				48A199B71D8C53AC00C443D3 /* Assets.xcassets */,
@@ -130,7 +131,6 @@
 			isa = PBXGroup;
 			children = (
 				48A199C71D8C53E200C443D3 /* MainViewController.swift */,
-				C3BF0DFD1E13F5340009D12C /* CustomDataSource.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";

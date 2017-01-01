@@ -69,13 +69,19 @@ class FileListViewController: UIViewController {
     
     override func viewDidLoad() {
         
+        showActivityIndicator()
+        
         // Prepare data
-        do {
-            files = try dataSource.contents(ofDirectory: self.directory)
-            indexFiles()
-        } catch let error {
-            // TODO: error handling
-            print(error.localizedDescription)
+        dataSource.provideContents(ofDirectory: self.directory) { result, error in
+            self.hideActivityIndicator()
+            if let files = result {
+                self.files = files
+                self.indexFiles()
+                self.tableView.reloadData()
+            } else {
+                // TODO: display errors
+                print(error?.localizedDescription)
+            }
         }
         
         // Set search bar
@@ -128,6 +134,17 @@ class FileListViewController: UIViewController {
             return file.displayName.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()
+    }
+    
+    //MARK: activity indicator
+    func showActivityIndicator() {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.navigationItem.titleView = activityIndicator
+        activityIndicator.startAnimating()
+    }
+    
+    func hideActivityIndicator() {
+        navigationItem.titleView = nil // revert to default (title)
     }
 
 }

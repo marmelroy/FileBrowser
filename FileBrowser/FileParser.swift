@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Result
 
 class LocalFileParser: FileBrowserDataSource {
     
@@ -27,28 +28,33 @@ class LocalFileParser: FileBrowserDataSource {
         return FBFile(path: url)
     }
     
-    func contents(ofDirectory directory: FBFile) throws -> [FBFile] {
+    func provideContents(ofDirectory directory: FBFile, callback: @escaping ([FBFile]?, Error?) -> ()) {
         
         // Get contents
-        
-        let filePaths = try self.fileManager.contentsOfDirectory(at: directory.path, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
-        
-        // Filter
-        var files = filePaths.map(FBFile.init)
-        if let excludesFileExtensions = excludesFileExtensions {
-            let lowercased = excludesFileExtensions.map { $0.lowercased() }
-            files = files.filter { !lowercased.contains($0.fileExtension?.lowercased() ?? "") }
+        do {
+            let filePaths = try self.fileManager.contentsOfDirectory(at: directory.path, includingPropertiesForKeys: [], options: [.skipsHiddenFiles])
+            
+            
+            // Filter
+            var files = filePaths.map(FBFile.init)
+            if let excludesFileExtensions = excludesFileExtensions {
+                let lowercased = excludesFileExtensions.map { $0.lowercased() }
+                files = files.filter { !lowercased.contains($0.fileExtension?.lowercased() ?? "") }
+            }
+            if let excludesFilepaths = excludesFilepaths {
+                files = files.filter { !excludesFilepaths.contains($0.path) }
+            }
+            if excludesWithEmptyFilenames {
+                files = files.filter { !$0.displayName.isEmpty }
+            }
+            
+            // Sort
+            files = files.sorted(){$0.displayName < $1.displayName}
+            callback(files, nil)
+        } catch let error {
+            callback(nil, error)
+            return
         }
-        if let excludesFilepaths = excludesFilepaths {
-            files = files.filter { !excludesFilepaths.contains($0.path) }
-        }
-        if excludesWithEmptyFilenames {
-            files = files.filter { !$0.displayName.isEmpty }
-        }
-        
-        // Sort
-        files = files.sorted(){$0.displayName < $1.displayName}
-        return files
     }
     
     func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary? {

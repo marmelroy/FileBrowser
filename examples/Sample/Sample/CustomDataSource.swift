@@ -23,7 +23,7 @@ open class CustomDataSource: FileBrowserDataSource {
     public var excludesFileExtensions: [String]? = nil
     public var excludesFilepaths: [URL]? = nil
     public var excludesWithEmptyFilenames = false
-    
+        
     let rootUrl = URL(string: "/")!
     public var rootDirectory: FBFile {
         let file = FBFile(path: rootUrl)
@@ -34,9 +34,9 @@ open class CustomDataSource: FileBrowserDataSource {
     let fileManager = FileManager.default
     
     
-    public func contents(ofDirectory directory: FBFile) throws -> [FBFile] {
+    open func provideContents(ofDirectory directory: FBFile, callback: @escaping ([FBFile]?, Error?) -> ()) {
         // traverse the file tree outlined in the JSON file to find the directory
-        let pathComponents = Array(directory.path.pathComponents.dropFirst())
+        let pathComponents = Array(directory.path.pathComponents.dropFirst())   // we're already in the root directory at the root of our json document
         let directoryDescription = pathComponents.reduce(json) { currentFolder, subfolderName -> KeyValue in
             let content = currentFolder["content"]! as! KeyValue
             return content[subfolderName] as! KeyValue
@@ -56,7 +56,12 @@ open class CustomDataSource: FileBrowserDataSource {
             return file
         }
         
-        return files
+        // simulate loading of remote content
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            callback(files, nil)
+        })
+        
+        return
     }
     
     public func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary? {
@@ -69,11 +74,3 @@ open class CustomDataSource: FileBrowserDataSource {
     }
     
 }
-
-//extension URL {
-//    func relativeTo(baseUrl: URL) -> URL {
-//        
-//        let keep = self.pathComponents.dropFirst(baseUrl.pathComponents.count)
-//        return keep.fir
-//    }
-//}
