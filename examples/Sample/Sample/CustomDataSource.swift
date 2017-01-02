@@ -57,7 +57,7 @@ open class CustomDataSource: FileBrowserDataSource {
         }
         
         // simulate loading of remote content
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
             callback(.success(files))
         })
         

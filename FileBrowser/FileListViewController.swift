@@ -69,11 +69,8 @@ class FileListViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        showActivityIndicator()
-        
         // Prepare data
         dataSource.provideContents(ofDirectory: self.directory) { result in
-            self.hideActivityIndicator()
             switch result {
             case .success(let files):
                 self.files = files
@@ -137,16 +134,6 @@ class FileListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    //MARK: activity indicator
-    func showActivityIndicator() {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        self.navigationItem.titleView = activityIndicator
-        activityIndicator.startAnimating()
-    }
-    
-    func hideActivityIndicator() {
-        navigationItem.titleView = nil // revert to default (title)
-    }
 
 }
 
