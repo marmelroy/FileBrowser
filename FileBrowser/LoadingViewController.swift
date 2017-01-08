@@ -7,53 +7,46 @@
 //
 
 import Foundation
-import Alamofire
 import QuickLook
 
 
-class LoadingViewController: UIViewController {
+class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSessionDataDelegate {
     //MARK: Lifecycle
     
     @IBOutlet var progressView: UIProgressView!
     
+    var downloadTask: URLSessionDownloadTask?
+    var session: URLSession!
     
     var file: FBFile!
     convenience init (file: FBFile) {
         self.init(nibName: "LoadingViewController", bundle: Bundle(for: LoadingViewController.self))
         self.file = file
         self.title = file.displayName
+        
+        let configuration = URLSessionConfiguration.default
+        session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }
     
-    var request: DataRequest?
+//    var request: DataRequest?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Test loading")
         progressView.setProgress(0, animated: false)
         guard let fileLocation = file.fileLocation else {
             print("Error: File has no fileLocation set")
             return
         }
         
-        Alamofire
-            .request(fileLocation)
-            .validate()
-            .downloadProgress { progress in
-                self.progressView.setProgress(Float(progress.fractionCompleted), animated: true)
-            }
-            .responseData { response in
-            switch response.result {
-            case .success:
-                let data = response.data
-                self.showFile(data: data)
-            case .failure(let error):
-                print(error) // TODO: display the error
-            }
-        }
+ 
+        downloadTask = session.downloadTask(with: fileLocation)
+        downloadTask!.resume()
     }
     
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
-        request?.cancel()
+        downloadTask?.cancel()
     }
     
     func showFile(data: Data?) {
@@ -77,6 +70,38 @@ class LoadingViewController: UIViewController {
                 ql.reloadData()
             }
         }
+    }
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        completionHandler(.allow)
+    }
+    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.performDefaultHandling, nil)
+    }
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        print(error?.localizedDescription)
+    }
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        do {
+            let data = try Data(contentsOf: location)
+            self.showFile(data: data)
+        } catch let error {
+            print(error)
+        }
+    }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+        let progress = Float(totalBytesWritten / totalBytesExpectedToWrite)
+        DispatchQueue.main.async {
+            self.progressView.setProgress(progress, animated: true)
+        }
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if let error = error {
+            print(error.localizedDescription)
+        }
+        session.finishTasksAndInvalidate()
     }
 }
 
