@@ -49,16 +49,19 @@ class FileBrowserTests: XCTestCase {
         let parser = LocalFileParser()
         let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
         let directory = FBFile(path: directoryPath)
-        do {
-            let directoryContents = try parser.contents(ofDirectory: directory)
-            XCTAssertTrue(directoryContents.count > 0)
-            let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
-            XCTAssertNotNil(stitchFile)
-            if let stitchFile = stitchFile {
-                XCTAssertEqual(stitchFile.type, FBFileType.JPG)
+        
+        parser.provideContents(ofDirectory: directory) { result in
+            switch result {
+            case .error(let error):
+                XCTFail(error.localizedDescription)
+            case .success(let directoryContents):
+                XCTAssertTrue(directoryContents.count > 0)
+                let stitchFile = directoryContents.filter({$0.displayName == "Stitch.jpg"}).first
+                XCTAssertNotNil(stitchFile)
+                if let stitchFile = stitchFile {
+                    XCTAssertEqual(stitchFile.type, FBFileType.JPG)
+                }
             }
-        } catch let error {
-            XCTFail(error.localizedDescription)
         }
     }
 
@@ -67,15 +70,17 @@ class FileBrowserTests: XCTestCase {
         parser.excludesFileExtensions = ["gIf"]
         let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
         let directory = FBFile(path: directoryPath)
-        do {
-            let directoryContents = try parser.contents(ofDirectory: directory)
-            for file in directoryContents {
-                if let fileExtension = file.fileExtension {
-                    XCTAssertFalse(fileExtension == "gif")
+        parser.provideContents(ofDirectory: directory) { result in
+            switch result {
+            case .error(let error):
+                XCTFail(error.localizedDescription)
+            case .success(let directoryContents):
+                for file in directoryContents {
+                    if let fileExtension = file.fileExtension {
+                        XCTAssertFalse(fileExtension == "gif")
+                    }
                 }
             }
-        } catch let error {
-            XCTFail(error.localizedDescription)
         }
     }
 
