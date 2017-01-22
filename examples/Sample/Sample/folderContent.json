@@ -33,6 +33,10 @@
                     "location": "https://jsonplaceholder.typicode.com/users"
                 }
             }
+        },
+        "Invalid directory": {
+            "type": "directory",
+            "notContent": {}
         }
     }
 }
