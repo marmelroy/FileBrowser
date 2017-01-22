@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoadingViewController" customModule="FileBrowser" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="zwe-Yi-75m" id="QKM-zx-GdY"/>
+                <outlet property="errorLabel" destination="57g-8J-gEz" id="34T-Xi-zmN"/>
                 <outlet property="progressView" destination="Sw3-cK-JZs" id="Ggo-nB-npk"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ZxE-pQ-kdT"/>
             </connections>
@@ -30,19 +32,31 @@
                         <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="cAQ-9d-80e"/>
                     </connections>
                 </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57g-8J-gEz">
+                    <rect key="frame" x="10" y="209.5" width="300" height="61"/>
+                    <string key="text">Error:
+Something
+happened</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="zwe-Yi-75m" firstAttribute="top" secondItem="Sw3-cK-JZs" secondAttribute="bottom" priority="750" constant="32" id="0M3-MB-wQF"/>
                 <constraint firstItem="Sw3-cK-JZs" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2eN-cj-oi2"/>
                 <constraint firstItem="Sw3-cK-JZs" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" priority="750" id="OUk-MM-cb5"/>
+                <constraint firstItem="57g-8J-gEz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Wev-uV-QoE"/>
                 <constraint firstItem="Sw3-cK-JZs" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="Xfd-Dd-5Km"/>
                 <constraint firstItem="zwe-Yi-75m" firstAttribute="centerX" secondItem="Sw3-cK-JZs" secondAttribute="centerX" id="ZgS-gL-hUL"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zwe-Yi-75m" secondAttribute="bottom" constant="16" id="bSv-NZ-Mie"/>
+                <constraint firstAttribute="trailing" secondItem="57g-8J-gEz" secondAttribute="trailing" constant="10" id="eqx-sm-yaS"/>
                 <constraint firstItem="Sw3-cK-JZs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="fXw-FY-lQA"/>
+                <constraint firstItem="57g-8J-gEz" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="p2f-dQ-MC8"/>
                 <constraint firstAttribute="trailing" secondItem="Sw3-cK-JZs" secondAttribute="trailing" constant="16" id="vcr-P6-EVh"/>
             </constraints>
-            <point key="canvasLocation" x="33.5" y="54.5"/>
+            <point key="canvasLocation" x="33" y="54"/>
         </view>
     </objects>
 </document>

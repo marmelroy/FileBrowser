@@ -14,6 +14,8 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     //MARK: Lifecycle
     
     @IBOutlet var progressView: UIProgressView!
+    @IBOutlet var errorLabel: UILabel!
+    @IBOutlet var cancelButton: UIButton!
     
     var downloadTask: URLSessionDownloadTask?
     var session: URLSession!
@@ -32,21 +34,24 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Test loading")
         progressView.setProgress(0, animated: false)
         guard let fileLocation = file.fileLocation else {
             print("Error: File has no fileLocation set")
             return
         }
-        
  
         downloadTask = session.downloadTask(with: fileLocation)
         downloadTask!.resume()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        downloadTask?.cancel()
+    }
+    
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         downloadTask?.cancel()
+        navigationController?.popViewController(animated: true)
     }
     
     func showFile(data: Data?) {
@@ -62,7 +67,7 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
                 nav.setViewControllers(viewControllers, animated: true)
                 
             } else {
-            self.present(controller, animated: true, completion: nil)
+                self.present(controller, animated: true, completion: nil)
             }
             if let ql = (controller as? QLPreviewController) ?? (controller as? PreviewTransitionViewController)?.quickLookPreviewController {
                 // fix for dataSource magically disappearing because hey let's store it in a weak variable in QLPreviewController
@@ -71,22 +76,31 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
             }
         }
     }
+    
+    func show(error: Error) {
+        DispatchQueue.main.async {
+            self.cancelButton.isHidden = true
+            self.progressView.isHidden = true
+            self.errorLabel.text = error.localizedDescription
+            self.errorLabel.isHidden = false
+        }
+    }
+    
+    //MARK: URLSession
 
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        completionHandler(.allow)
-    }
-    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        completionHandler(.performDefaultHandling, nil)
-    }
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        print(error?.localizedDescription)
+        if let error = error {
+            show(error: error)
+        }
     }
+    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         do {
             let data = try Data(contentsOf: location)
             self.showFile(data: data)
         } catch let error {
             print(error)
+            show(error: error)
         }
     }
     
@@ -98,8 +112,8 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let error = error {
-            print(error.localizedDescription)
+        if let error = error, (error as? NSError)?.code != NSURLErrorCancelled {
+            show(error: error)
         }
         session.finishTasksAndInvalidate()
     }
