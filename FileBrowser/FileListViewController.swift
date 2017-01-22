@@ -71,6 +71,7 @@ class FileListViewController: UIViewController {
         
         // Prepare data
         dataSource.provideContents(ofDirectory: self.directory) { result in
+            self.didCompleteLoading()
             switch result {
             case .success(let files):
                 self.files = files
@@ -79,6 +80,11 @@ class FileListViewController: UIViewController {
             case .error(let error):
                 self.replaceTableViewRowsShowing(error: error)
             }
+        }
+        
+        // show a loading indicator if it takes more than 0.5 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.showLoadingIndicatorIfNeeded()
         }
         
         // Set search bar
@@ -141,6 +147,34 @@ class FileListViewController: UIViewController {
         
         tableView.backgroundView = errorLabel
         tableView.separatorStyle = .none
+    }
+    
+    //MARK: loading indicator
+    
+    var loadingCompleted = false
+    func didCompleteLoading() {
+        locking(loadingCompleted) {
+            loadingCompleted = true
+        }
+        hideLoadingIndicator()
+    }
+    
+    func showLoadingIndicatorIfNeeded() {
+        locking(loadingCompleted) {
+            if !loadingCompleted {
+                navigationItem.prompt = "Loading..."
+            }
+        }
+    }
+    
+    func hideLoadingIndicator() {
+        navigationItem.prompt = nil
+    }
+    
+    func locking(_ lock: Any, closure: () -> ()) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
     }
 }
 
