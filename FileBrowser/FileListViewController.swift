@@ -77,8 +77,7 @@ class FileListViewController: UIViewController {
                 self.indexFiles()
                 self.tableView.reloadData()
             case .error(let error):
-                // TODO: display errors
-                print(error.localizedDescription)
+                self.replaceTableViewRowsShowing(error: error)
             }
         }
         
@@ -134,6 +133,14 @@ class FileListViewController: UIViewController {
         tableView.reloadData()
     }
     
-
+    func replaceTableViewRowsShowing(error: Error) {
+        let errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        errorLabel.text = error.localizedDescription
+        errorLabel.textColor = UIColor.black
+        errorLabel.textAlignment = .center
+        
+        tableView.backgroundView = errorLabel
+        tableView.separatorStyle = .none
+    }
 }
 

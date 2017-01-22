@@ -37,29 +37,38 @@ open class CustomDataSource: FileBrowserDataSource {
     open func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
         // traverse the file tree outlined in the JSON file to find the directory
         let pathComponents = Array(directory.path.pathComponents.dropFirst())   // we're already in the root directory at the root of our json document
-        let directoryDescription = pathComponents.reduce(json) { currentFolder, subfolderName -> KeyValue in
-            let content = currentFolder["content"]! as! KeyValue
-            return content[subfolderName] as! KeyValue
-        }
-        
-        let files = (directoryDescription["content"] as! KeyValue).map {name, properties -> FBFile in
-            let properties = properties as! KeyValue
-            let isDirectory = (properties["type"] as? String) == "directory"
-            let path = directory.path.appendingPathComponent(name, isDirectory: isDirectory)
-            let file = FBFile(path: path)
-            if let resourceURLString = properties["location"] as? String, let resourceURL = URL(string: resourceURLString) {
-                file.fileLocation = resourceURL
+        do {
+            let directoryDescription = try pathComponents.reduce(json) { currentFolder, subfolderName throws -> KeyValue in
+                guard let content = currentFolder["content"] as? KeyValue else {
+                    throw JSONParsingError.noDirectoryContent
+                }
+                return content[subfolderName] as! KeyValue
             }
-            if let typeName = properties["type"] as? String, let type = FBFileType(rawValue: typeName) {
-                file.type = type
+            
+            guard let content = directoryDescription["content"] as? KeyValue else {
+                throw JSONParsingError.noDirectoryContent
             }
-            return file
+            let files = content.map {name, properties -> FBFile in
+                let properties = properties as! KeyValue
+                let isDirectory = (properties["type"] as? String) == "directory"
+                let path = directory.path.appendingPathComponent(name, isDirectory: isDirectory)
+                let file = FBFile(path: path)
+                if let resourceURLString = properties["location"] as? String, let resourceURL = URL(string: resourceURLString) {
+                    file.fileLocation = resourceURL
+                }
+                if let typeName = properties["type"] as? String, let type = FBFileType(rawValue: typeName) {
+                    file.type = type
+                }
+                return file
+            }
+            
+            // simulate loading of remote content
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
+                callback(.success(files))
+            })
+        } catch let error {
+            callback(.error(error))
         }
-        
-        // simulate loading of remote content
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
-            callback(.success(files))
-        })
         
         return
     }
@@ -73,4 +82,17 @@ open class CustomDataSource: FileBrowserDataSource {
         return file.fileLocation!
     }
     
+}
+
+enum JSONParsingError: Error {
+    case noDirectoryContent
+}
+
+extension JSONParsingError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .noDirectoryContent:
+            return "Cannot read the directory contents"
+        }
+    }
 }
