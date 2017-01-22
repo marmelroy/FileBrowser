@@ -3,7 +3,7 @@ platform :ios, "8.0"
 use_frameworks!
 
 project 'Sample'
-# workspace '../../FileBrowserWorkspace'
+workspace '../../FileBrowserWorkspace'
 
 target 'Sample' do
     pod 'FileBrowser', :path => '../../FileBrowser.podspec'

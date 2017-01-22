@@ -7,8 +7,7 @@ env:
 before_install:
   - gem install cocoapods --pre
   - xcrun simctl list
-  - pod repo update --silent
-install: pod install
+install: echo "<3"
 env:
   - MODE=framework
   - MODE=examples

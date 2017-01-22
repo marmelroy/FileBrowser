@@ -20,7 +20,7 @@ MODE="$1"
 if [ "$MODE" = "framework" ]; then
     echo "Building and testing FileBrowser."
     xcodebuild \
-        -workspace FileBrowserWorkspace.xcworkspace \
+        -project FileBrowser.xcodeproj \
         -scheme FileBrowser \
         -sdk "$SDK" \
         -destination "$PLATFORM" \
