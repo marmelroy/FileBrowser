@@ -64,6 +64,7 @@ class WebviewPreviewViewContoller: UIViewController {
     
     func processForDisplay() {
         guard let file = file else {
+            print("file is not set!")
             return
         }
         
@@ -75,6 +76,7 @@ class WebviewPreviewViewContoller: UIViewController {
             let fileData = try? Data(contentsOf: localFileUrl) {
             data = fileData
         } else {
+            print("Could not find data for file!")
             return
         }
         

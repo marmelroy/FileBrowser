@@ -25,6 +25,7 @@ open class FBFile: NSObject {
     // FBFileType
     open var type: FBFileType
     
+    /// Describes the path in the current file system, e.g. /dir/file.txt
     open let path: URL
     
     /**
@@ -36,6 +37,7 @@ open class FBFile: NSObject {
      */
     public init(path: URL) {
         self.path = path
+        self.fileLocation = path
         self.isDirectory = checkDirectory(path)
         
         if self.isDirectory {
