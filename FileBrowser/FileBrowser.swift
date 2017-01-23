@@ -29,13 +29,6 @@ open class FileBrowser: UINavigationController {
         }
     }
     
-    /// Whether to exclude files with empty filenames
-    open var excludesWithEmptyFilenames: Bool = false {
-        didSet {
-            dataSource.excludesWithEmptyFilenames = excludesWithEmptyFilenames
-        }
-    }
-    
     /// Override default preview and actionsheet behaviour in favour of custom file handling.
     open var didSelectFile: ((FBFile) -> ())? {
         didSet {

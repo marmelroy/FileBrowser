@@ -22,7 +22,6 @@ open class CustomDataSource: FileBrowserDataSource {
     
     public var excludesFileExtensions: [String]? = nil
     public var excludesFilepaths: [URL]? = nil
-    public var excludesWithEmptyFilenames = false
         
     let rootUrl = URL(string: "/")!
     public var rootDirectory: FBFile {

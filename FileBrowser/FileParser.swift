@@ -43,9 +43,6 @@ class LocalFileParser: FileBrowserDataSource {
             if let excludesFilepaths = excludesFilepaths {
                 files = files.filter { !excludesFilepaths.contains($0.path) }
             }
-            if excludesWithEmptyFilenames {
-                files = files.filter { !$0.displayName.isEmpty }
-            }
             
             // Sort
             files = files.sorted(){$0.displayName < $1.displayName}

@@ -18,7 +18,6 @@ public protocol FileBrowserDataSource {
     
     var excludesFileExtensions: [String]? { get set }
     var excludesFilepaths: [URL]? { get set }
-    var excludesWithEmptyFilenames: Bool { get set }
 }
 
 extension FileBrowserDataSource {
