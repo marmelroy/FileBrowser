@@ -41,7 +41,9 @@ class FileListViewController: UIViewController {
         
         // Set initial path
         self.initialPath = initialPath
-        self.title = initialPath.lastPathComponent
+        
+        // Customized by Burak Yanmaz
+        self.title = "İndirilmiş Dosyalar"//initialPath.lastPathComponent
         
         // Set search controller delegates
         searchController.searchResultsUpdater = self
@@ -49,8 +51,8 @@ class FileListViewController: UIViewController {
         searchController.delegate = self
         
         // Add dismiss button
-        let dismissButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(FileListViewController.dismiss))
-        self.navigationItem.rightBarButtonItem = dismissButton
+        //let dismissButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(FileListViewController.dismiss))
+        //self.navigationItem.rightBarButtonItem = dismissButton
         
     }
     
@@ -115,6 +117,31 @@ class FileListViewController: UIViewController {
             file = sections[indexPath.section][indexPath.row]
         }
         return file
+    }
+    
+    func deleteFileAtIndexPath(indexPath: NSIndexPath) -> Bool {
+        var file: FBFile
+        
+        do {
+            
+            file = searchController.active ? filteredFiles[indexPath.row] : sections[indexPath.section][indexPath.row]
+            
+            try NSFileManager.defaultManager().removeItemAtURL(file.filePath)
+            
+            if searchController.active {
+                filteredFiles.removeAtIndex(indexPath.row)
+            }
+            
+            files = parser.filesForDirectory(initialPath!)
+            indexFiles()
+            
+            return true
+        }
+        catch {
+            return false
+        }
+        
+        
     }
     
     func filterContentForSearchText(searchText: String) {
