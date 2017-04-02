@@ -43,7 +43,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         let selectedFile = fileForIndexPath(indexPath)
         searchController.isActive = false
         if selectedFile.isDirectory {
-            let fileListViewController = FileListViewController(initialPath: selectedFile.filePath)
+            let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: selectedFile)
             fileListViewController.didSelectFile = didSelectFile
             self.navigationController?.pushViewController(fileListViewController, animated: true)
         }
@@ -53,7 +53,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
                 didSelectFile(selectedFile)
             }
             else {
-                let filePreview = previewManager.previewViewControllerForFile(selectedFile, fromNavigation: true)
+                let filePreview = previewManager.previewViewControllerForFile(selectedFile, data: nil, fromNavigation: true)
                 self.navigationController?.pushViewController(filePreview, animated: true)
             }
         }

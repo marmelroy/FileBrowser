@@ -7,21 +7,26 @@
 //
 
 import Foundation
+import UIKit
 
 /// FBFile is a class representing a file in FileBrowser
 open class FBFile: NSObject {
     /// Display name. String.
-    open let displayName: String
+    open var displayName: String
     // is Directory. Bool.
     open let isDirectory: Bool
     /// File extension.
     open let fileExtension: String?
     /// File attributes (including size, creation date etc).
-    open let fileAttributes: NSDictionary?
-    /// NSURL file path.
-    open let filePath: URL
+    //open let fileAttributes: NSDictionary? = nil
+    
+    /// Describes where the resource can be found. May be a file:// or http[s]:// URL
+    open var fileLocation: URL?
     // FBFileType
-    open let type: FBFileType
+    open var type: FBFileType
+    
+    /// Describes the path in the current file system, e.g. /dir/file.txt
+    open let path: URL
     
     /**
      Initialize an FBFile object with a filePath
@@ -30,26 +35,29 @@ open class FBFile: NSObject {
      
      - returns: FBFile object.
      */
-    init(filePath: URL) {
-        self.filePath = filePath
-        let isDirectory = checkDirectory(filePath)
-        self.isDirectory = isDirectory
+    public init(path: URL) {
+        self.path = path
+        self.fileLocation = path
+        self.isDirectory = checkDirectory(path)
+        
         if self.isDirectory {
-            self.fileAttributes = nil
             self.fileExtension = nil
             self.type = .Directory
         }
         else {
-            self.fileAttributes = getFileAttributes(self.filePath)
-            self.fileExtension = filePath.pathExtension
-            if let fileExtension = fileExtension {
-                self.type = FBFileType(rawValue: fileExtension) ?? .Default
-            }
-            else {
+            if path.pathExtension != "" {
+                self.fileExtension = path.pathExtension
+                self.type = FBFileType(rawValue: fileExtension!) ?? .Default
+            } else {
+                self.fileExtension = nil
                 self.type = .Default
             }
         }
-        self.displayName = filePath.lastPathComponent 
+        self.displayName = path.lastPathComponent
+    }
+    
+    public var isRemoteFile: Bool {
+        return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
     }
 }
 
@@ -82,7 +90,7 @@ public enum FBFileType: String {
      - returns: UIImage for file type
      */
     public func image() -> UIImage? {
-        let bundle =  Bundle(for: FileParser.self)
+        let bundle = Bundle(for: FBFile.self)
         var fileName = String()
         switch self {
         case .Directory: fileName = "folder@2x.png"
@@ -104,6 +112,9 @@ public enum FBFileType: String {
  - returns: isDirectory Bool.
  */
 func checkDirectory(_ filePath: URL) -> Bool {
+    if #available(iOS 9.0, *) {
+        return filePath.hasDirectoryPath
+    }
     var isDirectory = false
     do {
         var resourceValue: AnyObject?
@@ -114,14 +125,4 @@ func checkDirectory(_ filePath: URL) -> Bool {
     }
     catch { }
     return isDirectory
-}
-
-func getFileAttributes(_ filePath: URL) -> NSDictionary? {
-    let path = filePath.path
-    let fileManager = FileParser.sharedInstance.fileManager
-    do {
-        let attributes = try fileManager.attributesOfItem(atPath: path) as NSDictionary
-        return attributes
-    } catch {}
-    return nil
 }

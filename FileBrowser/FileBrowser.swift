@@ -11,21 +11,21 @@ import Foundation
 /// File browser containing navigation controller.
 open class FileBrowser: UINavigationController {
     
-    let parser = FileParser.sharedInstance
+    open var dataSource: FileBrowserDataSource = LocalFileParser()
     
     var fileList: FileListViewController?
 
     /// File types to exclude from the file browser.
     open var excludesFileExtensions: [String]? {
         didSet {
-            parser.excludesFileExtensions = excludesFileExtensions
+            dataSource.excludesFileExtensions = excludesFileExtensions
         }
     }
     
     /// File paths to exclude from the file browser.
     open var excludesFilepaths: [URL]? {
         didSet {
-            parser.excludesFilepaths = excludesFilepaths
+            dataSource.excludesFilepaths = excludesFilepaths
         }
     }
     
@@ -37,28 +37,38 @@ open class FileBrowser: UINavigationController {
     }
     
     /**
-     Init to documents folder.
-     
-     - returns: File browser view controller.
-     */
+     Init to local documents folder.
+    */
     public convenience init() {
-        let parser = FileParser.sharedInstance
-        let path = parser.documentsURL()
-        self.init(initialPath: path as URL)
+        let parser = LocalFileParser()
+        self.init(dataSource: parser)
     }
     
     /**
-     Init to a custom directory path.
+     Init to a custom local directory path.
      
      - parameter initialPath: NSURL filepath to containing directory.
-     
-     - returns: File browser view controller.
-     */
+    */
     public convenience init(initialPath: URL) {
-        let fileListViewController = FileListViewController(initialPath: initialPath)
+        let parser = LocalFileParser()
+        parser.customRootUrl = initialPath
+        self.init(dataSource: parser)
+    }
+    
+    /**
+    Init with a custom dataSource. Alternatively, the dataSource can be set after initialization.
+     
+     - parameter parser: The data source used by the file browser
+    */
+    
+    public convenience init(dataSource: FileBrowserDataSource) {
+        let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: dataSource.rootDirectory)
         self.init(rootViewController: fileListViewController)
+        self.dataSource = dataSource
         self.view.backgroundColor = UIColor.white
         self.fileList = fileListViewController
     }
+    
+    
     
 }
