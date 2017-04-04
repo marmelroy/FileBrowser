@@ -52,7 +52,7 @@ class FileListViewController: UIViewController {
         searchController.delegate = self
         
         // Add dismiss button
-        let dismissButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:)))
+        let dismissButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(FileListViewController.dismiss(button:)))
         self.navigationItem.rightBarButtonItem = dismissButton
         
     }
