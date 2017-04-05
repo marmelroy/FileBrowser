@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0750C3CC1E942CB200CC4F2F /* QuickLookWithActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0750C3CB1E942CB200CC4F2F /* QuickLookWithActionsViewController.swift */; };
+		0750C3CF1E94680B00CC4F2F /* FileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0750C3CE1E94680B00CC4F2F /* FileDetailViewController.swift */; };
 		3437405B1C6E7DA50090FD6A /* FileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3437405A1C6E7DA50090FD6A /* FileListViewController.swift */; };
 		3439AB681C6F203A0058AF04 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439AB671C6F203A0058AF04 /* FileParser.swift */; };
 		3439AB6A1C6FC6D90058AF04 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3439AB691C6FC6D90058AF04 /* QuickLook.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -56,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0750C3CB1E942CB200CC4F2F /* QuickLookWithActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickLookWithActionsViewController.swift; sourceTree = "<group>"; };
+		0750C3CE1E94680B00CC4F2F /* FileDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDetailViewController.swift; sourceTree = "<group>"; };
 		3437405A1C6E7DA50090FD6A /* FileListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FileListViewController.swift; sourceTree = "<group>"; };
 		3439AB671C6F203A0058AF04 /* FileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileParser.swift; sourceTree = "<group>"; };
 		3439AB691C6FC6D90058AF04 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -113,6 +117,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0750C3CD1E9467ED00CC4F2F /* FileDetail */ = {
+			isa = PBXGroup;
+			children = (
+				0750C3CE1E94680B00CC4F2F /* FileDetailViewController.swift */,
+			);
+			name = FileDetail;
+			sourceTree = "<group>";
+		};
 		343C445E1C73CB9600D874FB /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +155,7 @@
 				343C44611C73CC8100D874FB /* PreviewTransitionViewController.swift */,
 				343C44651C73CD3200D874FB /* PreviewManager.swift */,
 				343C44781C73CFC400D874FB /* WebviewPreviewViewContoller.swift */,
+				0750C3CB1E942CB200CC4F2F /* QuickLookWithActionsViewController.swift */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -173,6 +186,7 @@
 				343C445E1C73CB9600D874FB /* Data */,
 				349A121D1C706601005435C0 /* Frameworks */,
 				343C445F1C73CBA900D874FB /* FileList */,
+				0750C3CD1E9467ED00CC4F2F /* FileDetail */,
 				343C44601C73CC3C00D874FB /* Preview */,
 				349A122A1C707E86005435C0 /* Resources */,
 				344169591C67812400B93D28 /* Info.plist */,
@@ -341,6 +355,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				343C447A1C73CFC400D874FB /* WebviewPreviewViewContoller.swift in Sources */,
+				0750C3CF1E94680B00CC4F2F /* FileDetailViewController.swift in Sources */,
+				0750C3CC1E942CB200CC4F2F /* QuickLookWithActionsViewController.swift in Sources */,
 				52E190C81E9358C5007C2242 /* FolderEditorTableView.swift in Sources */,
 				C3D983CD1E195B9600A8CC06 /* (null) in Sources */,
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,

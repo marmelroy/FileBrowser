@@ -28,15 +28,27 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FileCell"
-        var cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
-        if let reuseCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) {
-            cell = reuseCell
+		let reuseCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
+        var cell = reuseCell
+        if cell == nil
+		{
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         }
-        cell.selectionStyle = .blue
+        cell!.selectionStyle = .blue
         let selectedFile = fileForIndexPath(indexPath)
-        cell.textLabel?.text = selectedFile.displayName
-        cell.imageView?.image = selectedFile.type.image()
-        return cell
+        cell!.textLabel?.text = selectedFile.displayName
+        cell!.imageView?.image = selectedFile.type.image()
+		
+		cell!.textLabel?.adjustsFontSizeToFitWidth = true
+		cell!.textLabel?.minimumScaleFactor = 0.5
+		
+		if #available(iOS 9, *) {
+			cell!.textLabel?.allowsDefaultTighteningForTruncation = true
+		} else {
+		}
+		
+		cell!.accessoryType = .detailButton
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
