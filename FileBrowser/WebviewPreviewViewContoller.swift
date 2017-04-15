@@ -1,3 +1,4 @@
+
 //
 //  WebviewPreviewViewContoller.swift
 //  FileBrowser
@@ -30,7 +31,7 @@ class WebviewPreviewViewContoller: UIViewController {
         self.view.addSubview(webView)
         
         // Add share button
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile))
+		let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
         self.navigationItem.rightBarButtonItem = shareButton
     }
     
@@ -41,7 +42,7 @@ class WebviewPreviewViewContoller: UIViewController {
     
     //MARK: Share
     
-    func shareFile() {
+	func shareFile( sender : UIBarButtonItem ) {
         guard let file = file else {
             return
         }

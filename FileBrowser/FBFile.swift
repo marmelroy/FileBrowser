@@ -59,6 +59,11 @@ open class FBFile: NSObject {
     public var isRemoteFile: Bool {
         return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
     }
+	
+	open func delete()
+	{
+		// make override for local file browser
+	}
 }
 
 /**

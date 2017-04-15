@@ -11,7 +11,7 @@ import Foundation
 /// File browser containing navigation controller.
 open class FileBrowser: UINavigationController {
     
-    open var dataSource: FileBrowserDataSource = LocalFileParser()
+    open var dataSource: FileBrowserDataSource = LocalFileBrowserDataSource()
     
     var fileList: FileListViewController?
 
@@ -40,7 +40,7 @@ open class FileBrowser: UINavigationController {
      Init to local documents folder.
     */
     public convenience init() {
-        let parser = LocalFileParser()
+        let parser = LocalFileBrowserDataSource()
         self.init(dataSource: parser)
     }
     
@@ -50,7 +50,7 @@ open class FileBrowser: UINavigationController {
      - parameter initialPath: NSURL filepath to containing directory.
     */
     public convenience init(initialPath: URL) {
-        let parser = LocalFileParser()
+        let parser = LocalFileBrowserDataSource()
         parser.customRootUrl = initialPath
         self.init(dataSource: parser)
     }

@@ -69,24 +69,8 @@ class FileListViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        // Prepare data
-        dataSource.provideContents(ofDirectory: self.directory) { result in
-            self.didCompleteLoading()
-            switch result {
-            case .success(let files):
-                self.files = files
-                self.indexFiles()
-                self.tableView.reloadData()
-            case .error(let error):
-                self.replaceTableViewRowsShowing(error: error)
-            }
-        }
-        
-        // show a loading indicator if it takes more than 0.5 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            self?.showLoadingIndicatorIfNeeded()
-        }
-        
+        prepareData()
+		
         // Set search bar
         tableView.tableHeaderView = searchController.searchBar
         
@@ -109,7 +93,29 @@ class FileListViewController: UIViewController {
     }
     
     //MARK: Data
-    
+	
+	func prepareData() {
+		// Prepare data
+		loadingCompleted = false
+		dataSource.provideContents(ofDirectory: self.directory) { result in
+			self.didCompleteLoading()
+			switch result {
+			case .success(let files):
+				self.files = files
+				self.indexFiles()
+				self.tableView.reloadData()
+			case .error(let error):
+				self.replaceTableViewRowsShowing(error: error)
+			}
+		}
+		
+		// show a loading indicator if it takes more than 0.5 seconds
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+			self?.showLoadingIndicatorIfNeeded()
+		}
+
+	}
+	
     func indexFiles() {
         let selector: Selector = #selector(getter: UIPrinter.displayName)
         sections = Array(repeating: [], count: collation.sectionTitles.count)
