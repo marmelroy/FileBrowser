@@ -8,6 +8,20 @@ import Foundation
 
 class FileDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 	
+	// Table Rows
+	
+	// File Name (tap to rename)
+	// File Size
+	// File Creation date
+	// File modification date
+	// File added date
+	// Last viewed date
+	// Move action
+	// Copy action
+	// Duplicate action
+	// Delete Action
+	
+	
 	// TableView
 	@IBOutlet weak var tableView: UITableView!
 	

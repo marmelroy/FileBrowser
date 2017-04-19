@@ -20,9 +20,9 @@ class FileActivityViewController
 		
 		controller.setValue( file.displayName, forKey: "subject")
 		
-		if UIDevice.current.userInterfaceIdiom == .pad
+		if let popoverPresentationController = controller.popoverPresentationController
 		{
-			controller.popoverPresentationController?.barButtonItem = sender;
+			popoverPresentationController.barButtonItem = sender;
 		}
 
 		return controller

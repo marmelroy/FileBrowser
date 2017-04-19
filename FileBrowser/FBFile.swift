@@ -62,7 +62,19 @@ open class FBFile: NSObject {
 	
 	open func delete()
 	{
-		// make override for local file browser
+		// override for local file browser
+	}
+	
+	open func createFile(name: String) -> Bool
+	{
+		// override for local file browser
+		return false
+	}
+	
+	open func createDirectory(name: String) -> Bool
+	{
+		// override for local file browser
+		return false
 	}
 }
 

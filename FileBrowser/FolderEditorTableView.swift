@@ -29,10 +29,10 @@ class FolderEditorTableView : FileListViewController
 		//self.navigationBar = self.navigationController.navigationBar;
 		//self.navigationBarSuperView = self.navigationBar.superview;
 		
-		let hideBarsWithGestures = true;
+		//let hideBarsWithGestures = true;
 		
 		//self.navigationController?.hidesBarsOnSwipe = hideBarsWithGestures;
-		self.navigationController?.hidesBarsWhenKeyboardAppears = hideBarsWithGestures;
+		//self.navigationController?.hidesBarsWhenKeyboardAppears = hideBarsWithGestures;
 		//self.navigationController?.hidesBarsWhenVerticallyCompact = hideBarsWithGestures;
 		
 //		if (self.hideBarsWithGestures) {
@@ -198,20 +198,91 @@ class FolderEditorTableView : FileListViewController
 	}
 	
 	@objc func actionAdd(button: UIBarButtonItem = UIBarButtonItem()) {
-		// New folder or new file
 		// TODO: not done
+		
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		let folderAction = UIAlertAction(title: "New Folder", style: .default, handler: {(alert: UIAlertAction!) in
+			// Create new folder
+			
+			// ask for name
+			Alert_AskForText(title: "New Folder", question: "Name for new folder", presenter: self, okHandler:{
+				(alert: UIAlertController) in
+				// Create folder
+				
+				if let text = alert.textFields?[0].text
+				{
+					if self.directory.createDirectory(name: text)
+					{
+						self.prepareData()
+					}
+				}
+			})
+			
+		})
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
+		let fileAction = UIAlertAction(title: "New File", style: .default, handler: {(alert: UIAlertAction!) in
+			// Create new file
+			
+			// ask for name
+			Alert_AskForText(title: "New File", question: "Name for new file", presenter: self, okHandler:{
+				(alert: UIAlertController) in
+				// Create file
+				
+				if let text = alert.textFields?[0].text
+				{
+					if self.directory.createFile(name: text)
+					{
+						self.prepareData()
+					}
+				}
+			})
+			
+		})
+		
+		alertController.addAction(cancelAction)
+		alertController.addAction(fileAction)
+		alertController.addAction(folderAction)
+		
+		// Configure the alert controller's popover presentation controller if it has one.
+		if let popoverPresentationController = alertController.popoverPresentationController
+		{
+			popoverPresentationController.barButtonItem = button
+		}
+		
+		self.present(alertController, animated: true, completion: nil)
 	}
 	
 	@objc func selectActionTrash(button: UIBarButtonItem = UIBarButtonItem()) {
 		
-		let files = allSelectedFiles()
+		guard let selectedPaths = self.tableView.indexPathsForSelectedRows else {return}
+		guard selectedPaths.count > 0 else {return}
 		
-		for file in files
+		
+		// Need confirm delete
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: {(alert: UIAlertAction!) in
+			// Perform delete
+			let files = self.allSelectedFiles()
+			
+			for file in files
+			{
+				file.delete()
+			}
+			
+			self.prepareData()
+
+		})
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
+		
+		alertController.addAction(cancelAction)
+		alertController.addAction(deleteAction)
+		
+		// Configure the alert controller's popover presentation controller if it has one.
+		if let popoverPresentationController = alertController.popoverPresentationController
 		{
-			file.delete()
+			popoverPresentationController.barButtonItem = button
 		}
-		
-		self.prepareData()
+		self.present(alertController, animated: true, completion: nil)
 	}
     
     //MARK: UITableViewDataSource, UITableViewDelegate

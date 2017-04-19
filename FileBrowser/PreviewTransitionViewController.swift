@@ -14,7 +14,7 @@ class PreviewTransitionViewController: UIViewController {
     
     @IBOutlet weak var containerView: UIView!
     
-    let quickLookPreviewController = QLPreviewController()
+    let quickLookPreviewController = QuickLookWithActionsViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +22,10 @@ class PreviewTransitionViewController: UIViewController {
         containerView.addSubview(quickLookPreviewController.view)
         quickLookPreviewController.view.frame = containerView.bounds
         quickLookPreviewController.didMove(toParentViewController: self)
+		
+		
     }
+	
+	
 
 }
