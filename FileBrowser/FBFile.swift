@@ -76,6 +76,21 @@ open class FBFile: NSObject {
 		// override for local file browser
 		return false
 	}
+	
+	open func getFileSize() -> Int
+	{
+		return 0
+	}
+	
+	open func getCreationDate() -> Date
+	{
+		return Date()
+	}
+	
+	open func getModificationDate() -> Date
+	{
+		return Date()
+	}
 }
 
 /**

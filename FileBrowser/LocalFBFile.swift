@@ -24,7 +24,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			Alert_Show(title: "Error", message: "An error occured when trying to delete file:\(self.fileLocation) Error:\(error)")
+			Alert_Show(title: "Error", message: "An error occured when trying to delete file:\(String(describing: self.fileLocation)) Error:\(error)")
 		}
 	}
 
@@ -52,7 +52,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			Alert_Show(title: "Error", message: "An error occured when trying to create a directory:\(self.fileLocation) Error:\(error)")
+			Alert_Show(title: "Error", message: "An error occured when trying to create a directory:\(String(describing: self.fileLocation)) Error:\(error)")
 		}
 		return false
 	}
@@ -94,5 +94,50 @@ open class LocalFBFile : FBFile
 			}
 		}
 		return false
+	}
+	
+	open override func getFileSize() -> Int
+	{
+		do
+		{
+			if let resourceValues = try fileLocation?.resourceValues(forKeys: [URLResourceKey.fileSizeKey])
+			{
+				return resourceValues.fileSize ?? 0
+			}
+		}
+		catch
+		{
+		}
+		return 0;
+	}
+	
+	open override func getCreationDate() -> Date
+	{
+		do
+		{
+			if let resourceValues = try fileLocation?.resourceValues(forKeys: [URLResourceKey.creationDateKey])
+			{
+				return resourceValues.creationDate ?? Date()
+			}
+		}
+		catch
+		{
+		}
+		return Date()
+	}
+	
+	open override func getModificationDate() -> Date
+	{
+		do
+		{
+			if let resourceValues = try fileLocation?.resourceValues(forKeys: [URLResourceKey.contentModificationDateKey])
+			{
+				return resourceValues.contentModificationDate ?? Date()
+			}
+		}
+		catch
+		{
+		}
+		return Date()
 	}
 }

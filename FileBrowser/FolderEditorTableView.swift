@@ -88,7 +88,6 @@ class FolderEditorTableView : FileListViewController
 			selectCancelBtn = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FolderEditorTableView.selectCancel(button:)))
 		}
 		items.append( selectCancelBtn! )
-
 		
 		return items
 	}
