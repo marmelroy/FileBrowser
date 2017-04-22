@@ -11,12 +11,16 @@ import Foundation
 class FolderEditorTableView : FileListViewController
 {
 	weak var toolbar : UIToolbar?;
-	var selectBtn : UIBarButtonItem?;
+	// Edit mode toolbar
 	var selectAllBtn : UIBarButtonItem?;
 	var selectActionBtn : UIBarButtonItem?;
 	var selectCancelBtn : UIBarButtonItem?;
-	var actionAddBtn : UIBarButtonItem?;
 	var selectActionTrashBtn : UIBarButtonItem?;
+	// Regular toolbar
+	var selectBtn : UIBarButtonItem?;
+	var optionsBtn : UIBarButtonItem?;
+	var refreshBtn : UIBarButtonItem?;
+	var actionAddBtn : UIBarButtonItem?;
 	
    //MARK: Lifecycle
     func configureToolBars()
@@ -102,9 +106,24 @@ class FolderEditorTableView : FileListViewController
 		}
 		items.append( actionAddBtn! )
 		
-		let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-		items.append( space )
+		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
 
+		if refreshBtn == nil
+		{
+			refreshBtn = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FolderEditorTableView.actionRefresh(button:)))
+		}
+		items.append( refreshBtn! )
+		
+		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
+
+		if optionsBtn == nil
+		{
+			optionsBtn = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(FolderEditorTableView.actionOptions(button:)))
+		}
+		items.append( optionsBtn! )
+		
+		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
+		
 		if selectBtn == nil
 		{
 			selectBtn = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(FolderEditorTableView.select(button:)))
@@ -149,6 +168,16 @@ class FolderEditorTableView : FileListViewController
 	
 	//MARK: Button Actions
 	
+	@objc func actionRefresh( button : UIBarButtonItem )
+	{
+		self.prepareData(sender: nil)
+	}
+	
+	@objc func actionOptions( button : UIBarButtonItem )
+	{
+		// TODO: finish this
+	}
+	
 	@objc func select(button: UIBarButtonItem = UIBarButtonItem()) {
 		self.setEditing(true, animated:true)
 		self.tableView.setEditing(true, animated: true)
@@ -171,8 +200,6 @@ class FolderEditorTableView : FileListViewController
 	}
 	
 	@objc func selectAction(button: UIBarButtonItem = UIBarButtonItem()) {
-		// TODO: show sheet
-		
 		// Move
 		// Copy
 		// User definable actions
@@ -197,7 +224,6 @@ class FolderEditorTableView : FileListViewController
 	}
 	
 	@objc func actionAdd(button: UIBarButtonItem = UIBarButtonItem()) {
-		// TODO: not done
 		
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let folderAction = UIAlertAction(title: "New Folder", style: .default, handler: {(alert: UIAlertAction!) in
@@ -212,7 +238,7 @@ class FolderEditorTableView : FileListViewController
 				{
 					if self.directory.createDirectory(name: text)
 					{
-						self.prepareData()
+						self.prepareData(sender:nil)
 					}
 				}
 			})
@@ -231,7 +257,7 @@ class FolderEditorTableView : FileListViewController
 				{
 					if self.directory.createFile(name: text)
 					{
-						self.prepareData()
+						self.prepareData(sender:nil)
 					}
 				}
 			})
@@ -268,7 +294,7 @@ class FolderEditorTableView : FileListViewController
 				file.delete()
 			}
 			
-			self.prepareData()
+			self.prepareData(sender: nil)
 
 		})
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
@@ -283,29 +309,17 @@ class FolderEditorTableView : FileListViewController
 		}
 		self.present(alertController, animated: true, completion: nil)
 	}
-    
+	
+	
+	
     //MARK: UITableViewDataSource, UITableViewDelegate
     
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if tableView.isEditing == false
 		{
 			let selectedFile = fileForIndexPath(indexPath)
-			searchController.isActive = false
-			if selectedFile.isDirectory {
-				let fileListViewController = FolderEditorTableView(dataSource: dataSource, withDirectory: selectedFile)
-				fileListViewController.didSelectFile = didSelectFile
-				self.navigationController?.pushViewController(fileListViewController, animated: true)
-			}
-			else {
-				if let didSelectFile = didSelectFile {
-					self.dismiss()
-					didSelectFile(selectedFile)
-				}
-				else {
-					let filePreview = previewManager.previewViewControllerForFile(selectedFile, data: nil, fromNavigation: true)
-					self.navigationController?.pushViewController(filePreview, animated: true)
-				}
-			}
+			searchController?.isActive = false
+			fileBrowserState.viewFile(file: selectedFile, controller: self)
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
@@ -319,7 +333,11 @@ class FolderEditorTableView : FileListViewController
 	
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
 	{
-		
+		if editingStyle == .delete
+		{
+			let selectedFile = fileForIndexPath(indexPath)
+			selectedFile.delete()
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle
@@ -334,7 +352,7 @@ class FolderEditorTableView : FileListViewController
 		// show file detail view controller
 		
 		// for renaming, open in, delete
-		let detailViewController = FileDetailViewController(file: fileForIndexPath(indexPath))
+		let detailViewController = FileDetailViewController(file: fileForIndexPath(indexPath), state: fileBrowserState)
 		self.navigationController?.pushViewController(detailViewController, animated: true)
 		
 //		self.showDetailViewController(<#T##vc: UIViewController##UIViewController#>, sender: <#T##Any?#>)

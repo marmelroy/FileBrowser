@@ -16,15 +16,21 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	// File modification date
 	// File added date
 	// Last viewed date
+	
+	// if any image show the width and height
+	
+	
+	// View Action (view in Quick Look or other, view as hex)
 	// Rename action
 	// Move action
 	// Copy action
 	// Duplicate action
 	// Delete Action
-	private static let MOVE_ACTION = 1
-	private static let COPY_ACTION = 2
-	private static let DELETE_ACTION = 3
-	private static let RENAME_ACTION = 0
+	private static let VIEW_ACTION = 0
+	private static let RENAME_ACTION = 1
+	private static let MOVE_ACTION = 2
+	private static let COPY_ACTION = 3
+	private static let DELETE_ACTION = 4
 	
 	
 	// TableView
@@ -32,15 +38,19 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	
 	/// Data
 	var file: FBFile!
+	var fileBrowserState: FileBrowserState!
 	
 	//MARK: Lifecycle
 	
-	convenience init (file: FBFile) {
+	convenience init (file: FBFile, state: FileBrowserState) {
 		self.init(nibName: "FileBrowser", bundle: Bundle(for: FileDetailViewController.self))
 		self.edgesForExtendedLayout = UIRectEdge()
 		
 		self.title = file.displayName
+		
+		// Data
 		self.file = file;
+		self.fileBrowserState = state;
 		
 		// Add dismiss button
 		let dismissButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(FileListViewController.dismiss(button:)))
@@ -87,12 +97,15 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 			break;
 		case 2:
 			cell.textLabel?.text = "Created"
-			cell.detailTextLabel?.text = file.getCreationDate().description
+			cell.detailTextLabel?.text = file.getCreationDate().description( with: Locale.current )
 			break;
 		case 3:
 			cell.textLabel?.text = "Modified"
-			cell.detailTextLabel?.text = file.getModificationDate().description
+			cell.detailTextLabel?.text = file.getModificationDate().description( with: Locale.current )
 			break;
+		case 4:
+			cell.textLabel?.text = "iCloud"
+			cell.detailTextLabel?.text = file.isInICloud() ? "Yes" : "No"
 		default:
 			break;
 		}
@@ -102,6 +115,8 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	
 	func buttonTextForRow( row: Int ) -> String{
 		switch row {
+		case FileDetailViewController.VIEW_ACTION:
+			return "View"
 		case FileDetailViewController.RENAME_ACTION:
 			return "Rename"
 		case FileDetailViewController.MOVE_ACTION:
@@ -122,7 +137,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 4
+		return 5
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -189,15 +204,24 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 		{
 			switch indexPath.row
 			{
+			case FileDetailViewController.VIEW_ACTION:
+				fileBrowserState.viewFile(file: file, controller: self)
 			case FileDetailViewController.RENAME_ACTION:
-				
-			break;
-			case FileDetailViewController.DELETE_ACTION:
 				break;
+			case FileDetailViewController.MOVE_ACTION:
+				fileBrowserState.moveFile(file: file, controller: self, sender: nil)
+				break;
+			case FileDetailViewController.DELETE_ACTION:
+				fileBrowserState.deleteFileAfterUserConfirmation( files: [file], controller: self, refresh: {
+					// need to refresh the previous view controller
+					// TODO: self.navigationController?.viewControllers
+					self.navigationController?.popViewController(animated: true)
+				} )
 			default:
 				break;
 			}
 		}
+		self.tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

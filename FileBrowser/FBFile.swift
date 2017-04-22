@@ -60,6 +60,18 @@ open class FBFile: NSObject {
         return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
     }
 	
+	open func enclosingDirectory() -> FBFile?
+	{
+		guard let fileLocation = fileLocation else
+		{
+			return nil;
+		}
+		
+		let baseURL = fileLocation.deletingLastPathComponent()
+		
+		return FBFile( path: baseURL )
+	}
+	
 	open func delete()
 	{
 		// override for local file browser
@@ -90,6 +102,11 @@ open class FBFile: NSObject {
 	open func getModificationDate() -> Date
 	{
 		return Date()
+	}
+	
+	open func isInICloud() -> Bool
+	{
+		return false
 	}
 }
 

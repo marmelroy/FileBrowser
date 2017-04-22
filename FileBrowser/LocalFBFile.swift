@@ -9,6 +9,19 @@ import Foundation
 open class LocalFBFile : FBFile
 {
 	
+	open override func enclosingDirectory() -> FBFile?
+	{
+		guard let fileLocation = fileLocation else
+		{
+			return nil;
+		}
+		
+		let baseURL = fileLocation.deletingLastPathComponent()
+		
+		return LocalFBFile( path: baseURL )
+	}
+
+	
 	override open func delete()
 	{
 		guard fileLocation != nil else
@@ -139,5 +152,19 @@ open class LocalFBFile : FBFile
 		{
 		}
 		return Date()
+	}
+	
+	open override func isInICloud() -> Bool {
+		do
+		{
+			if let resourceValues = try fileLocation?.resourceValues(forKeys: [URLResourceKey.isUbiquitousItemKey])
+			{
+				return resourceValues.isUbiquitousItem ?? false
+			}
+		}
+		catch
+		{
+		}
+		return false
 	}
 }

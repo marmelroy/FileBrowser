@@ -13,44 +13,46 @@ class FileListViewController: UIViewController {
     // TableView
     @IBOutlet weak var tableView: UITableView!
     let collation = UILocalizedIndexedCollation.current()
+	var refreshControl: UIRefreshControl?
     
     /// Data
     var directory: FBFile!
-    var dataSource: FileBrowserDataSource!
-    
-    var didSelectFile: ((FBFile) -> ())?
+	var fileBrowserState: FileBrowserState!
+	
     var files = [FBFile]()
-    let previewManager = PreviewManager()
     var sections: [[FBFile]] = []
 
     // Search controller
     var filteredFiles = [FBFile]()
-    let searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.backgroundColor = UIColor.white
-        searchController.dimsBackgroundDuringPresentation = false
-        return searchController
-    }()
+    var searchController: UISearchController?
     
     
     //MARK: Lifecycle
     
-    convenience init (dataSource: FileBrowserDataSource, withDirectory directory: FBFile) {
+	convenience init (state: FileBrowserState, withDirectory directory: FBFile) {
         self.init(nibName: "FileBrowser", bundle: Bundle(for: FileListViewController.self))
         self.edgesForExtendedLayout = UIRectEdge()
         
         // Set implicitly unwrapped optionals
-        self.dataSource = dataSource
+        self.fileBrowserState = state
         self.directory = directory
-        
+		
         self.title = directory.displayName
-        
-        // Set search controller delegates
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
-        searchController.delegate = self
-        
+		
+		if( fileBrowserState.allowSearch )
+		{
+			let searchController = UISearchController(searchResultsController: nil)
+			searchController.searchBar.searchBarStyle = .minimal
+			searchController.searchBar.backgroundColor = UIColor.white
+			searchController.dimsBackgroundDuringPresentation = false
+			
+			// Set search controller delegates
+			searchController.searchResultsUpdater = self
+			searchController.searchBar.delegate = self
+			searchController.delegate = self
+			self.searchController = searchController
+		}
+		
         // Add dismiss button
         let dismissButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(FileListViewController.dismiss(button:)))
         self.navigationItem.rightBarButtonItem = dismissButton
@@ -58,22 +60,39 @@ class FileListViewController: UIViewController {
     }
     
     deinit{
-        if #available(iOS 9.0, *) {
-            searchController.loadViewIfNeeded()
-        } else {
-            searchController.loadView()
-        }
+		if let searchController = self.searchController
+		{
+			if #available(iOS 9.0, *) {
+				searchController.loadViewIfNeeded()
+			} else {
+				searchController.loadView()
+			}
+		}
     }
-    
+		
     //MARK: UIViewController
     
     override func viewDidLoad() {
         
-        prepareData()
+		// Create pull to refresh
+		refreshControl = UIRefreshControl()
+		refreshControl?.attributedTitle = NSAttributedString(string: "Pull To Refresh")
+		refreshControl?.addTarget(self, action: #selector(FileListViewController.prepareData(sender:)), for: .valueChanged)
+		if #available(iOS 10.0, *) {
+			self.tableView.refreshControl = refreshControl
+		} else {
+			// Fallback on earlier versions
+		};
 		
-        // Set search bar
-        tableView.tableHeaderView = searchController.searchBar
-        
+		// Prepare data
+		prepareData(sender:nil)
+		
+		if let searchController = self.searchController
+		{
+			// Set search bar
+			tableView.tableHeaderView = searchController.searchBar
+		}
+		
         // Register for 3D touch
         self.registerFor3DTouch()
     }
@@ -82,8 +101,14 @@ class FileListViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Scroll to hide search bar
-        self.tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.size.height)
-        
+		if let searchController = self.searchController
+		{
+			if self.tableView.contentOffset.y < searchController.searchBar.frame.size.height
+			{
+				self.tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.size.height)
+			}
+		}
+		
         // Make sure navigation bar is visible
         self.navigationController?.isNavigationBarHidden = false
     }
@@ -94,11 +119,17 @@ class FileListViewController: UIViewController {
     
     //MARK: Data
 	
-	func prepareData() {
+	@objc func prepareData(sender:UIButton?) {
+		if( sender != refreshControl )
+		{
+			refreshControl?.beginRefreshing()
+		}
+		refreshControl?.attributedTitle = NSAttributedString(string: "Refreshing")
 		// Prepare data
 		loadingCompleted = false
-		dataSource.provideContents(ofDirectory: self.directory) { result in
+		fileBrowserState.dataSource.provideContents(ofDirectory: self.directory) { result in
 			self.didCompleteLoading()
+			self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to Refresh")
 			switch result {
 			case .success(let files):
 				self.files = files
@@ -107,32 +138,47 @@ class FileListViewController: UIViewController {
 			case .error(let error):
 				self.replaceTableViewRowsShowing(error: error)
 			}
+			self.refreshControl?.endRefreshing()
 		}
 		
 		// show a loading indicator if it takes more than 0.5 seconds
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-			self?.showLoadingIndicatorIfNeeded()
-		}
+		//DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+			//self?.showLoadingIndicatorIfNeeded()
+		//}
 
 	}
 	
     func indexFiles() {
-        let selector: Selector = #selector(getter: UIPrinter.displayName)
-        sections = Array(repeating: [], count: collation.sectionTitles.count)
-        if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
-            for object in sortedObjects {
-                let sectionNumber = collation.section(for: object, collationStringSelector: selector)
-                sections[sectionNumber].append(object)
-            }
-        }
+		let selector: Selector = #selector(getter: UIPrinter.displayName)
+		if fileBrowserState.includeIndex
+		{
+			sections = Array(repeating: [], count: collation.sectionTitles.count)
+			if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
+				for object in sortedObjects {
+					let sectionNumber = collation.section(for: object, collationStringSelector: selector)
+					sections[sectionNumber].append(object)
+				}
+			}
+		}
+		else
+		{
+			sections = Array(repeating: [], count: 1)
+			if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
+				for object in sortedObjects {
+					sections[0].append(object)
+				}
+			}
+		}
     }
-    
+	
     func fileForIndexPath(_ indexPath: IndexPath) -> FBFile {
         var file: FBFile
-        if searchController.isActive {
+        if let searchController = self.searchController, searchController.isActive
+		{
             file = filteredFiles[(indexPath as NSIndexPath).row]
         }
-        else {
+        else
+		{
             file = sections[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
         }
         return file
@@ -162,21 +208,21 @@ class FileListViewController: UIViewController {
         locking(loadingCompleted) {
             loadingCompleted = true
         }
-        hideLoadingIndicator()
+        //hideLoadingIndicator()
     }
-    
-    func showLoadingIndicatorIfNeeded() {
-        locking(loadingCompleted) {
-            if !loadingCompleted {
-                navigationItem.prompt = "Loading..."
-            }
-        }
-    }
-    
-    func hideLoadingIndicator() {
-        navigationItem.prompt = nil
-    }
-    
+//
+//    func showLoadingIndicatorIfNeeded() {
+//        locking(loadingCompleted) {
+//            if !loadingCompleted {
+//                //navigationItem.prompt = "Loading..."
+//            }
+//        }
+//    }
+//    
+//    func hideLoadingIndicator() {
+//        navigationItem.prompt = nil
+//    }
+	
     func locking(_ lock: Any, closure: () -> ()) {
         objc_sync_enter(lock)
         closure()

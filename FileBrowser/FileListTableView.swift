@@ -13,14 +13,14 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: UITableViewDataSource, UITableViewDelegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if searchController.isActive {
+        if searchController?.isActive ?? false {
             return 1
         }
         return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.isActive {
+        if searchController?.isActive ?? false {
             return filteredFiles.count
         }
         return sections[section].count
@@ -47,33 +47,19 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 		} else {
 		}
 		
-		cell!.accessoryType = .detailButton
+		cell!.accessoryType = fileBrowserState.cellAcc
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedFile = fileForIndexPath(indexPath)
-        searchController.isActive = false
-        if selectedFile.isDirectory {
-            let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: selectedFile)
-            fileListViewController.didSelectFile = didSelectFile
-            self.navigationController?.pushViewController(fileListViewController, animated: true)
-        }
-        else {
-            if let didSelectFile = didSelectFile {
-                self.dismiss()
-                didSelectFile(selectedFile)
-            }
-            else {
-                let filePreview = previewManager.previewViewControllerForFile(selectedFile, data: nil, fromNavigation: true)
-                self.navigationController?.pushViewController(filePreview, animated: true)
-            }
-        }
+        searchController?.isActive = false
+		fileBrowserState.viewFile(file: selectedFile, controller: self)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if searchController.isActive {
+        if (fileBrowserState.includeIndex == false) || (searchController?.isActive ?? false) {
             return nil
         }
         if sections[section].count > 0 {
@@ -85,14 +71,15 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if searchController.isActive {
+        if (fileBrowserState.includeIndex == false) || (searchController?.isActive ?? false)
+		{
             return nil
         }
         return collation.sectionIndexTitles
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        if searchController.isActive {
+        if (fileBrowserState.includeIndex == false) || (searchController?.isActive ?? false) {
             return 0
         }
         return collation.section(forSectionIndexTitle: index)

@@ -27,7 +27,7 @@ extension FileListViewController: UIViewControllerPreviewingDelegate {
                 let selectedFile = fileForIndexPath(indexPath)
                 previewingContext.sourceRect = tableView.rectForRow(at: indexPath)
                 if selectedFile.isDirectory == false {
-                    return previewManager.previewViewControllerForFile(selectedFile, data: nil, fromNavigation: false)
+                    return fileBrowserState.previewManager.previewViewControllerForFile(selectedFile, data: nil, fromNavigation: false)
                 }
             }
         }

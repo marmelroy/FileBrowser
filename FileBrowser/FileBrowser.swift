@@ -32,7 +32,7 @@ open class FileBrowser: UINavigationController {
     /// Override default preview and actionsheet behaviour in favour of custom file handling.
     open var didSelectFile: ((FBFile) -> ())? {
         didSet {
-            fileList?.didSelectFile = didSelectFile
+            fileList?.fileBrowserState.didSelectFile = didSelectFile
         }
     }
     
@@ -63,7 +63,7 @@ open class FileBrowser: UINavigationController {
     
     public convenience init(dataSource: FileBrowserDataSource) {
 //        let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: dataSource.rootDirectory)
-		let fileListViewController = FolderEditorTableView(dataSource: dataSource, withDirectory: dataSource.rootDirectory)
+		let fileListViewController = FolderEditorTableView(state: FileBrowserState(dataSource: dataSource), withDirectory: dataSource.rootDirectory)
         self.init(rootViewController: fileListViewController)
         self.dataSource = dataSource
         self.view.backgroundColor = UIColor.white

@@ -35,7 +35,9 @@
 		349A12361C707E86005435C0 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A122F1C707E86005435C0 /* image@2x.png */; };
 		349A12371C707E86005435C0 /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12301C707E86005435C0 /* pdf@2x.png */; };
 		349A12381C707E86005435C0 /* zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12311C707E86005435C0 /* zip@2x.png */; };
+		523EA2551EAAB520006B3D86 /* SelectFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */; };
 		528336621EA679BF00A60268 /* AlertUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528336611EA679BF00A60268 /* AlertUtilities.swift */; };
+		528937111EA94A0700CE113C /* FileBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528937101EA94A0700CE113C /* FileBrowserState.swift */; };
 		52E190C81E9358C5007C2242 /* FolderEditorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */; };
 		52E32F981EA17FFD0077FD93 /* FileActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E32F971EA17FFD0077FD93 /* FileActivityViewController.swift */; };
 		52E32F9A1EA182BD0077FD93 /* FileMoveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E32F991EA182BD0077FD93 /* FileMoveActivity.swift */; };
@@ -93,7 +95,9 @@
 		349A122F1C707E86005435C0 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		349A12301C707E86005435C0 /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
 		349A12311C707E86005435C0 /* zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zip@2x.png"; sourceTree = "<group>"; };
+		523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFolderViewController.swift; sourceTree = "<group>"; };
 		528336611EA679BF00A60268 /* AlertUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertUtilities.swift; path = Util/AlertUtilities.swift; sourceTree = "<group>"; };
+		528937101EA94A0700CE113C /* FileBrowserState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserState.swift; sourceTree = "<group>"; };
 		52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderEditorTableView.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		52E32F971EA17FFD0077FD93 /* FileActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileActivityViewController.swift; path = Activities/FileActivityViewController.swift; sourceTree = "<group>"; };
 		52E32F991EA182BD0077FD93 /* FileMoveActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileMoveActivity.swift; path = Activities/FileMoveActivity.swift; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 				349A12231C70725D005435C0 /* FileListSearch.swift */,
 				349A12251C707317005435C0 /* FileListTableView.swift */,
 				52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */,
+				528937101EA94A0700CE113C /* FileBrowserState.swift */,
 			);
 			name = FileList;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 				528336601EA6799700A60268 /* Utilities */,
 				52E32F961EA17FC90077FD93 /* Activities */,
 				343C445F1C73CBA900D874FB /* FileList */,
+				528937121EA9807100CE113C /* Folders */,
 				0750C3CD1E9467ED00CC4F2F /* FileDetail */,
 				343C44601C73CC3C00D874FB /* Preview */,
 				349A122A1C707E86005435C0 /* Resources */,
@@ -248,6 +254,14 @@
 				528336611EA679BF00A60268 /* AlertUtilities.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		528937121EA9807100CE113C /* Folders */ = {
+			isa = PBXGroup;
+			children = (
+				523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */,
+			);
+			name = Folders;
 			sourceTree = "<group>";
 		};
 		52E32F961EA17FC90077FD93 /* Activities */ = {
@@ -393,6 +407,7 @@
 				52E32F981EA17FFD0077FD93 /* FileActivityViewController.swift in Sources */,
 				343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */,
 				3439AB681C6F203A0058AF04 /* LocalFileBrowserDataSource.swift in Sources */,
+				523EA2551EAAB520006B3D86 /* SelectFolderViewController.swift in Sources */,
 				52E32F9C1EA1A26A0077FD93 /* LocalFBFile.swift in Sources */,
 				349A12281C707B1A005435C0 /* FBFile.swift in Sources */,
 				343C44631C73CC8100D874FB /* PreviewTransitionViewController.swift in Sources */,
@@ -400,6 +415,7 @@
 				3437405B1C6E7DA50090FD6A /* FileListViewController.swift in Sources */,
 				349A12241C70725D005435C0 /* FileListSearch.swift in Sources */,
 				528336621EA679BF00A60268 /* AlertUtilities.swift in Sources */,
+				528937111EA94A0700CE113C /* FileBrowserState.swift in Sources */,
 				52E32F9A1EA182BD0077FD93 /* FileMoveActivity.swift in Sources */,
 				3439AB6C1C6FD6650058AF04 /* FileListPreview.swift in Sources */,
 				C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */,
