@@ -209,7 +209,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 			case FileDetailViewController.RENAME_ACTION:
 				break;
 			case FileDetailViewController.MOVE_ACTION:
-				fileBrowserState.moveFile(file: file, controller: self, sender: nil)
+				fileBrowserState.moveFiles(files: [file], controller: self, sender: nil)
 				break;
 			case FileDetailViewController.DELETE_ACTION:
 				fileBrowserState.deleteFileAfterUserConfirmation( files: [file], controller: self, refresh: {

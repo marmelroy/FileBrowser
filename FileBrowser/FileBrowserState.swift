@@ -66,9 +66,9 @@ class FileBrowserState
 		controller.present(alertController, animated: true, completion: nil)
 	}
 	
-	func moveFile( file: FBFile, controller: UIViewController, sender: Any? )
+	func moveFiles( files: [FBFile], controller: UIViewController, sender: Any? )
 	{
-		let vc = SelectFolderViewController.newInstanceForMovingFiles(files: [file], state: self)
+		let vc = SelectFolderViewController.newInstanceForMovingFiles(files: files, state: self)
 		if let vc = vc
 		{
 			controller.showDetailViewController(vc, sender: sender)

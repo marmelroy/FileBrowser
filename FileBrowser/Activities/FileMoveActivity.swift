@@ -9,6 +9,15 @@ import Foundation
 
 class FileMoveActivity : UIActivity
 {
+	var files:[FBFile] = []
+	var state:FileBrowserState? = nil
+	
+	convenience init( state: FileBrowserState ) {
+		self.init()
+		
+		self.state = state
+	}
+	
 	override var activityTitle : String
 	{
 		return "Move"
@@ -26,8 +35,10 @@ class FileMoveActivity : UIActivity
 	
 	override var activityViewController: UIViewController?
 	{
-		//TODO: create view controller to select folder to move to
-		
+		if let state = state
+		{
+			return SelectFolderViewController.newInstanceForMovingFiles(files: files, state: state, action:{self.activityDidFinish(true) }, cancelAction:{self.activityDidFinish(false)})
+		}
 		return nil
 	}
 	
@@ -46,16 +57,24 @@ class FileMoveActivity : UIActivity
 	
 	override func prepare(withActivityItems items: [Any] )
 	{
-		// TODO: create view controller
+		for item in items
+		{
+			if let item = item as? FBFile
+			{
+				files.append(item)
+			}
+		}
+		
+		
 	}
 	
-	override func perform() {
-		/*
-		
-		This method is called on your app’s main thread. If your app can complete the activity quickly on the main thread, do so and call the activityDidFinish(_:) method when it is done. If performing the activity might take some time, use this method to start the work in the background and then exit without calling activityDidFinish(_:) from this method. When your background work has completed, call activityDidFinish(_:). You must call activityDidFinish(_:) on the main thread.
-		*/
-		activityDidFinish(true)
-	}
+//	override func perform() {
+//		/*
+//		
+//		This method is called on your app’s main thread. If your app can complete the activity quickly on the main thread, do so and call the activityDidFinish(_:) method when it is done. If performing the activity might take some time, use this method to start the work in the background and then exit without calling activityDidFinish(_:) from this method. When your background work has completed, call activityDidFinish(_:). You must call activityDidFinish(_:) on the main thread.
+//		*/
+//		activityDidFinish(true)
+//	}
 	
 	override class var activityCategory: UIActivityCategory
 	{

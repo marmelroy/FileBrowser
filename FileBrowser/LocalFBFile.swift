@@ -195,7 +195,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			print("Error moving file:\(error)")
+			Alert_Show(title: "Eror moving file", message: error.localizedDescription)
 		}
 
 	}

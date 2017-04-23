@@ -10,15 +10,21 @@ import Foundation
 class FileActivityViewController
 {
 
-	static func activityControllerFor( file: FBFile, title: String, sender:UIBarButtonItem ) -> UIActivityViewController
+	static func activityControllerFor( files: [FBFile], state: FileBrowserState, title: String, sender:UIBarButtonItem ) -> UIActivityViewController
 	{
-		let items = [file as Any, file.fileLocation as Any] as [Any]
+		var items = [Any]()
 		
-		let activities = [FileMoveActivity()]
+		for file in files
+		{
+			items.append(file)
+			items.append(file.fileLocation as Any)
+		}
+		
+		let activities = [FileMoveActivity( state: state )]
 				
 		let controller = UIActivityViewController( activityItems:items, applicationActivities: activities )
 		
-		controller.setValue( file.displayName, forKey: "subject")
+		//controller.setValue( file.displayName, forKey: "subject")
 		
 		if let popoverPresentationController = controller.popoverPresentationController
 		{

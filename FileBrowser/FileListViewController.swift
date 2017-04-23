@@ -85,7 +85,7 @@ class FileListViewController: UIViewController {
 		};
 		
 		// Prepare data
-		prepareData(sender:nil)
+		//prepareData(sender:nil) // now doing this in view will appear
 		
 		if let searchController = self.searchController
 		{
@@ -108,6 +108,9 @@ class FileListViewController: UIViewController {
 				self.tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.size.height)
 			}
 		}
+		
+		// Refresh / load data
+		prepareData(sender:nil)
 		
         // Make sure navigation bar is visible
         self.navigationController?.isNavigationBarHidden = false
@@ -134,6 +137,7 @@ class FileListViewController: UIViewController {
 			case .success(let files):
 				self.files = files
 				self.indexFiles()
+				//TODO: Check before reloading data as it removes the selection
 				self.tableView.reloadData()
 			case .error(let error):
 				self.replaceTableViewRowsShowing(error: error)

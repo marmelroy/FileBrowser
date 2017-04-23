@@ -26,7 +26,14 @@ class FolderEditorTableView : FileListViewController
     func configureToolBars()
     {
 		
-		self.setToolbarItems(self.navigationToolItems(), animated: true)
+		if self.tableView.isEditing
+		{
+			self.setToolbarItems(self.selectToolbarItems(), animated: true)
+		}
+		else
+		{
+			self.setToolbarItems(self.navigationToolItems(), animated: true)
+		}
 		
 		
 		self.toolbar = self.navigationController?.toolbar;
@@ -209,9 +216,7 @@ class FolderEditorTableView : FileListViewController
 		
 		if( (selectedIndexPaths?.count ?? 0) > 0 )
 		{
-			let file = fileForIndexPath(selectedIndexPaths![0])
-			
-			let viewController = FileActivityViewController.activityControllerFor(file: file, title: "Title", sender: button)
+			let viewController = FileActivityViewController.activityControllerFor(files: allSelectedFiles(), state: fileBrowserState, title: "Title", sender: button)
 			
 			self.present(viewController, animated: true, completion: {})
 		}

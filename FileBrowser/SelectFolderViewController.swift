@@ -10,10 +10,11 @@ import Foundation
 class SelectFolderViewController : FileListViewController
 {
 	
-	var action: ((FBFile)->())?
+	var action: ((FBFile, UIViewController)->())?
+	var cancelAction: ((UIViewController)->())?
 	var actionPrompt: String!
 	
-	static func newInstanceForMovingFiles(files: [FBFile], state: FileBrowserState) -> UIViewController?
+	static func newInstanceForMovingFiles(files: [FBFile], state: FileBrowserState, action: (()->())? = nil, cancelAction: (()->())? = nil) -> UIViewController?
 	{
 		guard files.count > 0 else
 		{
@@ -36,16 +37,34 @@ class SelectFolderViewController : FileListViewController
 			prompt = "Move item here"
 		}
 		
-		var stateForSelect = FileBrowserState(dataSource: state.dataSource)
+		let stateForSelect = FileBrowserState(dataSource: state.dataSource)
 		stateForSelect.allowSearch = false
 		stateForSelect.includeIndex = false
 		stateForSelect.cellAcc = .none
 		stateForSelect.showOnlyFolders = true
 		
-		let vc = SelectFolderViewController(state: stateForSelect, enclosingDirectory: enclosingDir, prompt:prompt, action: {(directory:FBFile) in
+		let vc = SelectFolderViewController(state: stateForSelect, enclosingDirectory: enclosingDir, prompt:prompt, action: {(directory:FBFile, vc:UIViewController) in
 			for file in files
 			{
 				file.moveTo(directory: directory)
+			}
+			
+			if let action = action
+			{
+				action()
+			}
+			else
+			{
+				vc.dismiss(animated: true, completion: nil)
+			}
+		}, cancelAction: {(vc: UIViewController) in
+			if let action = cancelAction
+			{
+				action()
+			}
+			else
+			{
+				vc.dismiss(animated: true, completion: nil)
 			}
 		})
 		// add in nav controller
@@ -59,15 +78,17 @@ class SelectFolderViewController : FileListViewController
 		return nc;
 	}
 	
-	convenience init (state: FileBrowserState, enclosingDirectory: FBFile, prompt: String, action: ((FBFile)->())?) {
+	convenience init (state: FileBrowserState, enclosingDirectory: FBFile, prompt: String, action: ((FBFile, UIViewController)->())?,
+	                  cancelAction: ((UIViewController)->())?) {
 		self.init(state: state, withDirectory: enclosingDirectory)
 		
 		// Data
-		self.action = action;
-		self.actionPrompt = prompt;
+		self.action = action
+		self.actionPrompt = prompt
+		self.cancelAction = cancelAction
 		
 		// Add cancel button
-		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:)))
+		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(SelectFolderViewController.actionCancel(button:)))
 		self.navigationItem.rightBarButtonItem = cancelButton
 
 	}
@@ -79,24 +100,43 @@ class SelectFolderViewController : FileListViewController
 		searchController?.isActive = false
 		if selectedFile.isDirectory
 		{
-			let fileListViewController = SelectFolderViewController(state: fileBrowserState, enclosingDirectory: selectedFile, prompt: actionPrompt, action: self.action)
+			let fileListViewController = SelectFolderViewController(state: fileBrowserState, enclosingDirectory: selectedFile, prompt: actionPrompt, action: self.action, cancelAction: self.cancelAction)
 			self.navigationController?.pushViewController(fileListViewController, animated: true)
 		}
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.configureToolBar()
+	}
+	
+	//MARK: Actions
 	
 	@objc func actionAddButton(button: UIBarButtonItem)
 	{
 		// TODO: new folder
 	}
 	
+	@objc func actionCancel(button: UIBarButtonItem)
+	{
+		if let action = self.cancelAction
+		{
+			action( self )
+		}
+		else
+		{
+			self.dismiss(animated: true, completion: nil)
+		}
+	}
+	
 	@objc func actionComplete(button: UIBarButtonItem)
 	{
 		if let action = self.action
 		{
-			action(self.directory)
+			action(self.directory, self)
 		}
-		self.dismiss(button: button)
 	}
 
 	func configureToolBar()
@@ -117,11 +157,7 @@ class SelectFolderViewController : FileListViewController
 		self.navigationController?.setToolbarHidden(false, animated: false)
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		self.configureToolBar()
-	}
+	
 
 	
 }
