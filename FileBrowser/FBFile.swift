@@ -108,6 +108,11 @@ open class FBFile: NSObject {
 	{
 		return false
 	}
+	
+	open func moveTo(directory:FBFile)
+	{
+		
+	}
 }
 
 /**

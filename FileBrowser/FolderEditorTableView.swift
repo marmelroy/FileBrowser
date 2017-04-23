@@ -51,7 +51,7 @@ class FolderEditorTableView : FileListViewController
 			self.navigationController?.setToolbarHidden(false, animated: false)
 		//}
 		//}
-		print("Frame: \(self.toolbar?.frame.origin.y)");
+		//print("Frame: \(self.toolbar?.frame.origin.y)");
     }
 	
 	

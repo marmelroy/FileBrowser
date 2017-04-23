@@ -167,4 +167,36 @@ open class LocalFBFile : FBFile
 		}
 		return false
 	}
+	
+	open override func moveTo(directory: FBFile) {
+		guard let currentLocation = fileLocation else
+		{
+			print("Could not move nil file location.")
+			return
+		}
+		
+		guard let moveToLocation = directory.fileLocation else
+		{
+			print("Could not move to nil file location.")
+			return
+		}
+		
+		guard directory.isDirectory else
+		{
+			print("Could not move to a file")
+			return
+		}
+		
+		let newLocation = moveToLocation.appendingPathComponent(currentLocation.lastPathComponent, isDirectory: self.isDirectory)
+		
+		do
+		{
+			try FileManager.default.moveItem(at: currentLocation, to: newLocation)
+		}
+		catch
+		{
+			print("Error moving file:\(error)")
+		}
+
+	}
 }
