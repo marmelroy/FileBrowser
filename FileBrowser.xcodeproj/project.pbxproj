@@ -35,6 +35,7 @@
 		349A12361C707E86005435C0 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A122F1C707E86005435C0 /* image@2x.png */; };
 		349A12371C707E86005435C0 /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12301C707E86005435C0 /* pdf@2x.png */; };
 		349A12381C707E86005435C0 /* zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12311C707E86005435C0 /* zip@2x.png */; };
+		520A34B61EAD46E9000A2D70 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520A34B51EAD46E9000A2D70 /* ImageViewController.swift */; };
 		523EA2551EAAB520006B3D86 /* SelectFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */; };
 		528336621EA679BF00A60268 /* AlertUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528336611EA679BF00A60268 /* AlertUtilities.swift */; };
 		528937111EA94A0700CE113C /* FileBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528937101EA94A0700CE113C /* FileBrowserState.swift */; };
@@ -95,6 +96,7 @@
 		349A122F1C707E86005435C0 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		349A12301C707E86005435C0 /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
 		349A12311C707E86005435C0 /* zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zip@2x.png"; sourceTree = "<group>"; };
+		520A34B51EAD46E9000A2D70 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageViewController.swift; path = View/ImageViewController.swift; sourceTree = "<group>"; };
 		523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFolderViewController.swift; sourceTree = "<group>"; };
 		528336611EA679BF00A60268 /* AlertUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertUtilities.swift; path = Util/AlertUtilities.swift; sourceTree = "<group>"; };
 		528937101EA94A0700CE113C /* FileBrowserState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserState.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				343C44651C73CD3200D874FB /* PreviewManager.swift */,
 				343C44781C73CFC400D874FB /* WebviewPreviewViewContoller.swift */,
 				0750C3CB1E942CB200CC4F2F /* QuickLookWithActionsViewController.swift */,
+				520A34B51EAD46E9000A2D70 /* ImageViewController.swift */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				528937111EA94A0700CE113C /* FileBrowserState.swift in Sources */,
 				52E32F9A1EA182BD0077FD93 /* FileMoveActivity.swift in Sources */,
 				3439AB6C1C6FD6650058AF04 /* FileListPreview.swift in Sources */,
+				520A34B61EAD46E9000A2D70 /* ImageViewController.swift in Sources */,
 				C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

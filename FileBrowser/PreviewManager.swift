@@ -26,16 +26,18 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
             return webviewPreviewViewContoller
         }
         else {
-            let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
-            self.file = file
-            self.fileData = data
-            
-            previewTransitionViewController.quickLookPreviewController.dataSource = self
-
-            if fromNavigation == true {
-                return previewTransitionViewController.quickLookPreviewController
-            }
-            return previewTransitionViewController
+//            let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
+//            self.file = file
+//            self.fileData = data
+//            
+//            previewTransitionViewController.quickLookPreviewController.dataSource = self
+//
+//            if fromNavigation == true {
+//                return previewTransitionViewController.quickLookPreviewController
+//            }
+//            return previewTransitionViewController
+			
+			return ImageViewController(file: file)
         }
     }
     
