@@ -45,24 +45,21 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
             return LoadingViewController(file: file)
         }
         
-        if file.type == .PLIST || file.type == .JSON {
+        if file.type == .PLIST || file.type == .JSON
+		{
             let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: WebviewPreviewViewContoller.self))
             webviewPreviewViewContoller.fileData = data
             webviewPreviewViewContoller.file = file
             return webviewPreviewViewContoller
         }
-        else {
-//            let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
-//            self.file = file
-//            self.fileData = data
-//            
-//            previewTransitionViewController.quickLookPreviewController.dataSource = self
-//
-//            if fromNavigation == true {
-//                return previewTransitionViewController.quickLookPreviewController
-//            }
-//            return previewTransitionViewController
-			
+		else if file.type == .TXT || file.type == .TEXT
+		{
+			// Open Text previewer
+			// TODO: if file size is less than 20MB
+			return TextFileViewController(file: file, state: state)
+		}
+        else
+		{
 			return ImageViewController(file: file, state: state)
         }
     }

@@ -148,6 +148,9 @@ public enum FBFileType: String {
     case PNG = "png"
     /// ZIP file
     case ZIP = "zip"
+	/// Text file
+	case TXT = "txt"
+	case TEXT = "text"
     /// Any file
     case Default = "file"
     

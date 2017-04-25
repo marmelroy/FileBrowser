@@ -78,37 +78,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		
 		scrollView.delegate = self
 		
-		
-//		self.view.autoresizesSubviews = true
-//		scrollView = UIScrollView(frame:self.view.frame)
-//		scrollView.autoresizesSubviews = true
-//		self.view.addSubview(scrollView)
-//		scrollView.maximumZoomScale = 4
-//		scrollView.minimumZoomScale = 0.5
-//		
-//		//Setting up the scrollView
-//		scrollView.bouncesZoom = true
-//		scrollView.delegate = self
-//		//scrollView.clipsToBounds = true
-//		
-//		//Setting up the imageView
-//		imageView = UIImageView(image: image)
-//		imageView.autoresizingMask = [.flexibleWidth , .flexibleHeight , .flexibleLeftMargin , .flexibleRightMargin]
-//		imageView.isUserInteractionEnabled = true
-//
-//		//Adding the imageView to the scrollView as subView
-//		scrollView.addSubview(imageView)
-//		scrollView.contentSize = CGSize(width:imageView.bounds.size.width, height:imageView.bounds.size.height)
-//		scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
-//		
-//		scrollView.zoomScale = 1.0;
-//		scrollView.contentMode = .scaleAspectFit;
-//		imageView.sizeToFit()
-//		scrollView.contentSize = CGSize(width: imageView.frame.size.width, height: imageView.frame.size.height)
-
-		
 		setZoomScale( setInitialScale: true )
-
 		
 		// Add share button
 		//let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
@@ -124,11 +94,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		
 		scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
 	}
-	
-//	override var childViewControllerForStatusBarHidden : UIViewController?
-//	{
-//		return self.navigationController
-//	}
 	
 	override var prefersStatusBarHidden: Bool
 	{
