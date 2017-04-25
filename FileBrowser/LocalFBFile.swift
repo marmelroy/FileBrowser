@@ -30,10 +30,10 @@ open class LocalFBFile : FBFile
 			return
 		}
 		
-		
 		do
 		{
 			try FileManager.default.removeItem(at:fileLocation!)
+			fileLocation = nil
 		}
 		catch
 		{
@@ -70,6 +70,9 @@ open class LocalFBFile : FBFile
 		return false
 	}
 	
+	/*
+	Create file at this directory location
+	*/
 	open override func createFile(name: String) -> Bool
 	{
 		guard fileLocation != nil else
@@ -168,23 +171,23 @@ open class LocalFBFile : FBFile
 		return false
 	}
 	
-	open override func moveTo(directory: FBFile) {
+	open override func moveTo(directory: FBFile) -> FBFile {
 		guard let currentLocation = fileLocation else
 		{
 			print("Could not move nil file location.")
-			return
+			return self
 		}
 		
 		guard let moveToLocation = directory.fileLocation else
 		{
 			print("Could not move to nil file location.")
-			return
+			return self
 		}
 		
 		guard directory.isDirectory else
 		{
 			print("Could not move to a file")
-			return
+			return self
 		}
 		
 		let newLocation = moveToLocation.appendingPathComponent(currentLocation.lastPathComponent, isDirectory: self.isDirectory)
@@ -192,11 +195,37 @@ open class LocalFBFile : FBFile
 		do
 		{
 			try FileManager.default.moveItem(at: currentLocation, to: newLocation)
+			
+			return LocalFBFile(path: newLocation)
 		}
 		catch
 		{
-			Alert_Show(title: "Eror moving file", message: error.localizedDescription)
+			Alert_Show(title: "Error moving file", message: error.localizedDescription)
 		}
-
+		
+		return self
+	}
+	
+	open override func rename(name:String) -> FBFile
+	{
+		guard let currentLocation = fileLocation else
+		{
+			print("Could not rename nil file location.")
+			return self
+		}
+		
+		let newLocation = currentLocation.deletingLastPathComponent().appendingPathComponent(name, isDirectory: isDirectory)
+		
+		do
+		{
+			try FileManager.default.moveItem(at: currentLocation, to: newLocation)
+			return LocalFBFile(path: newLocation)
+		}
+		catch
+		{
+			Alert_Show(title: "Error renaming file", message: error.localizedDescription)
+		}
+		
+		return self
 	}
 }

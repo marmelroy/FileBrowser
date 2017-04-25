@@ -13,8 +13,34 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     var file: FBFile?
     var fileData: Data?
-    
-    func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool) -> UIViewController {
+	
+	func quickLookControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool) -> UIViewController {
+		if data == nil && file.isRemoteFile {
+			return LoadingViewController(file: file)
+		}
+		
+		if file.type == .PLIST || file.type == .JSON {
+			let webviewPreviewViewContoller = WebviewPreviewViewContoller(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: WebviewPreviewViewContoller.self))
+			webviewPreviewViewContoller.fileData = data
+			webviewPreviewViewContoller.file = file
+			return webviewPreviewViewContoller
+		}
+		else {
+			let previewTransitionViewController = PreviewTransitionViewController(nibName: "PreviewTransitionViewController", bundle: Bundle(for: PreviewTransitionViewController.self))
+			self.file = file
+			self.fileData = data
+			
+			previewTransitionViewController.quickLookPreviewController.dataSource = self
+			
+			if fromNavigation == true {
+				return previewTransitionViewController.quickLookPreviewController
+			}
+			return previewTransitionViewController
+			
+		}
+	}
+	
+	func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool, state: FileBrowserState) -> UIViewController {
         if data == nil && file.isRemoteFile {
             return LoadingViewController(file: file)
         }
@@ -37,7 +63,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
 //            }
 //            return previewTransitionViewController
 			
-			return ImageViewController(file: file)
+			return ImageViewController(file: file, state: state)
         }
     }
     

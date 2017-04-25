@@ -39,10 +39,11 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	/// Data
 	var file: FBFile!
 	var fileBrowserState: FileBrowserState!
+	var fromImageViewer: Bool = false
 	
 	//MARK: Lifecycle
 	
-	convenience init (file: FBFile, state: FileBrowserState) {
+	convenience init (file: FBFile, state: FileBrowserState, fromImageViewer: Bool = false) {
 		self.init(nibName: "FileBrowser", bundle: Bundle(for: FileDetailViewController.self))
 		self.edgesForExtendedLayout = UIRectEdge()
 		
@@ -51,6 +52,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 		// Data
 		self.file = file;
 		self.fileBrowserState = state;
+		self.fromImageViewer = fromImageViewer
 		
 		// Add dismiss button
 		let dismissButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(FileListViewController.dismiss(button:)))
@@ -74,6 +76,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 		
 		// Make sure navigation bar is visible
 		self.navigationController?.isNavigationBarHidden = false
+		self.navigationController?.hidesBarsOnTap = false
 	}
 	
 	@objc func dismiss(button: UIBarButtonItem = UIBarButtonItem()) {
@@ -93,7 +96,14 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 			break;
 		case 1:
 			cell.textLabel?.text = "Size"
-			cell.detailTextLabel?.text = "\(file.getFileSize()) bytes"
+			if file.isDirectory
+			{
+				cell.detailTextLabel?.text = "Folder" // TODO: later calculate folder size?
+			}
+			else
+			{
+				cell.detailTextLabel?.text = "\(file.getFileSize()) bytes"
+			}
 			break;
 		case 2:
 			cell.textLabel?.text = "Created"
@@ -205,17 +215,54 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 			switch indexPath.row
 			{
 			case FileDetailViewController.VIEW_ACTION:
-				fileBrowserState.viewFile(file: file, controller: self)
+				if fromImageViewer
+				{
+					self.navigationController?.popViewController(animated: true)
+				}
+				else
+				{
+					fileBrowserState.viewFile(file: file, controller: self)
+				}
 			case FileDetailViewController.RENAME_ACTION:
+				fileBrowserState.renameFile( file: file, controller: self, completion: {(file: FBFile) in
+					self.file = file
+					self.title = self.file.displayName
+					self.tableView.reloadData()
+				} )
 				break;
 			case FileDetailViewController.MOVE_ACTION:
 				fileBrowserState.moveFiles(files: [file], controller: self, sender: nil)
 				break;
 			case FileDetailViewController.DELETE_ACTION:
 				fileBrowserState.deleteFileAfterUserConfirmation( files: [file], controller: self, refresh: {
-					// need to refresh the previous view controller
-					// TODO: self.navigationController?.viewControllers
-					self.navigationController?.popViewController(animated: true)
+					// need to refresh the previous view controller (the view controller is now refreshing every time view will appear)
+					
+					if self.fromImageViewer
+					{
+						// pop two view controllers
+						if let vcs = self.navigationController?.viewControllers
+						{
+							if vcs.count > 2
+							{
+								if vcs[0] === self.navigationController?.topViewController
+								{
+									self.navigationController?.popToViewController(vcs[2], animated: true)
+								}
+								else
+								{
+									self.navigationController?.popToViewController(vcs[vcs.count-3], animated: true)
+								}
+							}
+							else
+							{
+								self.navigationController?.popViewController(animated: true)
+							}
+						}
+					}
+					else
+					{
+						self.navigationController?.popViewController(animated: true)
+					}
 				} )
 			default:
 				break;

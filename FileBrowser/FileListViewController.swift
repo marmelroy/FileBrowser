@@ -112,6 +112,7 @@ class FileListViewController: UIViewController {
 		// Refresh / load data
 		prepareData(sender:nil)
 		
+		self.navigationController?.hidesBarsOnTap = false
         // Make sure navigation bar is visible
         self.navigationController?.isNavigationBarHidden = false
     }

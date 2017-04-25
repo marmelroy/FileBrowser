@@ -36,26 +36,27 @@ open class FBFile: NSObject {
      - returns: FBFile object.
      */
     public init(path: URL) {
-        self.path = path
-        self.fileLocation = path
-        self.isDirectory = checkDirectory(path)
-        
-        if self.isDirectory {
-            self.fileExtension = nil
-            self.type = .Directory
-        }
-        else {
-            if path.pathExtension != "" {
-                self.fileExtension = path.pathExtension
-                self.type = FBFileType(rawValue: fileExtension!) ?? .Default
-            } else {
-                self.fileExtension = nil
-                self.type = .Default
-            }
-        }
-        self.displayName = path.lastPathComponent
+		self.path = path
+		self.fileLocation = path
+		self.isDirectory = checkDirectory(path)
+		
+		if self.isDirectory {
+			self.fileExtension = nil
+			self.type = .Directory
+		}
+		else {
+			if path.pathExtension != "" {
+				self.fileExtension = path.pathExtension
+				self.type = FBFileType(rawValue: fileExtension!) ?? .Default
+			} else {
+				self.fileExtension = nil
+				self.type = .Default
+			}
+		}
+		self.displayName = path.lastPathComponent
+
     }
-    
+	
     public var isRemoteFile: Bool {
         return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
     }
@@ -109,9 +110,21 @@ open class FBFile: NSObject {
 		return false
 	}
 	
-	open func moveTo(directory:FBFile)
+	open func moveTo(directory:FBFile) -> FBFile
 	{
+		return self
+	}
+	
+	open func rename(name:String) -> FBFile
+	{
+		return self
+	}
+	
+	open func fileNameWithoutExtension() -> String
+	{
+		let filename : NSString = path.lastPathComponent as NSString
 		
+		return filename.deletingPathExtension
 	}
 }
 
