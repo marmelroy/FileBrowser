@@ -2,25 +2,23 @@
 //  FolderEditorViewController.swift
 //  FileBrowser
 //
-//  Created by test on 4/3/17.
-//  Copyright © 2017 Roy Marmelstein. All rights reserved.
 //
 
 import Foundation
 
 class FolderEditorTableView : FileListViewController
 {
-	weak var toolbar : UIToolbar?;
+	weak var toolbar : UIToolbar?
 	// Edit mode toolbar
-	var selectAllBtn : UIBarButtonItem?;
-	var selectActionBtn : UIBarButtonItem?;
-	var selectCancelBtn : UIBarButtonItem?;
-	var selectActionTrashBtn : UIBarButtonItem?;
+	var selectAllBtn : UIBarButtonItem?
+	var selectActionBtn : UIBarButtonItem?
+	var selectCancelBtn : UIBarButtonItem?
+	var selectActionTrashBtn : UIBarButtonItem?
 	// Regular toolbar
-	var selectBtn : UIBarButtonItem?;
-	var optionsBtn : UIBarButtonItem?;
-	var refreshBtn : UIBarButtonItem?;
-	var actionAddBtn : UIBarButtonItem?;
+	var selectBtn : UIBarButtonItem?
+	var optionsBtn : UIBarButtonItem?
+	var refreshBtn : UIBarButtonItem?
+	var actionAddBtn : UIBarButtonItem?
 	
    //MARK: Lifecycle
     func configureToolBars()
@@ -234,19 +232,7 @@ class FolderEditorTableView : FileListViewController
 		let folderAction = UIAlertAction(title: "New Folder", style: .default, handler: {(alert: UIAlertAction!) in
 			// Create new folder
 			
-			// ask for name
-			Alert_AskForText(title: "New Folder", question: "Name for new folder", presenter: self, okHandler:{
-				(alert: UIAlertController) in
-				// Create folder
-				
-				if let text = alert.textFields?[0].text
-				{
-					if self.directory.createDirectory(name: text)
-					{
-						self.prepareData(sender:nil)
-					}
-				}
-			})
+			self.fileBrowserState.newFolder(directory: self.directory, controller: self, action: {self.prepareData(sender: nil)})
 			
 		})
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )

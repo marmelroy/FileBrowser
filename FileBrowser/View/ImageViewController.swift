@@ -16,12 +16,15 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	var scrollView : UIScrollView!
 	var setZoom : Bool = false
 	
+	static let ZOOM_STEP : CGFloat = 2.0
+	
 	
 	convenience init (file: FBFile, state: FileBrowserState) {
 		self.init(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: ImageViewController.self))
 		self.file = file
 		self.state = state
 		self.title = file.displayName
+		self.edgesForExtendedLayout = UIRectEdge()
 		
 		//let configuration = URLSessionConfiguration.default
 		//session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
@@ -71,6 +74,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		scrollView.backgroundColor = .white
 		scrollView.contentSize = imageView.bounds.size
 		scrollView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
+		//scrollView.contentInset =
 		
 		scrollView.addSubview(imageView)
 		view.addSubview(scrollView)
@@ -79,6 +83,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		scrollView.delegate = self
 		
 		setZoomScale( setInitialScale: true )
+		
+		setupGestureRecognizer()
+		//self.automaticallyAdjustsScrollViewInsets = false
 		
 		// Add share button
 		//let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
@@ -92,6 +99,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
 		let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
 		
+		//scrollView.contentMode = .center
 		scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
 	}
 	
@@ -184,5 +192,73 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
 	@objc func trashAction(button: UIBarButtonItem) {
 		print("Trash this")
+	}
+	
+	//MARK: TapDetectingImageViewDelegate methods
+	
+	func setupGestureRecognizer() {
+		let doubleTap = UITapGestureRecognizer(target: self, action: #selector(ImageViewController.handleDoubleTap(recognizer:)))
+		doubleTap.numberOfTapsRequired = 2
+		scrollView.addGestureRecognizer(doubleTap)
+		
+		let twoFingerTap = UITapGestureRecognizer(target: self, action: #selector(ImageViewController.handleTwoFingerTap(gestureRecognizer:)))
+		twoFingerTap.numberOfTouchesRequired = 2
+		scrollView.addGestureRecognizer(twoFingerTap)
+	}
+	
+//	@objc func handleDoubleTap(recognizer: UITapGestureRecognizer) {
+//		
+//		if (scrollView.zoomScale > scrollView.minimumZoomScale) {
+//			scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+//		} else {
+//			scrollView.setZoomScale(scrollView.maximumZoomScale, animated: true)
+//		}
+//	}
+	
+	
+	@objc func handleDoubleTap(recognizer: UIGestureRecognizer) {
+		// zoom in
+		var newScale = scrollView.zoomScale * ImageViewController.ZOOM_STEP
+		
+		if (newScale > self.scrollView.maximumZoomScale)
+		{
+			newScale = self.scrollView.minimumZoomScale
+			let zoomRect = zoomRectForScale(newScale, withCenter:recognizer.location(in:recognizer.view));
+			
+			scrollView.zoom(to:zoomRect, animated:true);
+		}
+		else
+		{
+			newScale = self.scrollView.maximumZoomScale;
+			let zoomRect = zoomRectForScale(newScale, withCenter:recognizer.location(in:recognizer.view));
+			
+			scrollView.zoom(to: zoomRect, animated: true);
+		}
+	}
+	
+	func handleTwoFingerTap( gestureRecognizer: UIGestureRecognizer) {
+		// two-finger tap zooms out
+		let newScale = scrollView.zoomScale / ImageViewController.ZOOM_STEP
+		let zoomRect = zoomRectForScale(newScale, withCenter:gestureRecognizer.location(in: gestureRecognizer.view))
+		scrollView.zoom(to: zoomRect, animated:true);
+	}
+	
+	//MARK: Utility methods
+	
+	func zoomRectForScale(_ scale :CGFloat, withCenter center:CGPoint)->CGRect {
+		
+		var zoomRect = CGRect()
+		
+		// the zoom rect is in the content view's coordinates.
+		//    At a zoom scale of 1.0, it would be the size of the imageScrollView's bounds.
+		//    As the zoom scale decreases, so more content is visible, the size of the rect grows.
+		zoomRect.size.height = scrollView.frame.size.height / scale;
+		zoomRect.size.width  = scrollView.frame.size.width  / scale;
+		
+		// choose an origin so as to get the right center.
+		zoomRect.origin.x    = center.x - (zoomRect.size.width  / 2.0);
+		zoomRect.origin.y    = center.y - (zoomRect.size.height / 2.0);
+		
+		return zoomRect;
 	}
 }

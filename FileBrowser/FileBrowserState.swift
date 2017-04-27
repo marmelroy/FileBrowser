@@ -179,10 +179,29 @@ class FileBrowserState
 	
 	func moveFiles( files: [FBFile], controller: UIViewController, sender: Any? )
 	{
-		let vc = SelectFolderViewController.newInstanceForMovingFiles(files: files, state: self)
+		let vc = SelectFolderViewController.newInstanceForMovingFiles(files: files, state: self, action:{
+			//TODO: move to the new directory
+		} )
 		if let vc = vc
 		{
 			controller.showDetailViewController(vc, sender: sender)
 		}
+	}
+	
+	func newFolder( directory: FBFile, controller: UIViewController, action: @escaping ()->() )
+	{
+		// ask for name
+		Alert_AskForText(title: "New Folder", question: "Name for new folder", presenter: controller, okHandler:{
+			(alert: UIAlertController) in
+			// Create folder
+			
+			if let text = alert.textFields?[0].text
+			{
+				if directory.createDirectory(name: text)
+				{
+					 action()
+				}
+			}
+		})
 	}
 }

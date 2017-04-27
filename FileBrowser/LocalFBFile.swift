@@ -9,18 +9,17 @@ import Foundation
 open class LocalFBFile : FBFile
 {
 	
-	open override func enclosingDirectory() -> FBFile?
+	open override func enclosingDirectory() -> FBFile
 	{
-		guard let fileLocation = fileLocation else
-		{
-			return nil;
-		}
-		
-		let baseURL = fileLocation.deletingLastPathComponent()
+		let baseURL = path.deletingLastPathComponent()
 		
 		return LocalFBFile( path: baseURL )
 	}
 
+	static func ==(lhs: LocalFBFile, rhs: LocalFBFile) -> Bool
+	{
+		return lhs.path == rhs.path
+	}
 	
 	override open func delete()
 	{

@@ -14,36 +14,9 @@ class SelectFolderViewController : FileListViewController
 	var cancelAction: ((UIViewController)->())?
 	var actionPrompt: String!
 	
-	static func newInstanceForMovingFiles(files: [FBFile], state: FileBrowserState, action: (()->())? = nil, cancelAction: (()->())? = nil) -> UIViewController?
+	static private func controllerForDirectory(files: [FBFile], state: FileBrowserState, directory: FBFile, prompt: String, action: (()->())? = nil, cancelAction: (()->())? = nil) -> UIViewController
 	{
-		guard files.count > 0 else
-		{
-			return nil;
-		}
-		
-		guard let enclosingDir = files[0].enclosingDirectory() else
-		{
-			return nil;
-		}
-		
-		var prompt : String
-		
-		if files.count > 1
-		{
-			prompt = "Move \(files.count) items here"
-		}
-		else
-		{
-			prompt = "Move item here"
-		}
-		
-		let stateForSelect = FileBrowserState(dataSource: state.dataSource)
-		stateForSelect.allowSearch = false
-		stateForSelect.includeIndex = false
-		stateForSelect.cellAcc = .none
-		stateForSelect.showOnlyFolders = true
-		
-		let vc = SelectFolderViewController(state: stateForSelect, enclosingDirectory: enclosingDir, prompt:prompt, action: {(directory:FBFile, vc:UIViewController) in
+		let vc = SelectFolderViewController(state: state, enclosingDirectory: directory, prompt:prompt, action: {(directory:FBFile, vc:UIViewController) in
 			for file in files
 			{
 				file.moveTo(directory: directory)
@@ -67,13 +40,64 @@ class SelectFolderViewController : FileListViewController
 				vc.dismiss(animated: true, completion: nil)
 			}
 		})
+		
+		return vc;
+	}
+	
+	static func newInstanceForMovingFiles(files: [FBFile], state: FileBrowserState, action: (()->())? = nil, cancelAction: (()->())? = nil) -> UIViewController?
+	{
+		guard files.count > 0 else
+		{
+			return nil;
+		}
+		
+		let enclosingDir = files[0].enclosingDirectory()
+		var prompt : String
+		
+		if files.count > 1
+		{
+			prompt = "Move \(files.count) items here"
+		}
+		else
+		{
+			prompt = "Move item here"
+		}
+		
+		let stateForSelect = FileBrowserState(dataSource: state.dataSource)
+		stateForSelect.allowSearch = false
+		stateForSelect.includeIndex = false
+		stateForSelect.cellAcc = .none
+		stateForSelect.showOnlyFolders = true
+		
 		// add in nav controller
 		
-		//TODO: Need to create view controller list from Documents folder all the way to the current folder
+		let rootVC = controllerForDirectory(files: files, state: stateForSelect, directory: state.dataSource.rootDirectory, prompt: prompt)
 		
+		let nc = UINavigationController(rootViewController: rootVC)
 		
-		let nc = UINavigationController(rootViewController: vc)
+		// Create the folder list
+		var folderList = [FBFile]()
 		
+		var curDir = enclosingDir
+		while curDir != state.dataSource.rootDirectory
+		{
+			folderList.append(curDir)
+			curDir = curDir.enclosingDirectory()
+		}
+		
+		// Create the view controller stack
+		var vcStack = [UIViewController]()
+		
+		vcStack.append(rootVC)
+		
+		for curDir in folderList.reversed()
+		{
+			print("Building view controller list:\(curDir.path)")
+			
+			vcStack.append(controllerForDirectory(files: files, state: stateForSelect, directory: curDir, prompt: prompt))
+		}
+		
+		nc.setViewControllers(vcStack, animated: false)
 		
 		return nc;
 	}
@@ -116,7 +140,7 @@ class SelectFolderViewController : FileListViewController
 	
 	@objc func actionAddButton(button: UIBarButtonItem)
 	{
-		// TODO: new folder
+		fileBrowserState.newFolder(directory: self.directory, controller: self, action: {self.prepareData(sender: nil)})
 	}
 	
 	@objc func actionCancel(button: UIBarButtonItem)

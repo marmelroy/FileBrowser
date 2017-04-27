@@ -57,18 +57,23 @@ open class FBFile: NSObject {
 
     }
 	
-    public var isRemoteFile: Bool {
+	static func ==(lhs: FBFile, rhs: FBFile) -> Bool
+	{
+		return lhs.path == rhs.path
+	}
+	
+	static func !=(lhs: FBFile, rhs: FBFile) -> Bool
+	{
+		return lhs.path != rhs.path
+	}
+
+	public var isRemoteFile: Bool {
         return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
     }
 	
-	open func enclosingDirectory() -> FBFile?
+	open func enclosingDirectory() -> FBFile
 	{
-		guard let fileLocation = fileLocation else
-		{
-			return nil;
-		}
-		
-		let baseURL = fileLocation.deletingLastPathComponent()
+		let baseURL = path.deletingLastPathComponent()
 		
 		return FBFile( path: baseURL )
 	}
