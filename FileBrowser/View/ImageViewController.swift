@@ -191,7 +191,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	}
 	
 	@objc func trashAction(button: UIBarButtonItem) {
-		print("Trash this")
+		state.deleteFileAfterUserConfirmation(files: [file], controller: self, refresh: {
+			self.navigationController?.popViewController(animated: true)
+		})
 	}
 	
 	//MARK: TapDetectingImageViewDelegate methods
