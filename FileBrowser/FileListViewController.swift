@@ -21,6 +21,7 @@ class FileListViewController: UIViewController {
     let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
     var sections: [[FBFile]] = []
+    var allowEditing: Bool = false
 
     // Search controller
     var filteredFiles = [FBFile]()
@@ -62,15 +63,19 @@ class FileListViewController: UIViewController {
         }
     }
     
-    //MARK: UIViewController
-    
-    override func viewDidLoad() {
-        
+    func prepareData() {
         // Prepare data
         if let initialPath = initialPath {
             files = parser.filesForDirectory(initialPath)
             indexFiles()
         }
+    }
+    
+    //MARK: UIViewController
+    
+    override func viewDidLoad() {
+        
+        prepareData()
         
         // Set search bar
         tableView.tableHeaderView = searchController.searchBar
