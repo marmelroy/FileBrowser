@@ -23,6 +23,18 @@ open class FBFile: NSObject {
     // FBFileType
     open let type: FBFileType
     
+    open func delete()
+    {
+        do
+        {
+            try FileManager.default.removeItem(at: self.filePath)
+        }
+        catch
+        {
+            print("An error occured when trying to delete file:\(self.filePath) Error:\(error)")
+        }
+    }
+    
     /**
      Initialize an FBFile object with a filePath
      
