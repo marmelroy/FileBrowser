@@ -86,5 +86,19 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         return collation.section(forSectionIndexTitle: index)
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            let selectedFile = fileForIndexPath(indexPath)
+            selectedFile.delete()
+            
+            prepareData()
+            tableView.reloadSections([indexPath.section], with: UITableViewRowAnimation.automatic)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return allowEditing
+    }
+    
     
 }
