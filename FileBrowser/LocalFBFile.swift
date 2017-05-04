@@ -227,4 +227,5 @@ open class LocalFBFile : FBFile
 		
 		return self
 	}
+	
 }

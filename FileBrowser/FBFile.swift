@@ -36,19 +36,24 @@ open class FBFile: NSObject {
      - returns: FBFile object.
      */
     public init(path: URL) {
-		self.path = path
-		self.fileLocation = path
-		self.isDirectory = checkDirectory(path)
+		self.path = path.resolvingSymlinksInPath()
+		self.fileLocation = self.path
+		self.isDirectory = checkDirectory(self.path)
 		
-		if self.isDirectory {
+		if self.isDirectory
+		{
 			self.fileExtension = nil
 			self.type = .Directory
 		}
-		else {
-			if path.pathExtension != "" {
+		else
+		{
+			if path.pathExtension != ""
+			{
 				self.fileExtension = path.pathExtension
 				self.type = FBFileType(rawValue: fileExtension!) ?? .Default
-			} else {
+			}
+			else
+			{
 				self.fileExtension = nil
 				self.type = .Default
 			}
@@ -76,6 +81,35 @@ open class FBFile: NSObject {
 		let baseURL = path.deletingLastPathComponent()
 		
 		return FBFile( path: baseURL )
+	}
+	
+	open func folderListFrom(directory: FBFile) -> [FBFile]
+	{
+		// Create the folder list
+		var folderList = [FBFile]()
+		
+		if directory == self
+		{
+			return folderList
+		}
+		
+		let absURLForSelf = self.path.resolvingSymlinksInPath()
+		let absURLForDir = directory.path.resolvingSymlinksInPath()
+		
+		if !absURLForSelf.absoluteString.contains(absURLForDir.absoluteString)
+		{
+			return folderList
+		}
+
+		var curDir = enclosingDirectory()
+		while curDir != directory
+		{
+			folderList.append(curDir)
+			curDir = curDir.enclosingDirectory()
+		}
+		folderList.append(curDir)
+		
+		return folderList.reversed()
 	}
 	
 	open func delete()

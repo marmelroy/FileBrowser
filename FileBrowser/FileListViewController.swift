@@ -115,6 +115,9 @@ class FileListViewController: UIViewController {
 		self.navigationController?.hidesBarsOnTap = false
         // Make sure navigation bar is visible
         self.navigationController?.isNavigationBarHidden = false
+		
+		// Notify
+		NotificationCenter.default.post(name: FileBrowser.FILE_BROWSER_VIEW_NOTIFICATION, object: self.directory)
     }
     
     @objc func dismiss(button: UIBarButtonItem = UIBarButtonItem()) {

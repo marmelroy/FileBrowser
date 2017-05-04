@@ -96,14 +96,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 			break;
 		case 1:
 			cell.textLabel?.text = "Size"
-			if file.isDirectory
-			{
-				cell.detailTextLabel?.text = "Folder" // TODO: later calculate folder size?
-			}
-			else
-			{
-				cell.detailTextLabel?.text = "\(file.getFileSize()) bytes"
-			}
+			cell.detailTextLabel?.text = String_GetDisplayTextForFileSize(file: file, displayType: true)
 			break;
 		case 2:
 			cell.textLabel?.text = "Created"

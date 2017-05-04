@@ -47,6 +47,11 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 		} else {
 		}
 		
+		if fileBrowserState.cellShowDetail
+		{
+			cell!.detailTextLabel?.text = String_GetDisplayTextForFileSize(file: selectedFile, displayType: false)
+		}
+		
 		cell!.accessoryType = fileBrowserState.cellAcc
         return cell!
     }

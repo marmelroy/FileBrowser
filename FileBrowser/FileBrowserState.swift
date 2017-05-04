@@ -17,6 +17,7 @@ class FileBrowserState
 	var showOnlyFolders: Bool = false
 	var cellAcc: UITableViewCellAccessoryType = .detailButton
 	var allowSearch: Bool = true
+	var cellShowDetail: Bool = false
 
 	convenience init(dataSource: FileBrowserDataSource)
 	{
@@ -25,11 +26,26 @@ class FileBrowserState
 		self.dataSource = dataSource;
 	}
 	
+	func viewControllerFor( file: FBFile ) -> UIViewController
+	{
+		if file.isDirectory
+		{
+			let fileListViewController = FolderEditorTableView(state: self, withDirectory: file)
+			return fileListViewController
+		}
+		else
+		{
+			let filePreview = previewManager.previewViewControllerForFile(file, data: nil, fromNavigation: true, state: self)
+			return filePreview
+		}
+
+	}
+	
 	func viewFile( file: FBFile, controller: UIViewController )
 	{
-		if file.isDirectory {
-			let fileListViewController = FolderEditorTableView(state: self, withDirectory: file)
-			controller.navigationController?.pushViewController(fileListViewController, animated: true)
+		if file.isDirectory
+		{
+			controller.navigationController?.pushViewController(viewControllerFor(file: file), animated: true)
 		}
 		else {
 			if let didSelectFile = didSelectFile {
@@ -38,8 +54,7 @@ class FileBrowserState
 			}
 			else
 			{
-				let filePreview = previewManager.previewViewControllerForFile(file, data: nil, fromNavigation: true, state: self)
-				controller.navigationController?.pushViewController(filePreview, animated: true)
+				controller.navigationController?.pushViewController(viewControllerFor(file: file), animated: true)
 			}
 		}
 		

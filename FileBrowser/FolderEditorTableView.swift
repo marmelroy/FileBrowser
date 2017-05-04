@@ -143,7 +143,9 @@ class FolderEditorTableView : FileListViewController
 		
 		self.configureToolBars()
 	
-		self.tableView.allowsMultipleSelectionDuringEditing = true;
+		self.tableView.allowsMultipleSelectionDuringEditing = true
+		
+		fileBrowserState.cellShowDetail = true
 	}
 	
 
@@ -309,6 +311,10 @@ class FolderEditorTableView : FileListViewController
 		if tableView.isEditing == false
 		{
 			let selectedFile = fileForIndexPath(indexPath)
+			// Notify
+			NotificationCenter.default.post(name: FileBrowser.FILE_BROWSER_VIEW_NOTIFICATION, object: selectedFile)
+			
+			//
 			searchController?.isActive = false
 			fileBrowserState.viewFile(file: selectedFile, controller: self)
 			tableView.deselectRow(at: indexPath, animated: true)

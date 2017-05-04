@@ -10,10 +10,13 @@ import Foundation
 
 /// File browser containing navigation controller.
 open class FileBrowser: UINavigationController {
+	
+	// Notification send when file browser will appear. Object is FBFile currently looking at
+	@objc public static let FILE_BROWSER_VIEW_NOTIFICATION = NSNotification.Name("FileBrowserWillView")
     
     open var dataSource: FileBrowserDataSource = LocalFileBrowserDataSource()
     
-    var fileList: FileListViewController?
+//    var fileList: FileListViewController?
 
     /// File types to exclude from the file browser.
     open var excludesFileExtensions: [String]? {
@@ -30,18 +33,18 @@ open class FileBrowser: UINavigationController {
     }
     
     /// Override default preview and actionsheet behaviour in favour of custom file handling.
-    open var didSelectFile: ((FBFile) -> ())? {
-        didSet {
-            fileList?.fileBrowserState.didSelectFile = didSelectFile
-        }
-    }
+//    open var didSelectFile: ((FBFile) -> ())? {
+//        didSet {
+//            fileList?.fileBrowserState.didSelectFile = didSelectFile
+//        }
+//    }
     
     /**
      Init to local documents folder.
     */
     public convenience init() {
         let parser = LocalFileBrowserDataSource()
-        self.init(dataSource: parser)
+		self.init(dataSource: parser, directory: parser.rootDirectory)
     }
     
     /**
@@ -49,10 +52,11 @@ open class FileBrowser: UINavigationController {
      
      - parameter initialPath: NSURL filepath to containing directory.
     */
-    public convenience init(initialPath: URL) {
+    public convenience init(initialPath: URL)
+	{
         let parser = LocalFileBrowserDataSource()
-        parser.customRootUrl = initialPath
-        self.init(dataSource: parser)
+		
+		self.init(dataSource: parser, directory: LocalFBFile(path: initialPath))
     }
     
     /**
@@ -61,13 +65,34 @@ open class FileBrowser: UINavigationController {
      - parameter parser: The data source used by the file browser
     */
     
-    public convenience init(dataSource: FileBrowserDataSource) {
-//        let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: dataSource.rootDirectory)
-		let fileListViewController = FolderEditorTableView(state: FileBrowserState(dataSource: dataSource), withDirectory: dataSource.rootDirectory)
-        self.init(rootViewController: fileListViewController)
+	public convenience init(dataSource: FileBrowserDataSource, directory: FBFile ) {
+		let state = FileBrowserState(dataSource: dataSource)
+		
+		// need to create navigation stack starting with the root directory
+		let folderList = directory.folderListFrom(directory: dataSource.rootDirectory)
+		var userViewController : UIViewController
+		// TODO: load correct view controller if it is a file or a folder
+		if directory.isDirectory
+		{
+			userViewController = FolderEditorTableView(state: FileBrowserState(dataSource: dataSource), withDirectory: directory)
+		}
+		else
+		{
+			userViewController = state.viewControllerFor(file: directory)
+		}
+		var vcs = [UIViewController]()
+		for folder in folderList
+		{
+			vcs.append(FolderEditorTableView(state: state, withDirectory: folder))
+		}
+		vcs.append(userViewController)
+		
+        self.init(rootViewController: userViewController)
         self.dataSource = dataSource
         self.view.backgroundColor = UIColor.white
-        self.fileList = fileListViewController
+     //   self.fileList = userViewController
+		
+		self.viewControllers = vcs
     }
     
     

@@ -41,6 +41,7 @@
 		528336621EA679BF00A60268 /* AlertUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528336611EA679BF00A60268 /* AlertUtilities.swift */; };
 		528937111EA94A0700CE113C /* FileBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528937101EA94A0700CE113C /* FileBrowserState.swift */; };
 		52E190C81E9358C5007C2242 /* FolderEditorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */; };
+		52E30CB81EBA66D200139E0C /* FileStringUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E30CB71EBA66D200139E0C /* FileStringUtilities.swift */; };
 		52E32F981EA17FFD0077FD93 /* FileActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E32F971EA17FFD0077FD93 /* FileActivityViewController.swift */; };
 		52E32F9A1EA182BD0077FD93 /* FileMoveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E32F991EA182BD0077FD93 /* FileMoveActivity.swift */; };
 		52E32F9C1EA1A26A0077FD93 /* LocalFBFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E32F9B1EA1A26A0077FD93 /* LocalFBFile.swift */; };
@@ -103,6 +104,7 @@
 		528336611EA679BF00A60268 /* AlertUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertUtilities.swift; path = Util/AlertUtilities.swift; sourceTree = "<group>"; };
 		528937101EA94A0700CE113C /* FileBrowserState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserState.swift; sourceTree = "<group>"; };
 		52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderEditorTableView.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		52E30CB71EBA66D200139E0C /* FileStringUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileStringUtilities.swift; path = Util/FileStringUtilities.swift; sourceTree = "<group>"; };
 		52E32F971EA17FFD0077FD93 /* FileActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileActivityViewController.swift; path = Activities/FileActivityViewController.swift; sourceTree = "<group>"; };
 		52E32F991EA182BD0077FD93 /* FileMoveActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileMoveActivity.swift; path = Activities/FileMoveActivity.swift; sourceTree = "<group>"; };
 		52E32F9B1EA1A26A0077FD93 /* LocalFBFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalFBFile.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				528336611EA679BF00A60268 /* AlertUtilities.swift */,
+				52E30CB71EBA66D200139E0C /* FileStringUtilities.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				349A12261C707317005435C0 /* FileListTableView.swift in Sources */,
 				C3308C8F1E3501BE00F4D125 /* Result.swift in Sources */,
 				52E32F981EA17FFD0077FD93 /* FileActivityViewController.swift in Sources */,
+				52E30CB81EBA66D200139E0C /* FileStringUtilities.swift in Sources */,
 				343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */,
 				3439AB681C6F203A0058AF04 /* LocalFileBrowserDataSource.swift in Sources */,
 				523EA2551EAAB520006B3D86 /* SelectFolderViewController.swift in Sources */,

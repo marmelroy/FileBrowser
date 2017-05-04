@@ -51,7 +51,7 @@ class SelectFolderViewController : FileListViewController
 			return nil;
 		}
 		
-		let enclosingDir = files[0].enclosingDirectory()
+		//let enclosingDir = files[0].enclosingDirectory()
 		var prompt : String
 		
 		if files.count > 1
@@ -76,21 +76,12 @@ class SelectFolderViewController : FileListViewController
 		let nc = UINavigationController(rootViewController: rootVC)
 		
 		// Create the folder list
-		var folderList = [FBFile]()
-		
-		var curDir = enclosingDir
-		while curDir != state.dataSource.rootDirectory
-		{
-			folderList.append(curDir)
-			curDir = curDir.enclosingDirectory()
-		}
+		let folderList = files[0].folderListFrom(directory: state.dataSource.rootDirectory)
 		
 		// Create the view controller stack
 		var vcStack = [UIViewController]()
 		
-		vcStack.append(rootVC)
-		
-		for curDir in folderList.reversed()
+		for curDir in folderList
 		{
 			print("Building view controller list:\(curDir.path)")
 			

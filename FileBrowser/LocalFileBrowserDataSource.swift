@@ -17,14 +17,15 @@ class LocalFileBrowserDataSource: FileBrowserDataSource {
     
     let fileManager = FileManager.default
     
-    var customRootUrl: URL?
-    var defaultRootUrl: URL {
-        return fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0] as URL
-    }
-    
+    var rootUrl: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] as URL
+	
+	public convenience init( customRootUrl: URL ) {
+		self.init()
+		rootUrl = customRootUrl
+	}
+	
     var rootDirectory: FBFile {
-        let url = customRootUrl ?? defaultRootUrl
-        return LocalFBFile(path: url)
+        return LocalFBFile(path: rootUrl)
     }
     
     func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
