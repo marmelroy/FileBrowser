@@ -44,7 +44,7 @@ open class FileBrowser: UINavigationController {
     */
     public convenience init() {
         let parser = LocalFileBrowserDataSource()
-		self.init(dataSource: parser, directory: parser.rootDirectory)
+		self.init(dataSource: parser, directory: parser.rootDirectory, delegate: nil, options: nil)
     }
     
     /**
@@ -52,11 +52,11 @@ open class FileBrowser: UINavigationController {
      
      - parameter initialPath: NSURL filepath to containing directory.
     */
-    public convenience init(initialPath: URL)
+	@objc public convenience init(initialPath: URL, delegate: FileBrowserDelegate?, options: FileBrowserOptions? )
 	{
         let parser = LocalFileBrowserDataSource()
 		
-		self.init(dataSource: parser, directory: LocalFBFile(path: initialPath))
+		self.init(dataSource: parser, directory: LocalFBFile(path: initialPath), delegate: delegate, options: options)
     }
     
     /**
@@ -65,16 +65,17 @@ open class FileBrowser: UINavigationController {
      - parameter parser: The data source used by the file browser
     */
     
-	public convenience init(dataSource: FileBrowserDataSource, directory: FBFile ) {
+	public convenience init(dataSource: FileBrowserDataSource, directory: FBFile, delegate: FileBrowserDelegate?, options: FileBrowserOptions? ) {
 		let state = FileBrowserState(dataSource: dataSource)
+		state.delegate = delegate
+		state.options = options
 		
 		// need to create navigation stack starting with the root directory
 		let folderList = directory.folderListFrom(directory: dataSource.rootDirectory)
 		var userViewController : UIViewController
-		// TODO: load correct view controller if it is a file or a folder
 		if directory.isDirectory
 		{
-			userViewController = FolderEditorTableView(state: FileBrowserState(dataSource: dataSource), withDirectory: directory)
+			userViewController = FolderEditorTableView(state: state, withDirectory: directory)
 		}
 		else
 		{

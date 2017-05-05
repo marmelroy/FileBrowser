@@ -38,6 +38,8 @@
 		520A34B61EAD46E9000A2D70 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520A34B51EAD46E9000A2D70 /* ImageViewController.swift */; };
 		52189D9B1EAF1454006B1243 /* TextFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52189D9A1EAF1454006B1243 /* TextFileViewController.swift */; };
 		523EA2551EAAB520006B3D86 /* SelectFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */; };
+		5250BA101EBBB5F600385B9D /* FileBrowserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250BA0F1EBBB5F600385B9D /* FileBrowserDelegate.swift */; };
+		5250BA181EBBEE9E00385B9D /* FileBrowserOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250BA171EBBEE9E00385B9D /* FileBrowserOptions.swift */; };
 		528336621EA679BF00A60268 /* AlertUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528336611EA679BF00A60268 /* AlertUtilities.swift */; };
 		528937111EA94A0700CE113C /* FileBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528937101EA94A0700CE113C /* FileBrowserState.swift */; };
 		52E190C81E9358C5007C2242 /* FolderEditorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */; };
@@ -101,6 +103,8 @@
 		520A34B51EAD46E9000A2D70 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageViewController.swift; path = View/ImageViewController.swift; sourceTree = "<group>"; };
 		52189D9A1EAF1454006B1243 /* TextFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextFileViewController.swift; path = View/TextFileViewController.swift; sourceTree = "<group>"; };
 		523EA2541EAAB520006B3D86 /* SelectFolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFolderViewController.swift; sourceTree = "<group>"; };
+		5250BA0F1EBBB5F600385B9D /* FileBrowserDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserDelegate.swift; sourceTree = "<group>"; };
+		5250BA171EBBEE9E00385B9D /* FileBrowserOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserOptions.swift; sourceTree = "<group>"; };
 		528336611EA679BF00A60268 /* AlertUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertUtilities.swift; path = Util/AlertUtilities.swift; sourceTree = "<group>"; };
 		528937101EA94A0700CE113C /* FileBrowserState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserState.swift; sourceTree = "<group>"; };
 		52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderEditorTableView.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -149,8 +153,10 @@
 				3439AB671C6F203A0058AF04 /* LocalFileBrowserDataSource.swift */,
 				349A12271C707B1A005435C0 /* FBFile.swift */,
 				C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */,
+				5250BA0F1EBBB5F600385B9D /* FileBrowserDelegate.swift */,
 				C3308C8E1E3501BE00F4D125 /* Result.swift */,
 				52E32F9B1EA1A26A0077FD93 /* LocalFBFile.swift */,
+				5250BA171EBBEE9E00385B9D /* FileBrowserOptions.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -413,6 +419,7 @@
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,
 				349A12261C707317005435C0 /* FileListTableView.swift in Sources */,
 				C3308C8F1E3501BE00F4D125 /* Result.swift in Sources */,
+				5250BA101EBBB5F600385B9D /* FileBrowserDelegate.swift in Sources */,
 				52E32F981EA17FFD0077FD93 /* FileActivityViewController.swift in Sources */,
 				52E30CB81EBA66D200139E0C /* FileStringUtilities.swift in Sources */,
 				343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */,
@@ -431,6 +438,7 @@
 				3439AB6C1C6FD6650058AF04 /* FileListPreview.swift in Sources */,
 				520A34B61EAD46E9000A2D70 /* ImageViewController.swift in Sources */,
 				C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */,
+				5250BA181EBBEE9E00385B9D /* FileBrowserOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,33 +23,17 @@ class TextFileViewController : UIViewController
 		//let configuration = URLSessionConfiguration.default
 		//session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
 	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		// Prevent loading of too large of files
-		textView = UITextView(frame: view.bounds)
-		textView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
-
-		do
+	
+	func applyOptions()
+	{
+		if let options = state.options
 		{
-			textView.text = try NSString(contentsOfFile: file.path.path, usedEncoding: nil) as String!
-			textView.isEditable = false
-			textView.isUserInteractionEnabled = true
+			textView.backgroundColor = options.TextFile_backgroundColorDay
+			textView.textColor = options.TextFile_textColorDay
+			textView.font = options.TextFile_font
 		}
-		catch
-		{
-			// unable to load text file
-			print("Unable to read file. \(error)")
-		}
-		
-		self.view.addSubview(textView)
-		
-		
-		// Add share button
-		//let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
-		//self.navigationItem.rightBarButtonItem = shareButton
 	}
+
 	
 	func toolbarItemsForEdit() -> [UIBarButtonItem]
 	{
@@ -107,15 +91,49 @@ class TextFileViewController : UIViewController
 		self.navigationController?.isNavigationBarHidden = false
 	}
 	
+	//MARK: Lifecycle
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		// Prevent loading of too large of files
+		textView = UITextView(frame: view.bounds)
+		textView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
+		
+		do
+		{
+			textView.text = try NSString(contentsOfFile: file.path.path, usedEncoding: nil) as String!
+			textView.isEditable = false
+			textView.isUserInteractionEnabled = true
+			
+			applyOptions()
+		}
+		catch
+		{
+			// unable to load text file
+			print("Unable to read file. \(error)")
+		}
+		
+		self.view.addSubview(textView)
+		
+		
+		// Add share button
+		//let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
+		//self.navigationItem.rightBarButtonItem = shareButton
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		setupForMode()
+		applyOptions()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		removeKeyboardNotifications()
 	}
+	
+	//MARK: Button Actions
 	
 	@objc func dismiss(button: UIBarButtonItem)
 	{

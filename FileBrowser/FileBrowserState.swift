@@ -6,9 +6,11 @@
 
 import Foundation
 
-class FileBrowserState
+class FileBrowserState : NSObject, NSCopying
 {
 	var dataSource: FileBrowserDataSource!
+	var delegate: FileBrowserDelegate?
+	var options: FileBrowserOptions?
 	
 	var didSelectFile: ((FBFile) -> ())?
 	let previewManager = PreviewManager()
@@ -24,6 +26,22 @@ class FileBrowserState
 		self.init()
 		
 		self.dataSource = dataSource;
+	}
+	
+	public func copy(with zone: NSZone? = nil) -> Any
+	{
+		let state = FileBrowserState(dataSource: dataSource)
+		
+		state.delegate = self.delegate
+		state.didSelectFile = self.didSelectFile
+		state.includeIndex = self.includeIndex
+		state.showOnlyFolders = self.showOnlyFolders
+		state.cellAcc = self.cellAcc
+		state.allowSearch = self.allowSearch
+		state.cellShowDetail = self.cellShowDetail
+		state.options = self.options
+		
+		return state
 	}
 	
 	func viewControllerFor( file: FBFile ) -> UIViewController
@@ -218,5 +236,13 @@ class FileBrowserState
 				}
 			}
 		})
+	}
+	
+	func displayOptionsFrom( _ viewController: UIViewController )
+	{
+		if let delegate = delegate
+		{
+			delegate.displayOptionsFrom(viewController)
+		}
 	}
 }

@@ -63,7 +63,7 @@ class SelectFolderViewController : FileListViewController
 			prompt = "Move item here"
 		}
 		
-		let stateForSelect = FileBrowserState(dataSource: state.dataSource)
+		let stateForSelect = state.copy() as! FileBrowserState
 		stateForSelect.allowSearch = false
 		stateForSelect.includeIndex = false
 		stateForSelect.cellAcc = .none

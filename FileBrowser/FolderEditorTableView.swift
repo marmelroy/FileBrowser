@@ -182,7 +182,7 @@ class FolderEditorTableView : FileListViewController
 	
 	@objc func actionOptions( button : UIBarButtonItem )
 	{
-		// TODO: finish this
+		fileBrowserState.displayOptionsFrom(self)
 	}
 	
 	@objc func select(button: UIBarButtonItem = UIBarButtonItem()) {
