@@ -118,7 +118,7 @@ class SelectFolderViewController : FileListViewController
 			let fileListViewController = SelectFolderViewController(state: fileBrowserState, enclosingDirectory: selectedFile, prompt: actionPrompt, action: self.action, cancelAction: self.cancelAction)
 			self.navigationController?.pushViewController(fileListViewController, animated: true)
 		}
-		tableView.deselectRow(at: indexPath, animated: true)
+		//tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

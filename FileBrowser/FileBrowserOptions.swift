@@ -15,4 +15,8 @@ import Foundation
 	
 	public var TextFile_textColorNight: UIColor?
 	public var TextFile_backgroundColorNight: UIColor?
+	
+	public final var Default_TextFile_font: UIFont { get {return UIFont.preferredFont(forTextStyle: .body)} }
+	public let Default_TextFile_textColorDay: UIColor = UIColor.black
+	public let Default_TextFile_backgroundColorDay: UIColor = UIColor.white
 }

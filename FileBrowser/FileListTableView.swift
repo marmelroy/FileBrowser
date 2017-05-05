@@ -60,7 +60,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         let selectedFile = fileForIndexPath(indexPath)
         searchController?.isActive = false
 		fileBrowserState.viewFile(file: selectedFile, controller: self)
-        tableView.deselectRow(at: indexPath, animated: true)
+        //tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

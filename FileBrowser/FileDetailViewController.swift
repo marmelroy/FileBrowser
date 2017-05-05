@@ -261,7 +261,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 				break;
 			}
 		}
-		self.tableView.deselectRow(at: indexPath, animated: true)
+		//self.tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
