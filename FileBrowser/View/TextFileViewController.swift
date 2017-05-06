@@ -72,6 +72,8 @@ class TextFileViewController : UIViewController
 			self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(TextFileViewController.doneEditingAction(button:)))
 			
 			self.navigationController?.setToolbarHidden(true, animated: true)
+			
+			textView.becomeFirstResponder()
 		}
 		else
 		{
@@ -103,6 +105,8 @@ class TextFileViewController : UIViewController
 		do
 		{
 			textView.text = try NSString(contentsOfFile: file.path.path, usedEncoding: nil) as String!
+			textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument);
+			//textView.scrollRangeToVisible(NSRange(location: 0, length: 0))
 			textView.isEditable = false
 			textView.isUserInteractionEnabled = true
 			
@@ -197,15 +201,23 @@ class TextFileViewController : UIViewController
 		let info = aNotification.userInfo
 		let infoNSValue = info![UIKeyboardFrameBeginUserInfoKey] as! NSValue
 		let kbSize = infoNSValue.cgRectValue.size
-		let contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0)
+		var contentInsets = textView.contentInset
+		contentInsets.bottom = kbSize.height
 		textView.contentInset = contentInsets
-		textView.scrollIndicatorInsets = contentInsets
+		
+		var scrollInsets = textView.scrollIndicatorInsets
+		scrollInsets.bottom = kbSize.height
+		textView.scrollIndicatorInsets = scrollInsets
 	}
 	
 	@objc func keyboardWillBeHidden(aNotification:NSNotification) {
-		let contentInsets = UIEdgeInsets.zero
+		var contentInsets = textView.contentInset
+		contentInsets.bottom = 0
 		textView.contentInset = contentInsets
-		textView.scrollIndicatorInsets = contentInsets
+		
+		var scrollInsets = textView.scrollIndicatorInsets
+		scrollInsets.bottom = 0
+		textView.scrollIndicatorInsets = scrollInsets
 	}
 	
 	func scrollToCaretInTextView(textView: UITextView, animated: Bool) {
