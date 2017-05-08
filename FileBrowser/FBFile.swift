@@ -36,6 +36,7 @@ open class FBFile: NSObject {
      - returns: FBFile object.
      */
     public init(path: URL) {
+		// TODO: check permissions
 		self.path = path.resolvingSymlinksInPath()
 		self.fileLocation = self.path
 		self.isDirectory = checkDirectory(self.path)
@@ -164,6 +165,11 @@ open class FBFile: NSObject {
 		let filename : NSString = path.lastPathComponent as NSString
 		
 		return filename.deletingPathExtension
+	}
+	
+	open func hasViewPermission() -> Bool
+	{
+		return false
 	}
 }
 

@@ -66,6 +66,12 @@ open class FileBrowser: UINavigationController {
     */
     
 	public convenience init(dataSource: FileBrowserDataSource, directory: FBFile, delegate: FileBrowserDelegate?, options: FileBrowserOptions? ) {
+		var directory = directory
+		if directory.hasViewPermission() == false
+		{
+			directory = dataSource.rootDirectory
+		}
+		
 		let state = FileBrowserState(dataSource: dataSource)
 		state.delegate = delegate
 		state.options = options

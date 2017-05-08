@@ -228,4 +228,26 @@ open class LocalFBFile : FBFile
 		return self
 	}
 	
+	open override func hasViewPermission() -> Bool
+	{
+		guard path.isFileURL else
+		{
+			return false
+		}
+		
+		do
+		{
+			let resourceValues = try path.resourceValues(forKeys: [URLResourceKey.isReadableKey])
+			
+			return resourceValues.isReadable ?? false
+			
+		}
+		catch
+		{
+		}
+
+		
+		return false
+	}
+	
 }
