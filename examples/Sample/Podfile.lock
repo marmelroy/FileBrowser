@@ -6,11 +6,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   FileBrowser:
-    :path: "../../FileBrowser.podspec"
+    :path: ../../FileBrowser.podspec
 
 SPEC CHECKSUMS:
   FileBrowser: af8abc035daca66a6066351ae162c4af4c6b24dd
 
-PODFILE CHECKSUM: ca61a48c4a562caf636cf07a5f677bfee5b56184
+PODFILE CHECKSUM: 89b602114a6137a17b342c624bbed635b89d7a0e
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.0.1
