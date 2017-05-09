@@ -10,7 +10,7 @@ import Foundation
 
 public protocol FileBrowserDataSource {
     var rootDirectory: FBFile { get }
-    func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ())
+    func provideContents(ofDirectory directory: FBFile, callback: @escaping (FBResult<[FBFile]>) -> ())
     
     func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary?
     func data(forFile file: FBFile) throws -> Data

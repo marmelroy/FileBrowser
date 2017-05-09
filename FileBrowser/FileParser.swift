@@ -27,7 +27,7 @@ class LocalFileParser: FileBrowserDataSource {
         return FBFile(path: url)
     }
     
-    func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
+    func provideContents(ofDirectory directory: FBFile, callback: @escaping (FBResult<[FBFile]>) -> ()) {
         
         // Get contents
         do {

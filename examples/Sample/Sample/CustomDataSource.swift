@@ -33,7 +33,7 @@ open class CustomDataSource: FileBrowserDataSource {
     let fileManager = FileManager.default
     
     
-    open func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
+    open func provideContents(ofDirectory directory: FBFile, callback: @escaping (FBResult<[FBFile]>) -> ()) {
         // traverse the file tree outlined in the JSON file to find the directory
         let pathComponents = Array(directory.path.pathComponents.dropFirst())   // we're already in the root directory at the root of our json document
         do {

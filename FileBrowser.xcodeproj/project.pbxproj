@@ -33,10 +33,10 @@
 		349A12361C707E86005435C0 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A122F1C707E86005435C0 /* image@2x.png */; };
 		349A12371C707E86005435C0 /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12301C707E86005435C0 /* pdf@2x.png */; };
 		349A12381C707E86005435C0 /* zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12311C707E86005435C0 /* zip@2x.png */; };
-		C3308C8F1E3501BE00F4D125 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308C8E1E3501BE00F4D125 /* Result.swift */; };
+		C3308C8F1E3501BE00F4D125 /* FBResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308C8E1E3501BE00F4D125 /* FBResult.swift */; };
 		C3308C901E351F9D00F4D125 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439AB671C6F203A0058AF04 /* FileParser.swift */; };
 		C3308C911E351FB500F4D125 /* FBFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349A12271C707B1A005435C0 /* FBFile.swift */; };
-		C3308C921E351FCF00F4D125 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308C8E1E3501BE00F4D125 /* Result.swift */; };
+		C3308C921E351FCF00F4D125 /* FBResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308C8E1E3501BE00F4D125 /* FBResult.swift */; };
 		C3308C931E351FE900F4D125 /* FileBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */; };
 		C3BF0DFC1E13F4A80009D12C /* FileBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */; };
 		C3BF0E001E1534070009D12C /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */; };
@@ -84,7 +84,7 @@
 		349A122F1C707E86005435C0 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		349A12301C707E86005435C0 /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
 		349A12311C707E86005435C0 /* zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zip@2x.png"; sourceTree = "<group>"; };
-		C3308C8E1E3501BE00F4D125 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		C3308C8E1E3501BE00F4D125 /* FBResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBResult.swift; sourceTree = "<group>"; };
 		C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserDataSource.swift; sourceTree = "<group>"; };
 		C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
 		C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 				3439AB671C6F203A0058AF04 /* FileParser.swift */,
 				349A12271C707B1A005435C0 /* FBFile.swift */,
 				C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */,
-				C3308C8E1E3501BE00F4D125 /* Result.swift */,
+				C3308C8E1E3501BE00F4D125 /* FBResult.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -341,7 +341,7 @@
 				C3D983CD1E195B9600A8CC06 /* (null) in Sources */,
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,
 				349A12261C707317005435C0 /* FileListTableView.swift in Sources */,
-				C3308C8F1E3501BE00F4D125 /* Result.swift in Sources */,
+				C3308C8F1E3501BE00F4D125 /* FBResult.swift in Sources */,
 				343C44661C73CD3200D874FB /* PreviewManager.swift in Sources */,
 				3439AB681C6F203A0058AF04 /* FileParser.swift in Sources */,
 				349A12281C707B1A005435C0 /* FBFile.swift in Sources */,
@@ -360,7 +360,7 @@
 			files = (
 				C3308C901E351F9D00F4D125 /* FileParser.swift in Sources */,
 				C3308C911E351FB500F4D125 /* FBFile.swift in Sources */,
-				C3308C921E351FCF00F4D125 /* Result.swift in Sources */,
+				C3308C921E351FCF00F4D125 /* FBResult.swift in Sources */,
 				C3308C931E351FE900F4D125 /* FileBrowserDataSource.swift in Sources */,
 				344169641C67812400B93D28 /* FileBrowserTests.swift in Sources */,
 			);

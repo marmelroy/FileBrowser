@@ -1,5 +1,5 @@
 //
-//  Result.swift
+//  FBResult.swift
 //  FileBrowser
 //
 //  Created by Carl Julius Gödecken on 01/01/2017.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Result<T> {
+public enum FBResult<T> {
     case success(T)
     case error(Error)
 }
