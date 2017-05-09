@@ -112,7 +112,7 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let error = error, (error as? NSError)?.code != NSURLErrorCancelled {
+        if let error = error, (error as NSError).code != NSURLErrorCancelled {
             show(error: error)
         }
         session.finishTasksAndInvalidate()
