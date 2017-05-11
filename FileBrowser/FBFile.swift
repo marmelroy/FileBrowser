@@ -10,7 +10,22 @@ import Foundation
 import UIKit
 
 /// FBFile is a class representing a file in FileBrowser
-open class FBFile: NSObject {
+public protocol FBFile {
+    var displayName: String { get }
+    
+    /// Describes the path in the current file system, e.g. /dir/file.txt
+    var path: URL { get }
+    
+    /// Describes where the resource can be found. May be a file:// or http[s]:// URL
+    var resourceUrl: URL? { get }
+    
+    var isDirectory: Bool { get }
+    var fileExtension: String? { get }
+    var type: FBFileType { get }
+    var isRemoteFile: Bool { get }
+}
+
+open class BasicFBFile: NSObject, FBFile {
     /// Display name. String.
     open var displayName: String
     // is Directory. Bool.
@@ -18,12 +33,11 @@ open class FBFile: NSObject {
     /// File extension.
     open let fileExtension: String?
     
-    /// Describes where the resource can be found. May be a file:// or http[s]:// URL
-    open var fileLocation: URL?
+    open var resourceUrl: URL?
     // FBFileType
     open var type: FBFileType
     
-    /// Describes the path in the current file system, e.g. /dir/file.txt
+    
     open let path: URL
     
     /**
@@ -54,10 +68,10 @@ open class FBFile: NSObject {
     }
     
     public var isRemoteFile: Bool {
-        guard let fileLocation = fileLocation else {
+        guard let resourceUrl = resourceUrl else {
             return true
         }
-        return fileLocation.scheme == "http" || fileLocation.scheme == "https"
+        return resourceUrl.scheme == "http" || resourceUrl.scheme == "https"
     }
 }
 
@@ -90,7 +104,7 @@ public enum FBFileType: String {
      - returns: UIImage for file type
      */
     public func image() -> UIImage? {
-        let bundle = Bundle(for: FBFile.self)
+        let bundle = Bundle(for: FileBrowser.self)
         var fileName = String()
         switch self {
         case .Directory: fileName = "folder@2x.png"

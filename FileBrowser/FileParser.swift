@@ -24,7 +24,7 @@ class LocalFileParser: FileBrowserDataSource {
     
     var rootDirectory: FBFile {
         let url = customRootUrl ?? defaultRootUrl
-        return FBFile(path: url)
+        return BasicFBFile(path: url)
     }
     
     func provideContents(ofDirectory directory: FBFile, callback: @escaping (FBResult<[FBFile]>) -> ()) {
@@ -35,7 +35,7 @@ class LocalFileParser: FileBrowserDataSource {
             
             
             // Filter
-            var files = filePaths.map(FBFile.init)
+            var files = filePaths.map(BasicFBFile.init)
             if let excludesFileExtensions = excludesFileExtensions {
                 let lowercased = excludesFileExtensions.map { $0.lowercased() }
                 files = files.filter { !lowercased.contains($0.fileExtension?.lowercased() ?? "") }

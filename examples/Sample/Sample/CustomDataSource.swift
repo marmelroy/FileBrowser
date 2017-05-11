@@ -25,7 +25,7 @@ open class CustomDataSource: FileBrowserDataSource {
         
     let rootUrl = URL(string: "/")!
     public var rootDirectory: FBFile {
-        let file = FBFile(path: rootUrl)
+        let file = BasicFBFile(path: rootUrl)
         file.displayName = "Home"
         return file
     }
@@ -47,13 +47,13 @@ open class CustomDataSource: FileBrowserDataSource {
             guard let content = directoryDescription["content"] as? KeyValue else {
                 throw JSONParsingError.noDirectoryContent
             }
-            let files = content.map {name, properties -> FBFile in
+            let files = content.map {name, properties -> BasicFBFile in
                 let properties = properties as! KeyValue
                 let isDirectory = (properties["type"] as? String) == "directory"
                 let path = directory.path.appendingPathComponent(name, isDirectory: isDirectory)
-                let file = FBFile(path: path)
+                let file = BasicFBFile(path: path)
                 if let resourceURLString = properties["location"] as? String, let resourceURL = URL(string: resourceURLString) {
-                    file.fileLocation = resourceURL
+                    file.resourceUrl = resourceURL
                 }
                 if let typeName = properties["type"] as? String, let type = FBFileType(rawValue: typeName) {
                     file.type = type
@@ -78,7 +78,7 @@ open class CustomDataSource: FileBrowserDataSource {
     
     
     public func dataURL(forFile file: FBFile) throws -> URL {
-        return file.fileLocation!
+        return file.resourceUrl!
     }
     
 }

@@ -10,7 +10,7 @@ import Foundation
 
 public protocol FileBrowserDownloadDelegate {
     /// option to provide custom URLs before the download starts
-    /// called only if the fileLocation for a file is not set
+    /// called only if the resourceUrl for a file is not set
     func provideCustomDownloadUrl(for file: FBFile, completionHandler: @escaping (FBResult<URL>) -> ())
     
     /// customization point e.g. for setting custom headers
@@ -22,7 +22,7 @@ public protocol FileBrowserDownloadDelegate {
 
 extension FileBrowserDownloadDelegate {
     func provideCustomDownloadUrl(for file: FBFile, completionHandler: @escaping (FBResult<URL>) -> ()) {
-        if let url = file.fileLocation {
+        if let url = file.resourceUrl {
             completionHandler(.success(url))
         } else {
             completionHandler(.error(FileBrowserDownloadError.noFileUrlGiven))

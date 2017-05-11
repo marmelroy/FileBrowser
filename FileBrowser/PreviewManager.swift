@@ -55,7 +55,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
             let fileData = fileData,
             let url = copyDataToTemporaryDirectory(fileData, file: file) {
             item.filePath = url
-        } else if let file = file, let url = file.fileLocation, url.scheme == "file" {
+        } else if let file = file, let url = file.resourceUrl, url.scheme == "file" {
             item.filePath = url
         }
         

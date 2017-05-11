@@ -49,7 +49,7 @@ class WebviewPreviewViewContoller: UIViewController {
         let activityItems: [Any]
         if let data = fileData {
             activityItems = [data]
-        } else if let url = file.fileLocation {
+        } else if let url = file.resourceUrl {
             activityItems = [url]
         } else {
             return
@@ -71,7 +71,7 @@ class WebviewPreviewViewContoller: UIViewController {
         let data: Data
         if let fileData = fileData {
             data = fileData
-        } else if let localFileUrl = file.fileLocation,
+        } else if let localFileUrl = file.resourceUrl,
             localFileUrl.scheme == "file",
             let fileData = try? Data(contentsOf: localFileUrl) {
             data = fileData

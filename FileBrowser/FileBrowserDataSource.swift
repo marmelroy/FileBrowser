@@ -13,7 +13,6 @@ public protocol FileBrowserDataSource {
     func provideContents(ofDirectory directory: FBFile, callback: @escaping (FBResult<[FBFile]>) -> ())
     
     func data(forFile file: FBFile) throws -> Data
-    func dataURL(forFile file: FBFile) throws -> URL
     
     var excludesFileExtensions: [String]? { get set }
     var excludesFilepaths: [URL]? { get set }
@@ -21,7 +20,7 @@ public protocol FileBrowserDataSource {
 
 extension FileBrowserDataSource {
     public func data(forFile file: FBFile) throws -> Data {
-        let url = try dataURL(forFile: file)
+        let url = file.resourceUrl!
         return try Data(contentsOf: url)
     }
 }

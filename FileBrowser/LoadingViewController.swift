@@ -36,8 +36,8 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
         super.viewDidLoad()
         progressView.setProgress(0, animated: false)
         
-        if let fileLocation = file.fileLocation {
-            downloadFile(at: fileLocation)
+        if let resourceUrl = file.resourceUrl {
+            downloadFile(at: resourceUrl)
         } else if let downloadDelegate = downloadDelegate {
             downloadDelegate.provideCustomDownloadUrl(for: file) { result in
                 switch result {
@@ -48,12 +48,12 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
                 }
             }
         } else {
-            print("Error: No fileLocation and no downloadDelegate provided to download file!")
+            print("Error: No resourceUrl and no downloadDelegate provided to download file!")
         }
     }
     
-    func downloadFile(at fileLocation: URL) {
-        var urlRequest = URLRequest(url: fileLocation)
+    func downloadFile(at resourceUrl: URL) {
+        var urlRequest = URLRequest(url: resourceUrl)
         downloadDelegate?.willPerformDownloadTask(for: file, using: &urlRequest)
         downloadTask = session.downloadTask(with: urlRequest)
         downloadTask!.resume()
