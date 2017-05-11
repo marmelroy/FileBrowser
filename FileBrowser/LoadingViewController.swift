@@ -21,6 +21,8 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     var session: URLSession!
     
     var file: FBFile!
+    var downloadDelegate: FileBrowserDownloadDelegate? = nil
+    
     convenience init (file: FBFile) {
         self.init(nibName: "LoadingViewController", bundle: Bundle(for: LoadingViewController.self))
         self.file = file
@@ -30,17 +32,30 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
         session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }
     
-//    var request: DataRequest?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         progressView.setProgress(0, animated: false)
-        guard let fileLocation = file.fileLocation else {
-            print("Error: File has no fileLocation set")
-            return
+        
+        if let fileLocation = file.fileLocation {
+            downloadFile(at: fileLocation)
+        } else if let downloadDelegate = downloadDelegate {
+            downloadDelegate.provideCustomDownloadUrl(for: file) { result in
+                switch result {
+                case .success(let url):
+                    self.downloadFile(at: url)
+                case .error(let error):
+                    self.show(error: error)
+                }
+            }
+        } else {
+            print("Error: No fileLocation and no downloadDelegate provided to download file!")
         }
- 
-        downloadTask = session.downloadTask(with: fileLocation)
+    }
+    
+    func downloadFile(at fileLocation: URL) {
+        var urlRequest = URLRequest(url: fileLocation)
+        downloadDelegate?.willPerformDownloadTask(for: file, using: &urlRequest)
+        downloadTask = session.downloadTask(with: urlRequest)
         downloadTask!.resume()
     }
     
@@ -97,6 +112,7 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         do {
             let data = try Data(contentsOf: location)
+            try downloadDelegate?.didFinishDownloading(data: data, for: file, for: downloadTask)
             self.showFile(data: data)
         } catch let error {
             print(error)

@@ -17,8 +17,6 @@ open class FBFile: NSObject {
     open let isDirectory: Bool
     /// File extension.
     open let fileExtension: String?
-    /// File attributes (including size, creation date etc).
-    //open let fileAttributes: NSDictionary? = nil
     
     /// Describes where the resource can be found. May be a file:// or http[s]:// URL
     open var fileLocation: URL?
@@ -37,7 +35,6 @@ open class FBFile: NSObject {
      */
     public init(path: URL) {
         self.path = path
-        self.fileLocation = path
         self.isDirectory = checkDirectory(path)
         
         if self.isDirectory {
@@ -57,7 +54,10 @@ open class FBFile: NSObject {
     }
     
     public var isRemoteFile: Bool {
-        return fileLocation?.scheme == "http" || fileLocation?.scheme == "https"
+        guard let fileLocation = fileLocation else {
+            return true
+        }
+        return fileLocation.scheme == "http" || fileLocation.scheme == "https"
     }
 }
 

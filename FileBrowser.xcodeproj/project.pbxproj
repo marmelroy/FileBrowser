@@ -41,6 +41,7 @@
 		C3BF0DFC1E13F4A80009D12C /* FileBrowserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */; };
 		C3BF0E001E1534070009D12C /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */; };
 		C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */; };
+		C3C2AC201EC25F470060AECA /* FileBrowserDownloadDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C2AC1D1EC25A6F0060AECA /* FileBrowserDownloadDelegate.swift */; };
 		C3D983CD1E195B9600A8CC06 /* (null) in Sources */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
@@ -88,6 +89,7 @@
 		C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserDataSource.swift; sourceTree = "<group>"; };
 		C3BF0DFF1E1534070009D12C /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
 		C3BF0E011E153A2C0009D12C /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		C3C2AC1D1EC25A6F0060AECA /* FileBrowserDownloadDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowserDownloadDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				349A12271C707B1A005435C0 /* FBFile.swift */,
 				C3BF0DFB1E13F4A80009D12C /* FileBrowserDataSource.swift */,
 				C3308C8E1E3501BE00F4D125 /* FBResult.swift */,
+				C3C2AC1D1EC25A6F0060AECA /* FileBrowserDownloadDelegate.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3C2AC201EC25F470060AECA /* FileBrowserDownloadDelegate.swift in Sources */,
 				343C447A1C73CFC400D874FB /* WebviewPreviewViewContoller.swift in Sources */,
 				C3D983CD1E195B9600A8CC06 /* (null) in Sources */,
 				3439AB701C6FF68C0058AF04 /* FileBrowser.swift in Sources */,

@@ -17,12 +17,17 @@ class FileListViewController: UIViewController {
     /// Data
     var directory: FBFile!
     var dataSource: FileBrowserDataSource!
+    var downloadDelegate: FileBrowserDownloadDelegate? {
+        didSet {
+            previewManager.downloadDelegate = downloadDelegate
+        }
+    }
     
     var didSelectFile: ((FBFile) -> ())?
     var files = [FBFile]()
     let previewManager = PreviewManager()
     var sections: [[FBFile]] = []
-
+    
     // Search controller
     var filteredFiles = [FBFile]()
     let searchController: UISearchController = {
@@ -34,6 +39,7 @@ class FileListViewController: UIViewController {
     }()
     
     
+    
     //MARK: Lifecycle
     
     convenience init (dataSource: FileBrowserDataSource, withDirectory directory: FBFile) {
@@ -43,6 +49,7 @@ class FileListViewController: UIViewController {
         // Set implicitly unwrapped optionals
         self.dataSource = dataSource
         self.directory = directory
+        self.previewManager.dataSource = dataSource
         
         self.title = directory.displayName
         

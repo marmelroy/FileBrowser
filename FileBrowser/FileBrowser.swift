@@ -36,6 +36,12 @@ open class FileBrowser: UINavigationController {
         }
     }
     
+    open var downloadDelegate: FileBrowserDownloadDelegate? {
+        didSet {
+            fileList?.downloadDelegate = downloadDelegate
+        }
+    }
+    
     /**
      Init to local documents folder.
     */

@@ -44,6 +44,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         searchController.isActive = false
         if selectedFile.isDirectory {
             let fileListViewController = FileListViewController(dataSource: dataSource, withDirectory: selectedFile)
+            fileListViewController.downloadDelegate = downloadDelegate
             fileListViewController.didSelectFile = didSelectFile
             self.navigationController?.pushViewController(fileListViewController, animated: true)
         }

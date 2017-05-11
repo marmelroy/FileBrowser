@@ -13,10 +13,14 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
     
     var file: FBFile?
     var fileData: Data?
+    var downloadDelegate: FileBrowserDownloadDelegate?
+    var dataSource: FileBrowserDataSource!
     
     func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool) -> UIViewController {
         if data == nil && file.isRemoteFile {
-            return LoadingViewController(file: file)
+            let loadingViewController = LoadingViewController(file: file)
+            loadingViewController.downloadDelegate = downloadDelegate
+            return loadingViewController
         }
         
         if file.type == .PLIST || file.type == .JSON {
