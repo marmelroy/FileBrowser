@@ -21,16 +21,18 @@ public protocol FileBrowserDataSource {
 }
 
 extension FileBrowserDataSource {
+	
     public func data(forFile file: FBFile) throws -> Data {
         let url = try dataURL(forFile: file)
         return try Data(contentsOf: url)
     }
 	
-	public func fileInSameDirectory(after file: FBFile, callback: @escaping (Result<FBFile>)->())
+	public func fileInSameDirectory(after file: FBFile, sort: @escaping ([FBFile])->([FBFile]), callback: @escaping (Result<FBFile>)->())
 	{
 		provideContents(ofDirectory: file.enclosingDirectory()) { result in
 			switch result {
 			case .success(let files):
+				let files = sort(files)
 				var foundFile: Bool = false
 				var hasNextFile: Bool = false
 				for testFile in files
@@ -61,11 +63,12 @@ extension FileBrowserDataSource {
 
 	}
 	
-	public func fileInSameDirectory(before file: FBFile, callback: @escaping (Result<FBFile>)->())
+	public func fileInSameDirectory(before file: FBFile, sort: @escaping ([FBFile])->([FBFile]), callback: @escaping (Result<FBFile>)->())
 	{
 		provideContents(ofDirectory: file.enclosingDirectory()) { result in
 			switch result {
 			case .success(let files):
+				let files = sort(files)
 				var foundFile: Bool = false
 				var lastFile: FBFile? = nil
 				for testFile in files

@@ -107,7 +107,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		//self.navigationItem.rightBarButtonItem = shareButton
 	}
 	
-	func scrollViewDidZoom(_ scrollView: UIScrollView) {
+	func scrollViewDidZoom(_ scrollView: UIScrollView)
+	{
 		let imageViewSize = imageView.frame.size
 		let scrollViewSize = scrollView.bounds.size
 		
@@ -156,7 +157,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		return self.imageView;
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
+	override func viewWillAppear(_ animated: Bool)
+	{
 		super.viewWillAppear(animated)
 		
 		// Set nav bar items on right
@@ -216,7 +218,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
 	@objc func nextFile(button: UIBarButtonItem)
 	{
-		state.dataSource.fileInSameDirectory(after: self.file, callback: { result in
+		state.dataSource.fileInSameDirectory(after: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
 			switch result
 			{
 			case .error(let error):
@@ -229,7 +231,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
 	@objc func prevFile(button: UIBarButtonItem)
 	{
-		state.dataSource.fileInSameDirectory(before: self.file, callback: { result in
+		state.dataSource.fileInSameDirectory(before: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
 			switch result
 			{
 			case .error(let error):

@@ -15,7 +15,8 @@ class FileBrowserState : NSObject, NSCopying
 	
 	// Utility
 	let previewManager = PreviewManager()
-	
+	let collation = UILocalizedIndexedCollation.current()
+
 	// Configuration
 	var options: FileBrowserOptions?
 	fileprivate var includeIndex: Bool = true
@@ -257,6 +258,48 @@ class FileBrowserState : NSObject, NSCopying
 		{
 			delegate.displayOptionsFrom(viewController)
 		}
+	}
+	
+	func sortingSelector() -> Selector
+	{
+		var selector: Selector
+		
+		let sortBy : FBFileAttributes = options?.List_SortBy ?? .FileName
+		
+		switch( sortBy )
+		{
+		case .None:
+			selector = #selector(getter: FBFile.displayName)
+		case .FileName:
+			selector = #selector(getter: FBFile.displayName)
+		case .FileSize:
+			selector = #selector(FBFile.getFileSizeDisplayString)
+		case .FileType:
+			selector = #selector(FBFile.getFileTypeDisplayString)
+		case .DateModified:
+			selector = #selector(FBFile.getModificationDateDisplayString)
+		case .DateAdded:
+			selector = #selector(FBFile.getFileAddedDateDisplayString)
+		case .DateCreated:
+			selector = #selector(FBFile.getCreationDateDisplayString)
+		}
+
+		return selector
+	}
+	
+	func sort( fileList files: [FBFile] ) -> [FBFile]
+	{
+		let selector = sortingSelector()
+		
+		if let sortedFiles = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]
+		{
+			if options?.List_SortReversed ?? false
+			{
+				return sortedFiles.reversed()
+			}
+			return sortedFiles
+		}
+		return files
 	}
 	
 	//MARK: UI

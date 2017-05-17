@@ -12,7 +12,6 @@ class FileListViewController: UIViewController {
     
     // TableView
     @IBOutlet weak var tableView: UITableView!
-    let collation = UILocalizedIndexedCollation.current()
 	var refreshControl: UIRefreshControl?
     
     /// Data
@@ -157,24 +156,22 @@ class FileListViewController: UIViewController {
 	}
 	
     func indexFiles() {
-		let selector: Selector = #selector(getter: UIPrinter.displayName)
 		if fileBrowserState.shouldIncludeIndex()
 		{
-			sections = Array(repeating: [], count: collation.sectionTitles.count)
-			if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
-				for object in sortedObjects {
-					let sectionNumber = collation.section(for: object, collationStringSelector: selector)
-					sections[sectionNumber].append(object)
-				}
+			let selector = fileBrowserState.sortingSelector()
+			sections = Array(repeating: [], count: fileBrowserState.collation.sectionTitles.count)
+			let sortedObjects = fileBrowserState.sort(fileList: files)
+			for object in sortedObjects {
+				let sectionNumber = fileBrowserState.collation.section(for: object, collationStringSelector: selector)
+				sections[sectionNumber].append(object)
 			}
 		}
 		else
 		{
 			sections = Array(repeating: [], count: 1)
-			if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
-				for object in sortedObjects {
-					sections[0].append(object)
-				}
+			let sortedObjects = fileBrowserState.sort(fileList: files)
+			for object in sortedObjects {
+				sections[0].append(object)
 			}
 		}
     }

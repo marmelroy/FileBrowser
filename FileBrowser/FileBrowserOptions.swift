@@ -76,7 +76,6 @@ import Foundation
 		
 		self.FileDetail_Left = FBFileAttributes(rawValue: aDecoder.decodeInteger(forKey: "FileDetail_Left")) ?? .FileSize
 		self.FileDetail_Right = FBFileAttributes(rawValue: aDecoder.decodeInteger(forKey: "FileDetail_Right")) ?? .DateModified
-		
 	}
 	
 }

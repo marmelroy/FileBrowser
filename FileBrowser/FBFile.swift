@@ -132,27 +132,52 @@ open class FBFile: NSObject {
 	
 	static let dateFormatter = DateFormatter()
 	
+	open func getFileAddedDateDisplayString() -> String
+	{
+		FBFile.dateFormatter.dateStyle = .short
+		FBFile.dateFormatter.timeStyle = .short
+		return FBFile.dateFormatter.string(from: getFileAddedDate())
+	}
+	
+	open func getCreationDateDisplayString() -> String
+	{
+		FBFile.dateFormatter.dateStyle = .short
+		FBFile.dateFormatter.timeStyle = .short
+		return FBFile.dateFormatter.string(from: getCreationDate())
+	}
+	
+	open func getModificationDateDisplayString() -> String
+	{
+		FBFile.dateFormatter.dateStyle = .short
+		FBFile.dateFormatter.timeStyle = .short
+		return FBFile.dateFormatter.string(from: getModificationDate())
+	}
+	
+	open func getFileSizeDisplayString() -> String
+	{
+		return String_GetDisplayTextForFileSize(file: self, displayType: false)
+	}
+	
+	open func getFileTypeDisplayString() -> String
+	{
+		return type.rawValue
+	}
+	
 	open func textForAttribute( _ attrib : FBFileAttributes ) -> String
 	{
 		switch attrib {
 		case .DateAdded:
-			FBFile.dateFormatter.dateStyle = .short
-			FBFile.dateFormatter.timeStyle = .short
-			return FBFile.dateFormatter.string(from: getFileAddedDate())
+			return getFileAddedDateDisplayString()
 		case .DateCreated:
-			FBFile.dateFormatter.dateStyle = .short
-			FBFile.dateFormatter.timeStyle = .short
-			return FBFile.dateFormatter.string(from: getCreationDate())
+			return getCreationDateDisplayString()
 		case .DateModified:
-			FBFile.dateFormatter.dateStyle = .short
-			FBFile.dateFormatter.timeStyle = .short
-			return FBFile.dateFormatter.string(from: getModificationDate())
+			return getModificationDateDisplayString()
 		case .FileSize:
-			return String_GetDisplayTextForFileSize(file: self, displayType: false)
+			return getFileSizeDisplayString()
 		case .FileName:
 			return displayName
 		case .FileType:
-			return type.rawValue
+			return getFileTypeDisplayString()
 		case .None:
 			return ""
 		}
