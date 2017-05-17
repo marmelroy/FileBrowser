@@ -141,6 +141,21 @@ open class LocalFBFile : FBFile
 		return Date()
 	}
 	
+	open override func getFileAddedDate() -> Date
+	{
+		do
+		{
+			if let resourceValues = try fileLocation?.resourceValues(forKeys: [URLResourceKey.addedToDirectoryDateKey])
+			{
+				return resourceValues.addedToDirectoryDate ?? Date()
+			}
+		}
+		catch
+		{
+		}
+		return Date()
+	}
+
 	open override func getModificationDate() -> Date
 	{
 		do
@@ -155,7 +170,7 @@ open class LocalFBFile : FBFile
 		}
 		return Date()
 	}
-	
+
 	open override func isInICloud() -> Bool {
 		do
 		{

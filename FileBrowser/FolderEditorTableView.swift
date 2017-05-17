@@ -8,7 +8,7 @@ import Foundation
 
 class FolderEditorTableView : FileListViewController
 {
-	weak var toolbar : UIToolbar?
+	//weak var toolbar : UIToolbar?
 	// Edit mode toolbar
 	var selectAllBtn : UIBarButtonItem?
 	var selectActionBtn : UIBarButtonItem?
@@ -23,18 +23,28 @@ class FolderEditorTableView : FileListViewController
    //MARK: Lifecycle
     func configureToolBars()
     {
+		if selectCancelBtn == nil
+		{
+			selectCancelBtn = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FolderEditorTableView.selectCancel(button:)))
+		}
+		if selectBtn == nil
+		{
+			selectBtn = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(FolderEditorTableView.select(button:)))
+		}
 		
 		if self.tableView.isEditing
 		{
+			self.navigationItem.rightBarButtonItem = selectCancelBtn
 			self.setToolbarItems(self.selectToolbarItems(), animated: true)
 		}
 		else
 		{
+			self.navigationItem.rightBarButtonItem = selectBtn
 			self.setToolbarItems(self.navigationToolItems(), animated: true)
 		}
 		
 		
-		self.toolbar = self.navigationController?.toolbar;
+		//self.toolbar = self.navigationController?.toolbar;
 		//self.navigationBar = self.navigationController.navigationBar;
 		//self.navigationBarSuperView = self.navigationBar.superview;
 		
@@ -92,11 +102,7 @@ class FolderEditorTableView : FileListViewController
 		
 		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
 
-		if selectCancelBtn == nil
-		{
-			selectCancelBtn = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FolderEditorTableView.selectCancel(button:)))
-		}
-		items.append( selectCancelBtn! )
+		items.append( fileBrowserState.getDoneButton(target: self, action: #selector(FileListViewController.dismiss(button:))))
 		
 		return items
 	}
@@ -129,11 +135,7 @@ class FolderEditorTableView : FileListViewController
 		
 		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
 		
-		if selectBtn == nil
-		{
-			selectBtn = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(FolderEditorTableView.select(button:)))
-		}
-		items.append( selectBtn! )
+		items.append( fileBrowserState.getDoneButton(target: self, action: #selector(FileListViewController.dismiss(button:))))
 		
 		return items
 	}
@@ -189,7 +191,7 @@ class FolderEditorTableView : FileListViewController
 		self.setEditing(true, animated:true)
 		self.tableView.setEditing(true, animated: true)
 		
-		self.setToolbarItems(self.selectToolbarItems(), animated: true)
+		configureToolBars()
 	}
 	
 	@objc func selectAll(button: UIBarButtonItem = UIBarButtonItem()) {
@@ -225,7 +227,7 @@ class FolderEditorTableView : FileListViewController
 	@objc func selectCancel(button: UIBarButtonItem = UIBarButtonItem()) {
 		self.setEditing(false, animated:false )
 		self.tableView.setEditing(false, animated: false)
-		self.setToolbarItems(self.navigationToolItems(), animated: true)
+		configureToolBars()
 	}
 	
 	@objc func actionAdd(button: UIBarButtonItem = UIBarButtonItem()) {

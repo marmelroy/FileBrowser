@@ -65,7 +65,7 @@ class SelectFolderViewController : FileListViewController
 		
 		let stateForSelect = state.copy() as! FileBrowserState
 		stateForSelect.allowSearch = false
-		stateForSelect.includeIndex = false
+		stateForSelect.setIncludeIndex(false)
 		stateForSelect.cellAcc = .none
 		stateForSelect.showOnlyFolders = true
 		

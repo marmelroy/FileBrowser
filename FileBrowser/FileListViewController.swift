@@ -158,7 +158,7 @@ class FileListViewController: UIViewController {
 	
     func indexFiles() {
 		let selector: Selector = #selector(getter: UIPrinter.displayName)
-		if fileBrowserState.includeIndex
+		if fileBrowserState.shouldIncludeIndex()
 		{
 			sections = Array(repeating: [], count: collation.sectionTitles.count)
 			if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{

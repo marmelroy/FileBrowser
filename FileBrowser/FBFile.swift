@@ -130,11 +130,44 @@ open class FBFile: NSObject {
 		return false
 	}
 	
+	static let dateFormatter = DateFormatter()
+	
+	open func textForAttribute( _ attrib : FBFileAttributes ) -> String
+	{
+		switch attrib {
+		case .DateAdded:
+			FBFile.dateFormatter.dateStyle = .short
+			FBFile.dateFormatter.timeStyle = .short
+			return FBFile.dateFormatter.string(from: getFileAddedDate())
+		case .DateCreated:
+			FBFile.dateFormatter.dateStyle = .short
+			FBFile.dateFormatter.timeStyle = .short
+			return FBFile.dateFormatter.string(from: getCreationDate())
+		case .DateModified:
+			FBFile.dateFormatter.dateStyle = .short
+			FBFile.dateFormatter.timeStyle = .short
+			return FBFile.dateFormatter.string(from: getModificationDate())
+		case .FileSize:
+			return String_GetDisplayTextForFileSize(file: self, displayType: false)
+		case .FileName:
+			return displayName
+		case .FileType:
+			return type.rawValue
+		case .None:
+			return ""
+		}
+	}
+	
 	open func getFileSize() -> Int
 	{
 		return 0
 	}
 	
+	open func getFileAddedDate() -> Date
+	{
+		return Date()
+	}
+
 	open func getCreationDate() -> Date
 	{
 		return Date()

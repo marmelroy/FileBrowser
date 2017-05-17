@@ -8,18 +8,31 @@ import Foundation
 
 class FileBrowserState : NSObject, NSCopying
 {
+	// Overrides
 	var dataSource: FileBrowserDataSource!
 	var delegate: FileBrowserDelegate?
-	var options: FileBrowserOptions?
-	
 	var didSelectFile: ((FBFile) -> ())?
+	
+	// Utility
 	let previewManager = PreviewManager()
 	
-	var includeIndex: Bool = true
+	// Configuration
+	var options: FileBrowserOptions?
+	fileprivate var includeIndex: Bool = true
 	var showOnlyFolders: Bool = false
 	var cellAcc: UITableViewCellAccessoryType = .detailButton
 	var allowSearch: Bool = true
 	var cellShowDetail: Bool = false
+	
+	public func shouldIncludeIndex() -> Bool
+	{
+		return includeIndex && (options?.List_ShowIndex ?? true)
+	}
+	
+	public func setIncludeIndex(_ showIndex: Bool )
+	{
+		includeIndex = showIndex
+	}
 
 	convenience init(dataSource: FileBrowserDataSource)
 	{
@@ -245,4 +258,12 @@ class FileBrowserState : NSObject, NSCopying
 			delegate.displayOptionsFrom(viewController)
 		}
 	}
+	
+	//MARK: UI
+	
+	func getDoneButton( target: Any?, action: Selector? ) -> UIBarButtonItem
+	{
+		return UIBarButtonItem(barButtonSystemItem: .bookmarks, target: target, action: action)
+	}
+
 }

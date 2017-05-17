@@ -9,7 +9,23 @@ import Foundation
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
-	var file: FBFile!
+	var file: FBFile! {didSet {
+		self.title = file.displayName
+		if imageView != nil
+		{
+			do {
+				imageView.removeFromSuperview()
+				imageView = UIImageView(image: UIImage(data: try state.dataSource.data(forFile: file)))
+				setZoom = false
+				scrollView.contentSize = imageView.bounds.size
+				scrollView.addSubview(imageView)
+				
+				setZoomScale( setInitialScale: true )
+			} catch {
+				print(error)
+    		}
+		}
+		}}
 	var state: FileBrowserState!
 	
 	var imageView : UIImageView!
@@ -21,9 +37,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
 	convenience init (file: FBFile, state: FileBrowserState) {
 		self.init(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: ImageViewController.self))
-		self.file = file
 		self.state = state
-		self.title = file.displayName
+		self.file = file
 		self.edgesForExtendedLayout = UIRectEdge()
 		
 		//let configuration = URLSessionConfiguration.default
@@ -144,6 +159,17 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		// Set nav bar items on right
+		// Down and left
+		var navItems = [UIBarButtonItem]()
+		
+		navItems.append(UIBarButtonItem(title: ">", style: .plain, target: self, action: #selector(ImageViewController.nextFile(button:))))
+		navItems.append(UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(ImageViewController.prevFile(button:))))
+		
+		self.navigationItem.rightBarButtonItems = navItems
+		
+		// TODO: update disable/enable states of these
+		
 		// Add toolbar items to this view
 		var toolbarItems = [UIBarButtonItem]()
 		
@@ -169,6 +195,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		
 		toolbarItems.append(UIBarButtonItem(title: "Details", style: .plain, target: self, action: #selector(ImageViewController.detailsAction(button:))))
 
+		toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+		
+		toolbarItems.append(state.getDoneButton(target: self, action: #selector(done(button:))))
+
 		self.setToolbarItems(toolbarItems, animated: false);
 		
 		
@@ -177,6 +207,37 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		// Make sure navigation bar is visible
 		self.navigationController?.isNavigationBarHidden = false
 		self.navigationController?.setToolbarHidden(false, animated: false)
+	}
+	
+	@objc func done(button: UIBarButtonItem)
+	{
+		self.dismiss(animated: true, completion: nil)
+	}
+	
+	@objc func nextFile(button: UIBarButtonItem)
+	{
+		state.dataSource.fileInSameDirectory(after: self.file, callback: { result in
+			switch result
+			{
+			case .error(let error):
+				print("Error going to next file:\(error.localizedDescription)")
+			case .success(let newFile):
+				self.file = newFile
+			}
+		})
+	}
+	
+	@objc func prevFile(button: UIBarButtonItem)
+	{
+		state.dataSource.fileInSameDirectory(before: self.file, callback: { result in
+			switch result
+			{
+			case .error(let error):
+				print("Error going to next file:\(error.localizedDescription)")
+			case .success(let newFile):
+				self.file = newFile
+			}
+		})
 	}
 	
 	@objc func qlAction(button: UIBarButtonItem)
