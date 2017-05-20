@@ -41,6 +41,10 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	var fileBrowserState: FileBrowserState!
 	var fromImageViewer: Bool = false
 	
+	// Cache
+	var imageResolutionPixels: String?
+	// jpeg compression ratio?
+	
 	//MARK: Lifecycle
 	
 	convenience init (file: FBFile, state: FileBrowserState, fromImageViewer: Bool = false) {
@@ -77,6 +81,34 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 		// Make sure navigation bar is visible
 		self.navigationController?.isNavigationBarHidden = false
 		self.navigationController?.hidesBarsOnTap = false
+		
+		// refresh file metadata
+		
+		// Compute resolution information
+		if (imageResolutionPixels == nil) && self.file.type.isImage()
+		{
+			DispatchQueue.global(qos: .default).async {
+				do
+				{
+					let fileData = try self.fileBrowserState.dataSource.data(forFile: self.file)
+					if let image = UIImage(data: fileData)
+					{
+						self.imageResolutionPixels = "\(Int(image.size.width * image.scale)) x \(Int(image.size.height * image.scale)) pixels";
+					}
+					else
+					{
+						self.imageResolutionPixels = "?"
+					}
+				}
+				catch
+				{
+					self.imageResolutionPixels = error.localizedDescription
+				}
+				DispatchQueue.main.async {
+					self.tableView.reloadData()
+				}
+			}
+		}
 	}
 	
 	@objc func dismiss(button: UIBarButtonItem = UIBarButtonItem()) {
@@ -109,6 +141,9 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 		case 4:
 			cell.textLabel?.text = "iCloud"
 			cell.detailTextLabel?.text = file.isInICloud() ? "Yes" : "No"
+		case 5:
+			cell.textLabel?.text = "Resolution (W x H)"
+			cell.detailTextLabel?.text = imageResolutionPixels != nil ? imageResolutionPixels : "-"
 		default:
 			break;
 		}
@@ -140,7 +175,16 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 5
+		if section == 0
+		{
+			var numRows : Int = 5
+			numRows += imageResolutionPixels != nil ? 1 : 0
+			return numRows
+		}
+		else
+		{
+			return 5
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

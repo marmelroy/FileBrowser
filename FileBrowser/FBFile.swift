@@ -237,10 +237,13 @@ open class FBFile: NSObject {
 public enum FBFileType: String {
     /// Directory
     case Directory = "directory"
+	/// BMP file
+	case BMP = "bmp"
     /// GIF file
     case GIF = "gif"
     /// JPG file
     case JPG = "jpg"
+	case JPEG = "jpeg"
     /// PLIST file
     case JSON = "json"
     /// PDF file
@@ -256,7 +259,17 @@ public enum FBFileType: String {
 	case TEXT = "text"
     /// Any file
     case Default = "file"
-    
+	
+	public func isImage() -> Bool
+	{
+		switch self {
+		case .JPG, .JPEG, .PNG, .GIF, .BMP:
+			return true
+		default:
+			return false
+		}
+	}
+	
     /**
      Get representative image for file type
      
@@ -267,7 +280,7 @@ public enum FBFileType: String {
         var fileName = String()
         switch self {
         case .Directory: fileName = "folder@2x.png"
-        case .JPG, .PNG, .GIF: fileName = "image@2x.png"
+        case .JPG, .JPEG, .BMP, .PNG, .GIF: fileName = "image@2x.png"
         case .PDF: fileName = "pdf@2x.png"
         case .ZIP: fileName = "zip@2x.png"
         default: fileName = "file@2x.png"

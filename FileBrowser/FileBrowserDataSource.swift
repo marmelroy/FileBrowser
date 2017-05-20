@@ -22,6 +22,18 @@ public protocol FileBrowserDataSource {
 
 extension FileBrowserDataSource {
 	
+	public func dataNoThrow(forFile file: FBFile) -> Data? {
+		var theData : Data?
+		
+		do {
+			theData = try data(forFile: file)
+		} catch {
+			print("Error:\(error) getting data for file:\(file.displayName)")
+		}
+		return theData
+	}
+	
+	
     public func data(forFile file: FBFile) throws -> Data {
         let url = try dataURL(forFile: file)
         return try Data(contentsOf: url)

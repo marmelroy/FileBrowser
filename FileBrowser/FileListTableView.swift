@@ -37,7 +37,30 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         cell!.selectionStyle = .blue
         let selectedFile = fileForIndexPath(indexPath)
         cell!.textLabel?.text = selectedFile.displayName
-        cell!.imageView?.image = selectedFile.type.image()
+		if selectedFile.type.isImage() && (fileBrowserState.options?.List_ShowImageThumbnails ?? false)
+		{
+			if let imageData = fileBrowserState.dataSource.dataNoThrow(forFile: selectedFile)
+			{
+				if let imageForUI = UIImage(data: imageData)
+				{
+					// clip the image to aspect ratio
+					//if imageForUI.size
+					cell!.imageView?.image = imageForUI
+				}
+				else
+				{
+					cell!.imageView?.image = selectedFile.type.image()
+				}
+			}
+			else
+			{
+				cell!.imageView?.image = selectedFile.type.image()
+			}
+		}
+		else
+		{
+			cell!.imageView?.image = selectedFile.type.image()
+		}
 		
 		cell!.textLabel?.adjustsFontSizeToFitWidth = true
 		cell!.textLabel?.minimumScaleFactor = 0.5
@@ -49,7 +72,31 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 		
 		if fileBrowserState.cellShowDetail
 		{
-			cell!.detailTextLabel?.text = String_GetDisplayTextForFileSize(file: selectedFile, displayType: false)
+			let leftDetailAttribute : FBFileAttributes = fileBrowserState.options?.FileDetail_Left ?? FBFileAttributes.FileSize
+			let rightDetailAttribute : FBFileAttributes = fileBrowserState.options?.FileDetail_Right ?? FBFileAttributes.DateModified
+			
+			let leftDetailText = selectedFile.textForAttribute(leftDetailAttribute)
+			let rightDetailText = selectedFile.textForAttribute(rightDetailAttribute)
+			
+			if leftDetailText.characters.count > 0 || rightDetailText.characters.count > 0
+			{
+				let attString = NSMutableAttributedString.init(string: "\(leftDetailText)\t\(rightDetailText)")
+				
+				let style : NSMutableParagraphStyle = NSMutableParagraphStyle()
+				let adjustment : CGFloat = fileBrowserState.shouldIncludeIndex() ? 15 : 0 //TODO: replace with widht of index
+				let rightLocation : CGFloat = cell!.frame.width - (115 + adjustment)
+				style.tabStops = [NSTextTab.init(textAlignment: .right, location: rightLocation, options: [:])]
+				
+				attString.beginEditing()
+				attString.addAttribute(NSParagraphStyleAttributeName, value: style, range: NSMakeRange(0, leftDetailText.characters.count + rightDetailText.characters.count))
+				attString.endEditing()
+				
+				cell!.detailTextLabel?.attributedText = attString
+			}
+			else
+			{
+				cell!.detailTextLabel?.text = nil
+			}
 		}
 		
 		cell!.accessoryType = fileBrowserState.cellAcc
@@ -64,11 +111,11 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (fileBrowserState.includeIndex == false) || (searchController?.isActive ?? false) {
+        if (fileBrowserState.shouldIncludeIndex() == false) || (searchController?.isActive ?? false) {
             return nil
         }
         if sections[section].count > 0 {
-            return collation.sectionTitles[section]
+            return fileBrowserState.collation.sectionTitles[section]
         }
         else {
             return nil
@@ -76,18 +123,18 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if (fileBrowserState.includeIndex == false) || (searchController?.isActive ?? false)
+        if (fileBrowserState.shouldIncludeIndex() == false) || (searchController?.isActive ?? false)
 		{
             return nil
         }
-        return collation.sectionIndexTitles
+        return fileBrowserState.collation.sectionIndexTitles
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        if (fileBrowserState.includeIndex == false) || (searchController?.isActive ?? false) {
+        if (fileBrowserState.shouldIncludeIndex() == false) || (searchController?.isActive ?? false) {
             return 0
         }
-        return collation.section(forSectionIndexTitle: index)
+        return fileBrowserState.collation.section(forSectionIndexTitle: index)
     }
     
     
