@@ -40,7 +40,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
 		}
 	}
 	
-	func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool, state: FileBrowserState) -> UIViewController {
+	static func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool, state: FileBrowserState) -> UIViewController {
         if data == nil && file.isRemoteFile {
             return LoadingViewController(file: file)
         }

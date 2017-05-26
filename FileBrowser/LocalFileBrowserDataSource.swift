@@ -8,10 +8,10 @@
 
 import Foundation
 
-class LocalFileBrowserDataSource: FileBrowserDataSource {
+public class LocalFileBrowserDataSource: FileBrowserDataSource {
     
-    var excludesFileExtensions: [String]? = nil
-    var excludesFilepaths: [URL]? = nil
+    public var excludesFileExtensions: [String]? = nil
+    public var excludesFilepaths: [URL]? = nil
     var excludesWithEmptyFilenames = false
     
     
@@ -24,11 +24,11 @@ class LocalFileBrowserDataSource: FileBrowserDataSource {
 		rootUrl = customRootUrl
 	}
 	
-    var rootDirectory: FBFile {
+    public var rootDirectory: FBFile {
         return LocalFBFile(path: rootUrl)
     }
     
-    func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
+    public func provideContents(ofDirectory directory: FBFile, callback: @escaping (Result<[FBFile]>) -> ()) {
         
         // Get contents
         do {
@@ -54,7 +54,7 @@ class LocalFileBrowserDataSource: FileBrowserDataSource {
         }
     }
     
-    func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary? {
+    public func attributes(ofItemWithUrl fileUrl: URL) -> NSDictionary? {
         let path = fileUrl.path
         do {
             let attributes = try fileManager.attributesOfItem(atPath: path) as NSDictionary
@@ -64,7 +64,7 @@ class LocalFileBrowserDataSource: FileBrowserDataSource {
         }
     }
     
-    func dataURL(forFile file: FBFile) throws -> URL {
+    public func dataURL(forFile file: FBFile) throws -> URL {
         return file.path
     }
 

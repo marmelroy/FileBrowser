@@ -6,19 +6,19 @@
 
 import Foundation
 
-class FileBrowserState : NSObject, NSCopying
+public class FileBrowserState : NSObject, NSCopying
 {
 	// Overrides
-	var dataSource: FileBrowserDataSource!
-	var delegate: FileBrowserDelegate?
-	var didSelectFile: ((FBFile) -> ())?
+	public var dataSource: FileBrowserDataSource!
+	public var delegate: FileBrowserDelegate?
+	public var didSelectFile: ((FBFile) -> ())?
 	
 	// Utility
 	let previewManager = PreviewManager()
 	let collation = UILocalizedIndexedCollation.current()
 
 	// Configuration
-	var options: FileBrowserOptions?
+	public var options: FileBrowserOptions?
 	fileprivate var includeIndex: Bool = true
 	var showOnlyFolders: Bool = false
 	var cellAcc: UITableViewCellAccessoryType = .detailButton
@@ -35,7 +35,7 @@ class FileBrowserState : NSObject, NSCopying
 		includeIndex = showIndex
 	}
 
-	convenience init(dataSource: FileBrowserDataSource)
+	public convenience init(dataSource: FileBrowserDataSource)
 	{
 		self.init()
 		
@@ -67,7 +67,7 @@ class FileBrowserState : NSObject, NSCopying
 		}
 		else
 		{
-			let filePreview = previewManager.previewViewControllerForFile(file, data: nil, fromNavigation: true, state: self)
+			let filePreview = PreviewManager.previewViewControllerForFile(file, data: nil, fromNavigation: true, state: self)
 			return filePreview
 		}
 

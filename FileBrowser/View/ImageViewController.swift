@@ -7,7 +7,7 @@
 import Foundation
 
 
-class ImageViewController: UIViewController, UIScrollViewDelegate {
+public class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
 	var file: FBFile! {didSet {
 		self.title = file.displayName
@@ -35,7 +35,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	static let ZOOM_STEP : CGFloat = 2.0
 	
 	
-	convenience init (file: FBFile, state: FileBrowserState) {
+	public convenience init (file: FBFile, state: FileBrowserState) {
 		self.init(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: ImageViewController.self))
 		self.state = state
 		self.file = file
@@ -73,7 +73,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		scrollView.maximumZoomScale = 3.0
 	}
 	
-	override func viewDidLoad() {
+	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
 		
@@ -107,7 +107,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		//self.navigationItem.rightBarButtonItem = shareButton
 	}
 	
-	func scrollViewDidZoom(_ scrollView: UIScrollView)
+	public func scrollViewDidZoom(_ scrollView: UIScrollView)
 	{
 		let imageViewSize = imageView.frame.size
 		let scrollViewSize = scrollView.bounds.size
@@ -119,7 +119,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
 	}
 	
-	override var prefersStatusBarHidden: Bool
+	override public var prefersStatusBarHidden: Bool
 	{
 		let hidden = self.navigationController?.isNavigationBarHidden ?? false
 		
@@ -136,10 +136,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		return hidden
 	}
 	
-	override func viewWillLayoutSubviews() {
+	override public func viewWillLayoutSubviews() {
 	}
 	
-	override func viewDidLayoutSubviews() {
+	override public func viewDidLayoutSubviews() {
 		if setZoom == false
 		{
 			setZoomScale( setInitialScale: true )
@@ -157,7 +157,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 		return self.imageView;
 	}
 	
-	override func viewWillAppear(_ animated: Bool)
+	override public func viewWillAppear(_ animated: Bool)
 	{
 		super.viewWillAppear(animated)
 		

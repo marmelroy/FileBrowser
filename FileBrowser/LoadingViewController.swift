@@ -55,8 +55,7 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     }
     
     func showFile(data: Data?) {
-        let previewManager = PreviewManager()
-        let controller = previewManager.previewViewControllerForFile(self.file, data: data, fromNavigation: true, state: FileBrowserState(dataSource: LocalFileBrowserDataSource()))
+        let controller = PreviewManager.previewViewControllerForFile(self.file, data: data, fromNavigation: true, state: FileBrowserState(dataSource: LocalFileBrowserDataSource()))
         DispatchQueue.main.async {
             if let nav = self.navigationController {
                 //nav.pushViewController(controller, animated: true)
@@ -69,11 +68,11 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
             } else {
                 self.present(controller, animated: true, completion: nil)
             }
-            if let ql = (controller as? QLPreviewController) ?? (controller as? PreviewTransitionViewController)?.quickLookPreviewController {
-                // fix for dataSource magically disappearing because hey let's store it in a weak variable in QLPreviewController
-                ql.dataSource = previewManager
-                ql.reloadData()
-            }
+//            if let ql = (controller as? QLPreviewController) ?? (controller as? PreviewTransitionViewController)?.quickLookPreviewController {
+//                // fix for dataSource magically disappearing because hey let's store it in a weak variable in QLPreviewController
+//                ql.dataSource = previewManager
+//                ql.reloadData()
+//            }
         }
     }
     
