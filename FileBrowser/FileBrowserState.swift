@@ -238,7 +238,7 @@ public class FileBrowserState : NSObject, NSCopying
 	func newFolder( directory: FBFile, controller: UIViewController, action: @escaping ()->() )
 	{
 		// ask for name
-		Alert_AskForText(title: "New Folder", question: "Name for new folder", presenter: controller, okHandler:{
+		AlertUtilities.Alert_AskForText(title: "New Folder", question: "Name for new folder", presenter: controller, okHandler:{
 			(alert: UIAlertController) in
 			// Create folder
 			
@@ -304,7 +304,7 @@ public class FileBrowserState : NSObject, NSCopying
 	
 	//MARK: UI
 	
-	func getDoneButton( target: Any?, action: Selector? ) -> UIBarButtonItem
+	public func getDoneButton( target: Any?, action: Selector? ) -> UIBarButtonItem
 	{
 		return UIBarButtonItem(barButtonSystemItem: .bookmarks, target: target, action: action)
 	}

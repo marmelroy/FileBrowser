@@ -36,7 +36,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			Alert_Show(title: "Error", message: "An error occured when trying to delete file:\(String(describing: self.fileLocation)) Error:\(error)")
+			AlertUtilities.Alert_Show(title: "Error", message: "An error occured when trying to delete file:\(String(describing: self.fileLocation)) Error:\(error)")
 		}
 	}
 
@@ -64,7 +64,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			Alert_Show(title: "Error", message: "An error occured when trying to create a directory:\(String(describing: self.fileLocation)) Error:\(error)")
+			AlertUtilities.Alert_Show(title: "Error", message: "An error occured when trying to create a directory:\(String(describing: self.fileLocation)) Error:\(error)")
 		}
 		return false
 	}
@@ -96,7 +96,7 @@ open class LocalFBFile : FBFile
 				
 				if data.write(to: dirPath, atomically: true) == false
 				{
-					Alert_Show(title: "Error", message: "Could not create file.")
+					AlertUtilities.Alert_Show(title: "Error", message: "Could not create file.")
 				}
 				else
 				{
@@ -105,7 +105,7 @@ open class LocalFBFile : FBFile
 			}
 			else
 			{
-				Alert_Show(title: "File Exists", message: "Could not create file as file with that name already exists.")
+				AlertUtilities.Alert_Show(title: "File Exists", message: "Could not create file as file with that name already exists.")
 			}
 		}
 		return false
@@ -214,7 +214,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			Alert_Show(title: "Error moving file", message: error.localizedDescription)
+			AlertUtilities.Alert_Show(title: "Error moving file", message: error.localizedDescription)
 		}
 		
 		return self
@@ -237,7 +237,7 @@ open class LocalFBFile : FBFile
 		}
 		catch
 		{
-			Alert_Show(title: "Error renaming file", message: error.localizedDescription)
+			AlertUtilities.Alert_Show(title: "Error renaming file", message: error.localizedDescription)
 		}
 		
 		return self

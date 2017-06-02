@@ -244,7 +244,7 @@ class FolderEditorTableView : FileListViewController
 			// Create new file
 			
 			// ask for name
-			Alert_AskForText(title: "New File", question: "Name for new file", presenter: self, okHandler:{
+			AlertUtilities.Alert_AskForText(title: "New File", question: "Name for new file", presenter: self, okHandler:{
 				(alert: UIAlertController) in
 				// Create file
 				

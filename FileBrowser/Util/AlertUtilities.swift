@@ -6,50 +6,52 @@
 
 import Foundation
 
-func Alert_AskForText( title: String, question: String, presenter: UIViewController, okHandler: ((UIAlertController) -> Swift.Void)? = nil, cancelHandler: ((UIAlertController) -> Swift.Void)? = nil )
-
+public class AlertUtilities
 {
-	let alertController = UIAlertController(title: title, message: question, preferredStyle: .alert)
-	
-	alertController.addTextField(configurationHandler: nil)
-	
-	let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction) in
-		if let cancelHandler = cancelHandler
-		{
-			cancelHandler(alertController)
-		}
-	} )
-	let okAction = UIAlertAction(title: "OK", style: .default, handler: {(action: UIAlertAction) in
-		if let okHandler = okHandler
-		{
-			okHandler(alertController)
-		}
-	} )
-
-	alertController.addAction(cancelAction)
-	alertController.addAction(okAction)
-	
-	presenter.present(alertController, animated: true, completion: nil)
-}
-
-func Alert_Show(title: String, message: String, presenter: UIViewController? = nil )
-{
-	let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-	
-	let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil )
-	
-	alertController.addAction(cancelAction)
-	
-	if let presenter = presenter
+	static func Alert_AskForText( title: String, question: String, presenter: UIViewController, okHandler: ((UIAlertController) -> Swift.Void)? = nil, cancelHandler: ((UIAlertController) -> Swift.Void)? = nil )
+		
 	{
+		let alertController = UIAlertController(title: title, message: question, preferredStyle: .alert)
+		
+		alertController.addTextField(configurationHandler: nil)
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction) in
+			if let cancelHandler = cancelHandler
+			{
+				cancelHandler(alertController)
+			}
+		} )
+		let okAction = UIAlertAction(title: "OK", style: .default, handler: {(action: UIAlertAction) in
+			if let okHandler = okHandler
+			{
+				okHandler(alertController)
+			}
+		} )
+		
+		alertController.addAction(cancelAction)
+		alertController.addAction(okAction)
+		
 		presenter.present(alertController, animated: true, completion: nil)
 	}
-	else
+	
+	public static func Alert_Show(title: String, message: String, presenter: UIViewController? = nil )
 	{
-		alertController.show()
+		let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+		
+		let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil )
+		
+		alertController.addAction(cancelAction)
+		
+		if let presenter = presenter
+		{
+			presenter.present(alertController, animated: true, completion: nil)
+		}
+		else
+		{
+			alertController.show()
+		}
 	}
 }
-
 
 extension UIAlertController {
 	
