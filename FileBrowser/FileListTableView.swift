@@ -29,14 +29,28 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FileCell"
 		let reuseCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
-        var cell = reuseCell
-        if cell == nil
+		var cell : UITableViewCell
+        if reuseCell == nil
 		{
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         }
-        cell!.selectionStyle = .blue
+		else
+		{
+			cell = reuseCell!
+		}
+        cell.selectionStyle = .blue
         let selectedFile = fileForIndexPath(indexPath)
-        cell!.textLabel?.text = selectedFile.displayName
+		
+        cell.textLabel?.text = selectedFile.displayName
+		cell.textLabel?.adjustsFontSizeToFitWidth = true
+		cell.textLabel?.minimumScaleFactor = 0.5
+		
+		if #available(iOS 9, *) {
+			cell.textLabel?.allowsDefaultTighteningForTruncation = true
+		} else {
+		}
+
+		// Image Thumbnail
 		if selectedFile.type.isImage() && (fileBrowserState.options?.List_ShowImageThumbnails ?? false)
 		{
 			if let imageData = fileBrowserState.dataSource.dataNoThrow(forFile: selectedFile)
@@ -45,31 +59,25 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 				{
 					// clip the image to aspect ratio
 					//if imageForUI.size
-					cell!.imageView?.image = imageForUI
+					cell.imageView?.image = imageForUI
 				}
 				else
 				{
-					cell!.imageView?.image = selectedFile.type.image()
+					cell.imageView?.image = selectedFile.type.image()
 				}
 			}
 			else
 			{
-				cell!.imageView?.image = selectedFile.type.image()
+				cell.imageView?.image = selectedFile.type.image()
 			}
 		}
 		else
 		{
-			cell!.imageView?.image = selectedFile.type.image()
+			cell.imageView?.image = selectedFile.type.image()
 		}
 		
-		cell!.textLabel?.adjustsFontSizeToFitWidth = true
-		cell!.textLabel?.minimumScaleFactor = 0.5
 		
-		if #available(iOS 9, *) {
-			cell!.textLabel?.allowsDefaultTighteningForTruncation = true
-		} else {
-		}
-		
+		// Detail information
 		if fileBrowserState.cellShowDetail
 		{
 			let leftDetailAttribute : FBFileAttributes = fileBrowserState.options?.FileDetail_Left ?? FBFileAttributes.FileSize
@@ -83,24 +91,32 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 				let attString = NSMutableAttributedString.init(string: "\(leftDetailText)\t\(rightDetailText)")
 				
 				let style : NSMutableParagraphStyle = NSMutableParagraphStyle()
-				let adjustment : CGFloat = fileBrowserState.shouldIncludeIndex() ? 15 : 0 //TODO: replace with widht of index
-				let rightLocation : CGFloat = cell!.frame.width - (115 + adjustment)
+				let adjustment : CGFloat = fileBrowserState.shouldIncludeIndex() ? 15 : 0 //TODO: replace with width of index
+				let rightLocation : CGFloat = cell.frame.width - (115 + adjustment)
 				style.tabStops = [NSTextTab.init(textAlignment: .right, location: rightLocation, options: [:])]
 				
 				attString.beginEditing()
 				attString.addAttribute(NSParagraphStyleAttributeName, value: style, range: NSMakeRange(0, leftDetailText.characters.count + rightDetailText.characters.count))
 				attString.endEditing()
 				
-				cell!.detailTextLabel?.attributedText = attString
+				cell.detailTextLabel?.attributedText = attString
 			}
 			else
 			{
-				cell!.detailTextLabel?.text = nil
+				cell.detailTextLabel?.text = nil
 			}
 		}
 		
-		cell!.accessoryType = fileBrowserState.cellAcc
-        return cell!
+		// Disclosure (Info) button
+		if fileBrowserState.options?.File_ShowDisclosureButton ?? true
+		{
+			cell.accessoryType = fileBrowserState.cellAcc
+		}
+		else
+		{
+			cell.accessoryType = .none
+		}
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

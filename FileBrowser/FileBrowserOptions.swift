@@ -25,6 +25,8 @@ import Foundation
 	public var List_SortReversed : Bool = false
 	public var FileDetail_Left : FBFileAttributes = .FileSize
 	public var FileDetail_Right : FBFileAttributes = .DateModified
+	public var File_ShowDisclosureButton : Bool = true
+	public var Folder_ShowItemCount : Bool = false
 	
 	// Static
 	public static var Default_TextFile_font: UIFont { get {return UIFont.preferredFont(forTextStyle: .body)} }
@@ -56,6 +58,9 @@ import Foundation
 		aCoder.encode(List_SortReversed, forKey: "List_SortReversed")
 		aCoder.encode(FileDetail_Left.rawValue, forKey: "FileDetail_Left")
 		aCoder.encode(FileDetail_Right.rawValue, forKey: "FileDetail_Right")
+		
+		aCoder.encode(File_ShowDisclosureButton, forKey: "File_ShowDisclosureButton")
+		aCoder.encode(Folder_ShowItemCount, forKey: "Folder_ShowItemCount")
 	}
 	
 	required public init?(coder aDecoder: NSCoder)
@@ -76,6 +81,10 @@ import Foundation
 		
 		self.FileDetail_Left = FBFileAttributes(rawValue: aDecoder.decodeInteger(forKey: "FileDetail_Left")) ?? .FileSize
 		self.FileDetail_Right = FBFileAttributes(rawValue: aDecoder.decodeInteger(forKey: "FileDetail_Right")) ?? .DateModified
+		
+		self.File_ShowDisclosureButton = aDecoder.decodeBool(forKey: "File_ShowDisclosureButton")
+		self.Folder_ShowItemCount = aDecoder.decodeBool(forKey: "Folder_ShowItemCount")
+
 	}
 	
 }

@@ -306,7 +306,8 @@ public class FileBrowserState : NSObject, NSCopying
 	
 	public func getDoneButton( target: Any?, action: Selector? ) -> UIBarButtonItem
 	{
-		return UIBarButtonItem(barButtonSystemItem: .bookmarks, target: target, action: action)
+		return UIBarButtonItem(image: UIImage(named:"switch_tasks_icon"), style: .plain, target: target, action: action)
+		//return UIBarButtonItem(barButtonSystemItem: .bookmarks, target: target, action: action)
 	}
 
 }

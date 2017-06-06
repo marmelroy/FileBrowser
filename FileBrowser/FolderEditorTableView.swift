@@ -129,7 +129,8 @@ class FolderEditorTableView : FileListViewController
 
 		if optionsBtn == nil
 		{
-			optionsBtn = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(FolderEditorTableView.actionOptions(button:)))
+			optionsBtn = UIBarButtonItem( image: UIImage(named: "gear_icon"), style: .plain,  target: self, action: #selector(FolderEditorTableView.actionOptions(button:)))
+			//optionsBtn = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(FolderEditorTableView.actionOptions(button:)))
 		}
 		items.append( optionsBtn! )
 		
