@@ -29,7 +29,8 @@ import Foundation
 	public var Folder_ShowItemCount : Bool = false
 	
 	// Static
-	public static var Default_TextFile_font: UIFont { get {return UIFont.preferredFont(forTextStyle: .body)} }
+	public static var Default_TextFile_font: UIFont { get {return UIFont(name: "Helvetica", size: 16) ?? UIFont.preferredFont(forTextStyle: .body)} }
+//	public static var Default_TextFile_font: UIFont { get {return UIFont.preferredFont(forTextStyle: .body)} }
 	public static let Default_TextFile_textColorDay: UIColor = UIColor.black
 	public static let Default_TextFile_backgroundColorDay: UIColor = UIColor.white
 	
