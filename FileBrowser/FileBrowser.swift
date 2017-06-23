@@ -85,7 +85,7 @@ open class FileBrowser: UINavigationController {
 		}
 		else
 		{
-			userViewController = state.viewControllerFor(file: directory)
+			userViewController = state.viewControllerFor(file: directory, fileList: nil)
 		}
 		var vcs = [UIViewController]()
 		for folder in folderList

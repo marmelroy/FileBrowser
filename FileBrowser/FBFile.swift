@@ -9,8 +9,22 @@
 import Foundation
 import UIKit
 
+
+public protocol FBFileProto
+{
+	// TODO: fix this to have the actual members such as displayNae, path, etc
+	var file : FBFile? { get }
+	
+	var image: UIImage? { get }
+}
+
 /// FBFile is a class representing a file in FileBrowser
-open class FBFile: NSObject {
+open class FBFile: NSObject, FBFileProto {
+	// Temp implementation for FBFileProto
+	public var file : FBFile? { get { return self } }
+	public var image: UIImage? { get { return nil } }
+	//
+	
     /// Display name. String.
     open var displayName: String
     // is Directory. Bool.

@@ -258,7 +258,7 @@ class FileDetailViewController: UIViewController, UITableViewDataSource, UITable
 				}
 				else
 				{
-					fileBrowserState.viewFile(file: file, controller: self)
+					fileBrowserState.viewFile(file: file, controller: self, fileList: nil)
 				}
 			case FileDetailViewController.RENAME_ACTION:
 				fileBrowserState.renameFile( file: file, controller: self, completion: {(file: FBFile) in

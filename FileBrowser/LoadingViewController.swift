@@ -55,7 +55,7 @@ class LoadingViewController: UIViewController, URLSessionDownloadDelegate, URLSe
     }
     
     func showFile(data: Data?) {
-        let controller = PreviewManager.previewViewControllerForFile(self.file, data: data, fromNavigation: true, state: FileBrowserState(dataSource: LocalFileBrowserDataSource()))
+        let controller = PreviewManager.previewViewControllerForFile(self.file, data: data, state: FileBrowserState(dataSource: LocalFileBrowserDataSource()), fileList: nil)
         DispatchQueue.main.async {
             if let nav = self.navigationController {
                 //nav.pushViewController(controller, animated: true)

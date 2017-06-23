@@ -41,7 +41,23 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .blue
         let selectedFile = fileForIndexPath(indexPath)
 		
-        cell.textLabel?.text = selectedFile.displayName
+		if selectedFile.isDirectory
+		{
+			if fileBrowserState.options?.Folder_ShowItemCount ?? false
+			{
+				//TODO: count items in directory and then put in ()
+				cell.textLabel?.text = selectedFile.displayName
+			}
+			else
+			{
+				cell.textLabel?.text = selectedFile.displayName
+			}
+		}
+		else
+		{
+			cell.textLabel?.text = selectedFile.displayName
+		}
+		
 		cell.textLabel?.adjustsFontSizeToFitWidth = true
 		cell.textLabel?.minimumScaleFactor = 0.5
 		
@@ -122,7 +138,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedFile = fileForIndexPath(indexPath)
         searchController?.isActive = false
-		fileBrowserState.viewFile(file: selectedFile, controller: self)
+		fileBrowserState.viewFile(file: selectedFile, controller: self, fileList: files)
         //tableView.deselectRow(at: indexPath, animated: true)
     }
     

@@ -58,7 +58,7 @@ public class FileBrowserState : NSObject, NSCopying
 		return state
 	}
 	
-	func viewControllerFor( file: FBFile ) -> UIViewController
+	func viewControllerFor( file: FBFile, fileList: [FBFileProto]? ) -> UIViewController
 	{
 		if file.isDirectory
 		{
@@ -67,17 +67,17 @@ public class FileBrowserState : NSObject, NSCopying
 		}
 		else
 		{
-			let filePreview = PreviewManager.previewViewControllerForFile(file, data: nil, fromNavigation: true, state: self)
+			let filePreview = PreviewManager.previewViewControllerForFile(file, data: nil, state: self, fileList: fileList)
 			return filePreview
 		}
 
 	}
 	
-	func viewFile( file: FBFile, controller: UIViewController )
+	func viewFile( file: FBFile, controller: UIViewController, fileList: [FBFileProto]? )
 	{
 		if file.isDirectory
 		{
-			controller.navigationController?.pushViewController(viewControllerFor(file: file), animated: true)
+			controller.navigationController?.pushViewController(viewControllerFor(file: file, fileList: fileList), animated: true)
 		}
 		else {
 			if let didSelectFile = didSelectFile {
@@ -86,7 +86,7 @@ public class FileBrowserState : NSObject, NSCopying
 			}
 			else
 			{
-				controller.navigationController?.pushViewController(viewControllerFor(file: file), animated: true)
+				controller.navigationController?.pushViewController(viewControllerFor(file: file, fileList: fileList), animated: true)
 			}
 		}
 		
@@ -227,7 +227,7 @@ public class FileBrowserState : NSObject, NSCopying
 	func moveFiles( files: [FBFile], controller: UIViewController, sender: Any? )
 	{
 		let vc = SelectFolderViewController.newInstanceForMovingFiles(files: files, state: self, action:{
-			//TODO: move to the new directory
+			//TODO: move to the new directory, may not really want to
 		} )
 		if let vc = vc
 		{

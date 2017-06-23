@@ -43,30 +43,7 @@ class FolderEditorTableView : FileListViewController
 			self.setToolbarItems(self.navigationToolItems(), animated: true)
 		}
 		
-		
-		//self.toolbar = self.navigationController?.toolbar;
-		//self.navigationBar = self.navigationController.navigationBar;
-		//self.navigationBarSuperView = self.navigationBar.superview;
-		
-		//let hideBarsWithGestures = true;
-		
-		//self.navigationController?.hidesBarsOnSwipe = hideBarsWithGestures;
-		//self.navigationController?.hidesBarsWhenKeyboardAppears = hideBarsWithGestures;
-		//self.navigationController?.hidesBarsWhenVerticallyCompact = hideBarsWithGestures;
-		
-//		if (self.hideBarsWithGestures) {
-//			[self.navigationBar addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:&DZNWebViewControllerKVOContext];
-//			[self.navigationBar addObserver:self forKeyPath:@"center" options:NSKeyValueObservingOptionNew context:&DZNWebViewControllerKVOContext];
-//			[self.navigationBar addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:&DZNWebViewControllerKVOContext];
-//		}
-		
-		//if (!DZN_IS_IPAD && self.navigationController.toolbarHidden && self.toolbarItems.count > 0) {
-		//if (self.navigationController?.isToolbarHidden ?? false) && ((self.toolbarItems?.count ?? 0) > 0)
-		//{
-			self.navigationController?.setToolbarHidden(false, animated: false)
-		//}
-		//}
-		//print("Frame: \(self.toolbar?.frame.origin.y)");
+		self.navigationController?.setToolbarHidden(false, animated: false)
     }
 	
 	
@@ -278,10 +255,15 @@ class FolderEditorTableView : FileListViewController
 		guard let selectedPaths = self.tableView.indexPathsForSelectedRows else {return}
 		guard selectedPaths.count > 0 else {return}
 		
+		var prompt = "Delete \(selectedPaths.count) item"
+		if selectedPaths.count > 1
+		{
+			prompt = prompt + "s"
+		}
 		
 		// Need confirm delete
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: {(alert: UIAlertAction!) in
+		let deleteAction = UIAlertAction(title: prompt, style: .destructive, handler: {(alert: UIAlertAction!) in
 			// Perform delete
 			let files = self.allSelectedFiles()
 			
@@ -319,7 +301,7 @@ class FolderEditorTableView : FileListViewController
 			
 			//
 			searchController?.isActive = false
-			fileBrowserState.viewFile(file: selectedFile, controller: self)
+			fileBrowserState.viewFile(file: selectedFile, controller: self, fileList: files)
 			//tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
@@ -327,7 +309,6 @@ class FolderEditorTableView : FileListViewController
 	
 	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
 	{
-		// TODO: probably done, just makes the item selectable
 		return true;
 	}
 	
@@ -337,13 +318,16 @@ class FolderEditorTableView : FileListViewController
 		{
 			let selectedFile = fileForIndexPath(indexPath)
 			selectedFile.delete()
+			self.prepareData(sender: nil)
 		}
 	}
-	
-	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle
-	{
-		return .none;
-	}
+
+	// TODO: for adding more actions
+//	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
+//	{
+//	// add info or move actions + delete
+//	UITableViewRowAction
+//	}
 	
 	func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath)
 	{

@@ -40,7 +40,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
 		}
 	}
 	
-	static func previewViewControllerForFile(_ file: FBFile, data: Data?, fromNavigation: Bool, state: FileBrowserState) -> UIViewController {
+	static func previewViewControllerForFile(_ file: FBFile, data: Data?, state: FileBrowserState, fileList : [FBFileProto]?) -> UIViewController {
         if data == nil && file.isRemoteFile {
             return LoadingViewController(file: file)
         }
@@ -60,7 +60,7 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
 		}
         else
 		{
-			return ImageViewController(file: file, state: state)
+			return ImageViewController(file: file, state: state, fileList: fileList)
         }
     }
     

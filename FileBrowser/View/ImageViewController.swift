@@ -9,22 +9,10 @@ import Foundation
 
 public class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
-	var file: FBFile! {didSet {
-		self.title = file.displayName
-		if imageView != nil
-		{
-			do {
-				imageView.removeFromSuperview()
-				imageView = UIImageView(image: UIImage(data: try state.dataSource.data(forFile: file)))
-				setZoom = false
-				scrollView.contentSize = imageView.bounds.size
-				scrollView.addSubview(imageView)
-				
-				setZoomScale( setInitialScale: true )
-			} catch {
-				print(error)
-    		}
-		}
+	var navFileList: [FBFileProto]?
+	
+	var file: FBFileProto! {didSet {
+		loadImage()
 		}}
 	var state: FileBrowserState!
 	
@@ -35,17 +23,56 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 	static let ZOOM_STEP : CGFloat = 2.0
 	
 	
-	public convenience init (file: FBFile, state: FileBrowserState) {
+	public convenience init (file: FBFile, state: FileBrowserState, fileList: [FBFileProto]?) {
 		self.init(nibName: "WebviewPreviewViewContoller", bundle: Bundle(for: ImageViewController.self))
 		self.state = state
 		self.file = file
+		self.navFileList = fileList
 		self.edgesForExtendedLayout = UIRectEdge()
 		
 		//let configuration = URLSessionConfiguration.default
 		//session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
 	}
 	
+	func loadImage()
+	{
+		guard file != nil else { return }
+		guard file.file != nil else { return }
+		
+		self.title = file.file!.displayName
+		if imageView != nil
+		{
+			imageView.removeFromSuperview()
+		}
+		do
+		{
+			if let theImage = file.image
+			{
+				imageView = UIImageView(image: theImage)
+			}
+			else
+			{
+				imageView = UIImageView(image: UIImage(data: try state.dataSource.data(forFile: file.file!)))
+			}
+			setZoom = false
+			if scrollView != nil
+			{
+				scrollView.contentSize = imageView.bounds.size
+				scrollView.addSubview(imageView)
+				
+				setZoomScale( setInitialScale: true )
+			}
+		} catch {
+			print(error)
+		}
+
+	}
+	
 	func setZoomScale( setInitialScale: Bool = false ) {
+		guard imageView != nil else {
+			return
+		}
+		
 		let imageViewSize = imageView.bounds.size
 		let scrollViewSize = scrollView.bounds.size
 		let widthScale = scrollViewSize.width / imageViewSize.width
@@ -76,35 +103,34 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
-		
-		var image : UIImage?
-		if let fileString = file.fileLocation?.path
+		if imageView == nil
 		{
-			image = UIImage(contentsOfFile: fileString)
+			loadImage()
 		}
 		
-		imageView = UIImageView(image: image)
-		
-		scrollView = UIScrollView(frame: view.bounds)
-		scrollView.backgroundColor = .white
-		scrollView.contentSize = imageView.bounds.size
-		scrollView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
-		//scrollView.contentInset =
-		
-		scrollView.addSubview(imageView)
-		view.addSubview(scrollView)
-		
-		
-		scrollView.delegate = self
-		
-		setZoomScale( setInitialScale: true )
-		
-		setupGestureRecognizer()
-		//self.automaticallyAdjustsScrollViewInsets = false
-		
-		// Add share button
-		//let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
-		//self.navigationItem.rightBarButtonItem = shareButton
+		if imageView != nil
+		{
+			scrollView = UIScrollView(frame: view.bounds)
+			scrollView.backgroundColor = .white
+			scrollView.contentSize = imageView.bounds.size
+			scrollView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
+			//scrollView.contentInset =
+			
+			scrollView.addSubview(imageView)
+			view.addSubview(scrollView)
+			
+			
+			scrollView.delegate = self
+			
+			setZoomScale( setInitialScale: true )
+			
+			setupGestureRecognizer()
+			//self.automaticallyAdjustsScrollViewInsets = false
+			
+			// Add share button
+			//let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(sender:)))
+			//self.navigationItem.rightBarButtonItem = shareButton
+		}
 	}
 	
 	public func scrollViewDidZoom(_ scrollView: UIScrollView)
@@ -170,7 +196,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 		
 		self.navigationItem.rightBarButtonItems = navItems
 		
-		// TODO: update disable/enable states of these
+		// TODO: update disable/enable states of these (navigation buttons)
 		
 		// Add toolbar items to this view
 		var toolbarItems = [UIBarButtonItem]()
@@ -211,6 +237,20 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 		self.navigationController?.setToolbarHidden(false, animated: false)
 	}
 	
+	func indexOfFileIn( list : [FBFileProto], file : FBFileProto ) -> Int?
+	{
+		var index: Int = 0
+		for theFile in list
+		{
+			if theFile.file === file.file
+			{
+				return index
+			}
+			index += 1
+		}
+		return nil
+	}
+	
 	@objc func done(button: UIBarButtonItem)
 	{
 		self.dismiss(animated: true, completion: nil)
@@ -218,43 +258,81 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 	
 	@objc func nextFile(button: UIBarButtonItem)
 	{
-		state.dataSource.fileInSameDirectory(after: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
-			switch result
+		if let navFileList = navFileList
+		{
+			if let curIndex = indexOfFileIn( list: navFileList, file: self.file)
 			{
-			case .error(let error):
-				print("Error going to next file:\(error.localizedDescription)")
-			case .success(let newFile):
-				self.file = newFile
+				let index = curIndex + 1
+				
+				if index < navFileList.endIndex
+				{
+					self.file = navFileList[index]
+				}
 			}
-		})
+		}
+//
+//		state.dataSource.fileInSameDirectory(after: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
+//			switch result
+//			{
+//			case .error(let error):
+//				print("Error going to next file:\(error.localizedDescription)")
+//			case .success(let newFile):
+//				self.file = newFile
+//			}
+//		})
 	}
 	
 	@objc func prevFile(button: UIBarButtonItem)
 	{
-		state.dataSource.fileInSameDirectory(before: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
-			switch result
+		if let navFileList = navFileList
+		{
+			if let curIndex = indexOfFileIn( list: navFileList, file: self.file)
 			{
-			case .error(let error):
-				print("Error going to next file:\(error.localizedDescription)")
-			case .success(let newFile):
-				self.file = newFile
+				let index = curIndex - 1
+				
+				if index >= 0
+				{
+					self.file = navFileList[index]
+				}
 			}
-		})
+		}
+		
+//		state.dataSource.fileInSameDirectory(before: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
+//			switch result
+//			{
+//			case .error(let error):
+//				print("Error going to next file:\(error.localizedDescription)")
+//			case .success(let newFile):
+//				self.file = newFile
+//			}
+//		})
 	}
 	
 	@objc func qlAction(button: UIBarButtonItem)
 	{
-		let qlController = state.previewManager.quickLookControllerForFile(file, data: nil, fromNavigation: true)
+		guard file.file != nil else {
+			return
+		}
+		
+		let qlController = state.previewManager.quickLookControllerForFile(file.file!, data: nil, fromNavigation: true)
 		self.navigationController?.pushViewController(qlController, animated: true)
 	}
 	
 	@objc func detailsAction(button: UIBarButtonItem) {
-		let detailViewController = FileDetailViewController(file: file, state: state, fromImageViewer: true)
+		guard file.file != nil else {
+			return
+		}
+		
+		let detailViewController = FileDetailViewController(file: file.file!, state: state, fromImageViewer: true)
 		self.navigationController?.pushViewController(detailViewController, animated: true)
 	}
 	
 	@objc func trashAction(button: UIBarButtonItem) {
-		state.deleteFileAfterUserConfirmation(files: [file], controller: self, refresh: {
+		guard file.file != nil else {
+			return
+		}
+		
+		state.deleteFileAfterUserConfirmation(files: [file.file!], controller: self, refresh: {
 			self.navigationController?.popViewController(animated: true)
 		})
 	}
