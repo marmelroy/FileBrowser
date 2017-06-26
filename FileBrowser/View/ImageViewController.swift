@@ -183,20 +183,39 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 		return self.imageView;
 	}
 	
+	public func updateImageNavButtons()
+	{
+		// Set nav bar items on right
+		// Down and left
+		
+		if let navFileList = navFileList,
+			let curIndex = indexOfFileIn( list: navFileList, file: self.file)
+		{
+			var navItems = [UIBarButtonItem]()
+			
+			if curIndex < (navFileList.count - 1)
+			{
+				navItems.append(UIBarButtonItem(title: ">", style: .plain, target: self, action: #selector(ImageViewController.nextFile(button:))))
+			}
+			if curIndex > 0
+			{
+				navItems.append(UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(ImageViewController.prevFile(button:))))
+			}
+			self.navigationItem.rightBarButtonItems = navItems
+			
+			
+		}
+		else
+		{
+			self.navigationItem.rightBarButtonItems = nil
+		}
+	}
+	
 	override public func viewWillAppear(_ animated: Bool)
 	{
 		super.viewWillAppear(animated)
 		
-		// Set nav bar items on right
-		// Down and left
-		var navItems = [UIBarButtonItem]()
-		
-		navItems.append(UIBarButtonItem(title: ">", style: .plain, target: self, action: #selector(ImageViewController.nextFile(button:))))
-		navItems.append(UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(ImageViewController.prevFile(button:))))
-		
-		self.navigationItem.rightBarButtonItems = navItems
-		
-		// TODO: update disable/enable states of these (navigation buttons)
+		updateImageNavButtons()
 		
 		// Add toolbar items to this view
 		var toolbarItems = [UIBarButtonItem]()
@@ -270,6 +289,8 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 				}
 			}
 		}
+		
+		updateImageNavButtons()
 //
 //		state.dataSource.fileInSameDirectory(after: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
 //			switch result
@@ -296,7 +317,9 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate {
 				}
 			}
 		}
-		
+
+		updateImageNavButtons()
+
 //		state.dataSource.fileInSameDirectory(before: self.file, sort: { (files:[FBFile]) in self.state.sort(fileList: files)}, callback: { result in
 //			switch result
 //			{
