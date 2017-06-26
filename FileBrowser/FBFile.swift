@@ -12,7 +12,7 @@ import UIKit
 
 public protocol FBFileProto
 {
-	// TODO: fix this to have the actual members such as displayNae, path, etc
+	// TODO: fix this to have the actual members such as displayName, path, etc
 	var file : FBFile? { get }
 	
 	var image: UIImage? { get }
@@ -258,6 +258,9 @@ public enum FBFileType: String {
     /// JPG file
     case JPG = "jpg"
 	case JPEG = "jpeg"
+	// High Efficiency Image File Format (Heif/heic)
+	case HEIF = "heif"
+	case HEIC = "heic"
     /// PLIST file
     case JSON = "json"
     /// PDF file
@@ -277,7 +280,7 @@ public enum FBFileType: String {
 	public func isImage() -> Bool
 	{
 		switch self {
-		case .JPG, .JPEG, .PNG, .GIF, .BMP:
+		case .JPG, .JPEG, .PNG, .GIF, .BMP, .HEIF, .HEIC:
 			return true
 		default:
 			return false
@@ -294,7 +297,7 @@ public enum FBFileType: String {
         var fileName = String()
         switch self {
         case .Directory: fileName = "folder@2x.png"
-        case .JPG, .JPEG, .BMP, .PNG, .GIF: fileName = "image@2x.png"
+        case .JPG, .JPEG, .BMP, .PNG, .GIF, .HEIF, .HEIC: fileName = "image@2x.png"
         case .PDF: fileName = "pdf@2x.png"
         case .ZIP: fileName = "zip@2x.png"
         default: fileName = "file@2x.png"
