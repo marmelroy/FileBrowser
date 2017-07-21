@@ -54,7 +54,12 @@ class TextFileViewController : UIViewController
 		
 		toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
 		
-		toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TextFileViewController.editAction(button:))))
+		//toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TextFileViewController.editAction(button:))))
+		toolbarItems.append(UIBarButtonItem( image: UIImage(named: "gear_icon"), style: .plain,  target: self, action: #selector(TextFileViewController.actionOptions(button:))))
+		
+		toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+		
+		toolbarItems.append(state.getDoneButton(target: self, action: #selector(TextFileViewController.dismiss(button:))))
 		
 		return toolbarItems
 	}
@@ -68,8 +73,8 @@ class TextFileViewController : UIViewController
 			self.setToolbarItems(toolbarItemsForEdit(), animated: false)
 			self.navigationController?.hidesBarsOnTap = false
 			
-			self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(TextFileViewController.saveAction(button:)))
-			self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(TextFileViewController.doneEditingAction(button:)))
+			self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(TextFileViewController.saveAction(button:)))
+			self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(TextFileViewController.doneEditingAction(button:)))
 			
 			self.navigationController?.setToolbarHidden(true, animated: true)
 			
@@ -81,8 +86,8 @@ class TextFileViewController : UIViewController
 			self.navigationController?.hidesBarsOnTap = true
 			
 			self.navigationItem.leftBarButtonItem = nil
-			let dismissButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(TextFileViewController.dismiss(button:)))
-			self.navigationItem.rightBarButtonItem = dismissButton
+			let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TextFileViewController.editAction(button:)))
+			self.navigationItem.rightBarButtonItem = editButton
 
 			self.navigationController?.setToolbarHidden(false, animated: false)
 			
@@ -183,6 +188,11 @@ class TextFileViewController : UIViewController
 	@objc func detailsAction(button: UIBarButtonItem) {
 		let detailViewController = FileDetailViewController(file: file, state: state, fromImageViewer: true)
 		self.navigationController?.pushViewController(detailViewController, animated: true)
+	}
+	
+	@objc func actionOptions( button : UIBarButtonItem )
+	{
+		state.displayOptionsFrom(self)
 	}
 	
 	//MARK: Keyboard handling

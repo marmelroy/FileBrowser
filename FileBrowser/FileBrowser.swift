@@ -69,6 +69,7 @@ open class FileBrowser: UINavigationController {
 		var directory = directory
 		if directory.hasViewPermission() == false
 		{
+			print("No view persmission for directory:", directory.path)
 			directory = dataSource.rootDirectory
 		}
 		
