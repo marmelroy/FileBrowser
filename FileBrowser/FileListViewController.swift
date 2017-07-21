@@ -35,8 +35,11 @@ class FileListViewController: UIViewController {
     
     
     //MARK: Lifecycle
-    
     convenience init (initialPath: URL) {
+        self.init(initialPath: initialPath, showCancelButton: true)
+    }
+    
+    convenience init (initialPath: URL, showCancelButton: Bool) {
         self.init(nibName: "FileBrowser", bundle: Bundle(for: FileListViewController.self))
         self.edgesForExtendedLayout = UIRectEdge()
         
@@ -49,10 +52,11 @@ class FileListViewController: UIViewController {
         searchController.searchBar.delegate = self
         searchController.delegate = self
         
-        // Add dismiss button
-        let dismissButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:)))
-        self.navigationItem.rightBarButtonItem = dismissButton
-        
+        if showCancelButton {
+            // Add dismiss button
+            let dismissButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:)))
+            self.navigationItem.rightBarButtonItem = dismissButton
+        }
     }
     
     deinit{
