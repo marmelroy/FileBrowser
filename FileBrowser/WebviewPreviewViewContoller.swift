@@ -28,7 +28,7 @@ class WebviewPreviewViewContoller: UIViewController {
         self.view.addSubview(webView)
         
         // Add share button
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile))
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(WebviewPreviewViewContoller.shareFile(_:)))
         self.navigationItem.rightBarButtonItem = shareButton
     }
     
@@ -39,13 +39,18 @@ class WebviewPreviewViewContoller: UIViewController {
     
     //MARK: Share
     
-    func shareFile() {
+    func shareFile(_ sender: UIBarButtonItem) {
         guard let file = file else {
             return
         }
         let activityViewController = UIActivityViewController(activityItems: [file.filePath], applicationActivities: nil)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad &&
+            activityViewController.responds(to: #selector(getter: popoverPresentationController)) {
+            activityViewController.popoverPresentationController?.barButtonItem = sender
+        }
+        
         self.present(activityViewController, animated: true, completion: nil)
-
     }
 
     //MARK: Processing
