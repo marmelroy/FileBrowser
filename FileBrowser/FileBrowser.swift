@@ -55,7 +55,16 @@ open class FileBrowser: UINavigationController {
      - returns: File browser view controller.
      */
     public convenience init(initialPath: URL) {
-        let fileListViewController = FileListViewController(initialPath: initialPath)
+        self.init(initialPath: initialPath, allowEditing: false)
+    }
+    
+    public convenience init(initialPath: URL, allowEditing: Bool) {
+        self.init(initialPath: initialPath, allowEditing: allowEditing, showCancelButton: true)
+    }
+    
+    public convenience init(initialPath: URL, allowEditing: Bool, showCancelButton: Bool) {
+        let fileListViewController = FileListViewController(initialPath: initialPath, showCancelButton: showCancelButton)
+        fileListViewController.allowEditing = allowEditing
         self.init(rootViewController: fileListViewController)
         self.view.backgroundColor = UIColor.white
         self.fileList = fileListViewController
