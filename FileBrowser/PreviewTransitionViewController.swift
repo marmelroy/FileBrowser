@@ -23,5 +23,15 @@ class PreviewTransitionViewController: UIViewController {
         quickLookPreviewController.view.frame = containerView.bounds
         quickLookPreviewController.didMove(toParentViewController: self)
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.hidesBottomBarWhenPushed = true
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.hidesBottomBarWhenPushed = true
+    }
 
 }

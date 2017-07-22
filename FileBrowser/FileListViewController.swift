@@ -15,13 +15,19 @@ class FileListViewController: UIViewController {
     let collation = UILocalizedIndexedCollation.current()
     
     /// Data
+    var directory: FBFile!
+    var dataSource: FileBrowserDataSource!
+    var downloadDelegate: FileBrowserDownloadDelegate? {
+        didSet {
+            previewManager.downloadDelegate = downloadDelegate
+        }
+    }
+    
     var didSelectFile: ((FBFile) -> ())?
     var files = [FBFile]()
-    var initialPath: URL?
-    let parser = FileParser.sharedInstance
     let previewManager = PreviewManager()
     var sections: [[FBFile]] = []
-
+    
     // Search controller
     var filteredFiles = [FBFile]()
     let searchController: UISearchController = {
@@ -33,15 +39,19 @@ class FileListViewController: UIViewController {
     }()
     
     
+    
     //MARK: Lifecycle
     
-    convenience init (initialPath: URL) {
+    convenience init (dataSource: FileBrowserDataSource, withDirectory directory: FBFile) {
         self.init(nibName: "FileBrowser", bundle: Bundle(for: FileListViewController.self))
         self.edgesForExtendedLayout = UIRectEdge()
         
-        // Set initial path
-        self.initialPath = initialPath
-        self.title = initialPath.lastPathComponent
+        // Set implicitly unwrapped optionals
+        self.dataSource = dataSource
+        self.directory = directory
+        self.previewManager.dataSource = dataSource
+        
+        self.title = directory.displayName
         
         // Set search controller delegates
         searchController.searchResultsUpdater = self
@@ -67,9 +77,21 @@ class FileListViewController: UIViewController {
     override func viewDidLoad() {
         
         // Prepare data
-        if let initialPath = initialPath {
-            files = parser.filesForDirectory(initialPath)
-            indexFiles()
+        dataSource.provideContents(ofDirectory: self.directory) { result in
+            self.didCompleteLoading()
+            switch result {
+            case .success(let files):
+                self.files = files
+                self.indexFiles()
+                self.tableView.reloadData()
+            case .error(let error):
+                self.replaceTableViewRowsShowing(error: error)
+            }
+        }
+        
+        // show a loading indicator if it takes more than 0.5 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.showLoadingIndicatorIfNeeded()
         }
         
         // Set search bar
@@ -123,6 +145,43 @@ class FileListViewController: UIViewController {
         })
         tableView.reloadData()
     }
-
+    
+    func replaceTableViewRowsShowing(error: Error) {
+        let errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        errorLabel.text = error.localizedDescription
+        errorLabel.textColor = UIColor.black
+        errorLabel.textAlignment = .center
+        
+        tableView.backgroundView = errorLabel
+        tableView.separatorStyle = .none
+    }
+    
+    //MARK: loading indicator
+    
+    var loadingCompleted = false
+    func didCompleteLoading() {
+        locking(loadingCompleted) {
+            loadingCompleted = true
+        }
+        hideLoadingIndicator()
+    }
+    
+    func showLoadingIndicatorIfNeeded() {
+        locking(loadingCompleted) {
+            if !loadingCompleted {
+                navigationItem.prompt = "Loading..."
+            }
+        }
+    }
+    
+    func hideLoadingIndicator() {
+        navigationItem.prompt = nil
+    }
+    
+    func locking(_ lock: Any, closure: () -> ()) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
+    }
 }
 
