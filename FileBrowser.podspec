@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "FileBrowser"
-  s.version          = "0.2.1"
+  s.version          = "0.3.0"
   s.summary          = "Powerful iOS file browser in Swift."
 
 # This description is used to generate tags and improve search results.
