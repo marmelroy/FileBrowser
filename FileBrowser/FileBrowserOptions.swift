@@ -23,10 +23,14 @@ import Foundation
 	public var List_ShowImageThumbnails: Bool = true
 	public var List_SortBy : FBFileAttributes = .FileName
 	public var List_SortReversed : Bool = false
-	public var FileDetail_Left : FBFileAttributes = .FileSize
-	public var FileDetail_Right : FBFileAttributes = .DateModified
 	public var File_ShowDisclosureButton : Bool = true
 	public var Folder_ShowItemCount : Bool = false
+	
+	public var FileDetail_Left : FBFileAttributes = .FileSize
+	public var FileDetail_Right : FBFileAttributes = .DateModified
+	public var List_FileNameFontSize : Int = 17
+	public var List_FileDetailFontSize : Int = 12
+	public var List_FileRowCellHeight : Int = 44
 	
 	// Static
 	public static var Default_TextFile_font: UIFont { get {return UIFont(name: "Helvetica", size: 16) ?? UIFont.preferredFont(forTextStyle: .body)} }
@@ -57,9 +61,14 @@ import Foundation
 		aCoder.encode(List_ShowImageThumbnails, forKey: "List_ShowImageThumbnails")
 		aCoder.encode(List_SortBy.rawValue, forKey: "List_SortBy")
 		aCoder.encode(List_SortReversed, forKey: "List_SortReversed")
+		
 		aCoder.encode(FileDetail_Left.rawValue, forKey: "FileDetail_Left")
 		aCoder.encode(FileDetail_Right.rawValue, forKey: "FileDetail_Right")
-		
+
+		aCoder.encode(List_FileNameFontSize, forKey: "List_FileNameFontSize")
+		aCoder.encode(List_FileDetailFontSize, forKey: "List_FileDetailFontSize")
+		aCoder.encode(List_FileRowCellHeight, forKey: "List_FileRowCellHeight")
+
 		aCoder.encode(File_ShowDisclosureButton, forKey: "File_ShowDisclosureButton")
 		aCoder.encode(Folder_ShowItemCount, forKey: "Folder_ShowItemCount")
 	}
@@ -83,9 +92,27 @@ import Foundation
 		self.FileDetail_Left = FBFileAttributes(rawValue: aDecoder.decodeInteger(forKey: "FileDetail_Left")) ?? .FileSize
 		self.FileDetail_Right = FBFileAttributes(rawValue: aDecoder.decodeInteger(forKey: "FileDetail_Right")) ?? .DateModified
 		
+		self.List_FileNameFontSize = aDecoder.decodeInteger(forKey: "List_FileNameFontSize")
+		self.List_FileDetailFontSize = aDecoder.decodeInteger(forKey: "List_FileDetailFontSize")
+		self.List_FileRowCellHeight = aDecoder.decodeInteger(forKey: "List_FileRowCellHeight")
+		
 		self.File_ShowDisclosureButton = aDecoder.decodeBool(forKey: "File_ShowDisclosureButton")
 		self.Folder_ShowItemCount = aDecoder.decodeBool(forKey: "Folder_ShowItemCount")
 
+		
+		if self.List_FileRowCellHeight < 44
+		{
+			self.List_FileRowCellHeight = 44
+		}
+		
+		if self.List_FileNameFontSize < 10
+		{
+			self.List_FileNameFontSize = 16
+		}
+		if self.List_FileDetailFontSize < 10
+		{
+			self.List_FileDetailFontSize = 12
+		}
 	}
 	
 }

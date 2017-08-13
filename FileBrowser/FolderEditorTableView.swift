@@ -250,6 +250,33 @@ class FolderEditorTableView : FileListViewController
 		self.present(alertController, animated: true, completion: nil)
 	}
 	
+	func deleteFilesWithConfirmation( prompt : String, files: [FBFile], fromButton: UIBarButtonItem? )
+	{
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		let deleteAction = UIAlertAction(title: prompt, style: .destructive, handler: {(alert: UIAlertAction!) in
+			// Perform delete
+			
+			for file in files
+			{
+				file.delete()
+			}
+			
+			self.prepareData(sender: nil)
+			
+		})
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
+		
+		alertController.addAction(cancelAction)
+		alertController.addAction(deleteAction)
+		
+		// Configure the alert controller's popover presentation controller if it has one.
+		if let button = fromButton, let popoverPresentationController = alertController.popoverPresentationController
+		{
+			popoverPresentationController.barButtonItem = button
+		}
+		self.present(alertController, animated: true, completion: nil)
+	}
+	
 	@objc func selectActionTrash(button: UIBarButtonItem = UIBarButtonItem()) {
 		
 		guard let selectedPaths = self.tableView.indexPathsForSelectedRows else {return}
@@ -262,33 +289,8 @@ class FolderEditorTableView : FileListViewController
 		}
 		
 		// Need confirm delete
-		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		let deleteAction = UIAlertAction(title: prompt, style: .destructive, handler: {(alert: UIAlertAction!) in
-			// Perform delete
-			let files = self.allSelectedFiles()
-			
-			for file in files
-			{
-				file.delete()
-			}
-			
-			self.prepareData(sender: nil)
-
-		})
-		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
-		
-		alertController.addAction(cancelAction)
-		alertController.addAction(deleteAction)
-		
-		// Configure the alert controller's popover presentation controller if it has one.
-		if let popoverPresentationController = alertController.popoverPresentationController
-		{
-			popoverPresentationController.barButtonItem = button
-		}
-		self.present(alertController, animated: true, completion: nil)
+		deleteFilesWithConfirmation(prompt: prompt, files: self.allSelectedFiles(), fromButton: button)
 	}
-	
-	
 	
     //MARK: UITableViewDataSource, UITableViewDelegate
     
@@ -317,17 +319,42 @@ class FolderEditorTableView : FileListViewController
 		if editingStyle == .delete
 		{
 			let selectedFile = fileForIndexPath(indexPath)
-			selectedFile.delete()
-			self.prepareData(sender: nil)
+			
+			deleteFilesWithConfirmation(prompt: "Are you sure you want to delete \(selectedFile.displayName)?", files: [selectedFile], fromButton: nil)
+			
 		}
 	}
 
 	// TODO: for adding more actions
-//	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
-//	{
-//	// add info or move actions + delete
-//	UITableViewRowAction
-//	}
+	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
+	{
+		// add info or move actions + delete
+		let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete", handler: { (rowAction, indexPath) in
+			let selectedFile = self.fileForIndexPath(indexPath)
+			
+			self.deleteFilesWithConfirmation(prompt: "Are you sure you want to delete \(selectedFile.displayName)?", files: [selectedFile], fromButton: nil)
+		})
+		
+		let moreAction = UITableViewRowAction(style: .normal, title: "More", handler: { (rowAction, indexPath) in
+			let selectedFile = self.fileForIndexPath(indexPath)
+			
+			//TODO: action sheet with the following
+			//"View" "Rename" "Move" "Duplicate" "Copy"
+		})
+		moreAction.backgroundColor = UIColor.gray
+		
+		let detailsAction = UITableViewRowAction(style: .normal, title: "Details", handler: { (rowAction, indexPath) in
+			let selectedFile = self.fileForIndexPath(indexPath)
+			
+			let detailViewController = FileDetailViewController(file: selectedFile, state: self.fileBrowserState)
+			self.navigationController?.pushViewController(detailViewController, animated: true)
+		})
+		detailsAction.backgroundColor = UIColor.black
+		
+		
+		return [deleteAction, detailsAction, moreAction ];
+		
+	}
 	
 	func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath)
 	{

@@ -41,6 +41,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .blue
         let selectedFile = fileForIndexPath(indexPath)
 		
+		cell.textLabel?.font = cell.textLabel?.font.withSize(CGFloat(fileBrowserState.options?.List_FileNameFontSize ?? 17))
 		if selectedFile.isDirectory
 		{
 			if fileBrowserState.options?.Folder_ShowItemCount ?? false
@@ -92,7 +93,6 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 			cell.imageView?.image = selectedFile.type.image()
 		}
 		
-		
 		// Detail information
 		if fileBrowserState.cellShowDetail
 		{
@@ -115,6 +115,7 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
 				attString.addAttribute(NSParagraphStyleAttributeName, value: style, range: NSMakeRange(0, leftDetailText.characters.count + rightDetailText.characters.count))
 				attString.endEditing()
 				
+				cell.detailTextLabel?.font = cell.detailTextLabel?.font.withSize(CGFloat(fileBrowserState.options?.List_FileDetailFontSize ?? 10))
 				cell.detailTextLabel?.attributedText = attString
 			}
 			else

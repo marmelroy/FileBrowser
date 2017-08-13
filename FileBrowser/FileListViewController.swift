@@ -91,6 +91,7 @@ class FileListViewController: UIViewController {
 			// Set search bar
 			tableView.tableHeaderView = searchController.searchBar
 		}
+		tableView.rowHeight = CGFloat(fileBrowserState.options?.List_FileRowCellHeight ?? 44)
 		
         // Register for 3D touch
         self.registerFor3DTouch()
@@ -107,7 +108,12 @@ class FileListViewController: UIViewController {
 				self.tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.size.height)
 			}
 		}
-		
+
+		if tableView.rowHeight != CGFloat(fileBrowserState.options?.List_FileRowCellHeight ?? 0)
+		{
+			tableView.rowHeight = CGFloat(fileBrowserState.options?.List_FileRowCellHeight ?? 44)
+		}
+
 		// Refresh / load data
 		prepareData(sender:nil)
 		
@@ -140,7 +146,7 @@ class FileListViewController: UIViewController {
 			case .success(let files):
 				self.files = files
 				self.indexFiles()
-				//TODO: Check before reloading data as it removes the selection
+				//TODO: Check before reloading data as it removes the selection (save the selection?)
 				self.tableView.reloadData()
 			case .error(let error):
 				self.replaceTableViewRowsShowing(error: error)
