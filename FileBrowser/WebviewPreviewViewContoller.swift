@@ -39,7 +39,7 @@ class WebviewPreviewViewContoller: UIViewController {
     
     //MARK: Share
     
-    func shareFile(_ sender: UIBarButtonItem) {
+    @objc func shareFile(_ sender: UIBarButtonItem) {
         guard let file = file else {
             return
         }
