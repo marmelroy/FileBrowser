@@ -58,7 +58,11 @@ class PreviewManager: NSObject, QLPreviewControllerDataSource {
 			// TODO: if file size is less than 20MB
 			return TextFileViewController(file: file, state: state)
 		}
-        else
+        else if (file.type.isImage() == false) && (file is LocalFBFile)
+		{
+			return LocalFileQLViewController(fileURL: file.path as NSURL)
+		}
+		else
 		{
 			return ImageViewController(file: file, state: state, fileList: fileList)
         }

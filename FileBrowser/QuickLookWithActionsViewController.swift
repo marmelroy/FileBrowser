@@ -18,3 +18,28 @@ class QuickLookWithActionsViewController : QLPreviewController
 	
 	
 }
+
+
+class LocalFileQLViewController : QLPreviewController, QLPreviewControllerDelegate, QLPreviewControllerDataSource
+{
+	var theFile : NSURL?
+	
+	convenience init(fileURL : NSURL) {
+		self.init()
+		
+		theFile = fileURL
+		
+		dataSource = self
+	}
+	
+	
+	// MARK: delegate methods
+	func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+		return 1
+	}
+	
+	func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+		
+		return theFile!
+	}
+}

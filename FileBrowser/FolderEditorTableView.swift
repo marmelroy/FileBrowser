@@ -96,11 +96,17 @@ class FolderEditorTableView : FileListViewController
 		
 		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
 
-		if refreshBtn == nil
+		// have a custom more/action button instead
+		if fileBrowserState.delegate != nil
 		{
-			refreshBtn = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FolderEditorTableView.actionRefresh(button:)))
+			items.append(UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(FolderEditorTableView.actionFolderActions(button:))))
 		}
-		items.append( refreshBtn! )
+		
+//		if refreshBtn == nil
+//		{
+//			refreshBtn = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(FolderEditorTableView.actionRefresh(button:)))
+//		}
+//		items.append( refreshBtn! )
 		
 		items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) )
 
@@ -154,6 +160,14 @@ class FolderEditorTableView : FileListViewController
 	}
 	
 	//MARK: Button Actions
+	
+	@objc func actionFolderActions( button : UIBarButtonItem )
+	{
+		if let delegate = fileBrowserState.delegate
+		{
+			delegate.displayFolderActionsFor(directory, viewController: self)
+		}
+	}
 	
 	@objc func actionRefresh( button : UIBarButtonItem )
 	{
