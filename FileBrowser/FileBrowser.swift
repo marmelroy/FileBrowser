@@ -48,7 +48,7 @@ open class FileBrowser: UINavigationController {
     ///   - initialPath: NSURL filepath to containing directory.
     ///   - allowEditing: Whether to allow editing.
     ///   - showCancelButton: Whether to show the cancel button.
-    public convenience init(initialPath: URL = FileParser.sharedInstance.documentsURL(), allowEditing: Bool = false, showCancelButton: Bool = true) {
+    @objc public convenience init(initialPath: URL = FileParser.sharedInstance.documentsURL(), allowEditing: Bool = false, showCancelButton: Bool = true) {
         let fileListViewController = FileListViewController(initialPath: initialPath, showCancelButton: showCancelButton)
         fileListViewController.allowEditing = allowEditing
         self.init(rootViewController: fileListViewController)
