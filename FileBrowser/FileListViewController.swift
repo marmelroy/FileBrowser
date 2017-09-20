@@ -105,7 +105,7 @@ class FileListViewController: UIViewController {
     //MARK: Data
     
     func indexFiles() {
-        let selector: Selector = #selector(getter: UIPrinter.displayName)
+        let selector: Selector = #selector(getter: FBFile.displayName)
         sections = Array(repeating: [], count: collation.sectionTitles.count)
         if let sortedObjects = collation.sortedArray(from: files, collationStringSelector: selector) as? [FBFile]{
             for object in sortedObjects {

@@ -9,9 +9,9 @@
 import Foundation
 
 /// FBFile is a class representing a file in FileBrowser
-open class FBFile: NSObject {
+@objc open class FBFile: NSObject {
     /// Display name. String.
-    open let displayName: String
+    @objc open let displayName: String
     // is Directory. Bool.
     open let isDirectory: Bool
     /// File extension.
