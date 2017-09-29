@@ -35,6 +35,7 @@
 		349A12361C707E86005435C0 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A122F1C707E86005435C0 /* image@2x.png */; };
 		349A12371C707E86005435C0 /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12301C707E86005435C0 /* pdf@2x.png */; };
 		349A12381C707E86005435C0 /* zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A12311C707E86005435C0 /* zip@2x.png */; };
+		5204BAC81F3E4D3800CE4A8A /* FileListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5204BAC71F3E4D3800CE4A8A /* FileListTableViewCell.swift */; };
 		520A34B61EAD46E9000A2D70 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520A34B51EAD46E9000A2D70 /* ImageViewController.swift */; };
 		520BF61D1ECB65280064F22C /* FBFileAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF61C1ECB65280064F22C /* FBFileAttributes.swift */; };
 		52189D9B1EAF1454006B1243 /* TextFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52189D9A1EAF1454006B1243 /* TextFileViewController.swift */; };
@@ -101,6 +102,7 @@
 		349A122F1C707E86005435C0 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		349A12301C707E86005435C0 /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
 		349A12311C707E86005435C0 /* zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zip@2x.png"; sourceTree = "<group>"; };
+		5204BAC71F3E4D3800CE4A8A /* FileListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableViewCell.swift; sourceTree = "<group>"; };
 		520A34B51EAD46E9000A2D70 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageViewController.swift; path = View/ImageViewController.swift; sourceTree = "<group>"; };
 		520BF61C1ECB65280064F22C /* FBFileAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBFileAttributes.swift; sourceTree = "<group>"; };
 		52189D9A1EAF1454006B1243 /* TextFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextFileViewController.swift; path = View/TextFileViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				349A12251C707317005435C0 /* FileListTableView.swift */,
 				52E190C71E9358C5007C2242 /* FolderEditorTableView.swift */,
 				528937101EA94A0700CE113C /* FileBrowserState.swift */,
+				5204BAC71F3E4D3800CE4A8A /* FileListTableViewCell.swift */,
 			);
 			name = FileList;
 			sourceTree = "<group>";
@@ -348,7 +351,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Roy Marmelstein";
 				TargetAttributes = {
 					344169531C67812400B93D28 = {
@@ -443,6 +446,7 @@
 				520A34B61EAD46E9000A2D70 /* ImageViewController.swift in Sources */,
 				C3BF0E021E153A2C0009D12C /* LoadingViewController.swift in Sources */,
 				5250BA181EBBEE9E00385B9D /* FileBrowserOptions.swift in Sources */,
+				5204BAC81F3E4D3800CE4A8A /* FileListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,14 +481,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -526,14 +536,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
