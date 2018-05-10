@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 
   s.source_files = "FileBrowser"
   s.resources = "FileBrowser/Resources/*.*"
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.1' }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'QuickLook', 'WebKit'
