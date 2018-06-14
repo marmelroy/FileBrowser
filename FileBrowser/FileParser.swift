@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FileParser {
+public class FileParser {
     
     static let sharedInstance = FileParser()
     
