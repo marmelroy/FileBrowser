@@ -35,18 +35,19 @@ class FileListViewController: UIViewController {
     
     
     //MARK: Lifecycle
-    convenience init (initialPath: URL) {
-        self.init(initialPath: initialPath, showCancelButton: true)
+    convenience init (initialPath: URL, allowEditing: Bool = false) {
+        self.init(initialPath: initialPath, showCancelButton: true, allowEditing: allowEditing)
     }
     
-    convenience init (initialPath: URL, showCancelButton: Bool) {
+    convenience init (initialPath: URL, showCancelButton: Bool, allowEditing: Bool = false) {
         self.init(nibName: "FileBrowser", bundle: Bundle(for: FileListViewController.self))
         self.edgesForExtendedLayout = UIRectEdge()
         
         // Set initial path
         self.initialPath = initialPath
         self.title = initialPath.lastPathComponent
-        
+        self.allowEditing = allowEditing
+
         // Set search controller delegates
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
