@@ -53,8 +53,8 @@ open class FileBrowser: UINavigationController {
         let validInitialPath = initialPath ?? FileParser.sharedInstance.documentsURL()
         
         let fileListViewController = FileListViewController(initialPath: validInitialPath,
-                                                            allowEditing: allowEditing,
-                                                            showCancelButton: showCancelButton)
+                                                            showCancelButton: showCancelButton,
+                                                            allowEditing: allowEditing)
         fileListViewController.allowEditing = allowEditing
         self.init(rootViewController: fileListViewController)
         self.view.backgroundColor = UIColor.white
