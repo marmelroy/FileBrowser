@@ -19,7 +19,7 @@ import Foundation
     /// File attributes (including size, creation date etc).
     open let fileAttributes: NSDictionary?
     /// NSURL file path.
-    open let filePath: URL
+    @objc open let filePath: URL
     // FBFileType
     open let type: FBFileType
     
