@@ -15,11 +15,11 @@ import Foundation
     // is Directory. Bool.
     open let isDirectory: Bool
     /// File extension.
-    open let fileExtension: String?
+    @objc open let fileExtension: String?
     /// File attributes (including size, creation date etc).
     open let fileAttributes: NSDictionary?
     /// NSURL file path.
-    open let filePath: URL
+    @objc open let filePath: URL
     // FBFileType
     open let type: FBFileType
     
