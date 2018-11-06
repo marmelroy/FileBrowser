@@ -30,7 +30,7 @@ open class FileBrowser: UINavigationController {
     }
     
     /// Override default preview and actionsheet behaviour in favour of custom file handling.
-    open var didSelectFile: ((FBFile) -> ())? {
+   @objc open var didSelectFile: ((FBFile) -> ())? {
         didSet {
             fileList?.didSelectFile = didSelectFile
         }
