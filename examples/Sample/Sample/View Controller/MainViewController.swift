@@ -24,9 +24,8 @@ class MainViewController: UIViewController {
     // MARK: - FileBrowser
     
     @IBAction func showFileBrowser(sender: AnyObject) {
-        let file = FileBrowser()
-        present(file, animated: true, completion: nil)
-        //self.present(fileBrowser, animated: true, completion: nil)
+        let fileBrowser = FileBrowser()
+        present(fileBrowser, animated: true, completion: nil)
     }
 }
 

@@ -86,13 +86,13 @@ extension FileListViewController: UITableViewDataSource, UITableViewDelegate {
         return collation.section(forSectionIndexTitle: index)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCellEditingStyle.delete) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCell.EditingStyle.delete) {
             let selectedFile = fileForIndexPath(indexPath)
             selectedFile.delete()
             
             prepareData()
-            tableView.reloadSections([indexPath.section], with: UITableViewRowAnimation.automatic)
+            tableView.reloadSections([indexPath.section], with: UITableView.RowAnimation.automatic)
         }
     }
     
