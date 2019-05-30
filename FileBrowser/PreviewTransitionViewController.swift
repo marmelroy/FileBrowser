@@ -18,10 +18,10 @@ class PreviewTransitionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.addChild(quickLookPreviewController)
+        self.addChildViewController(quickLookPreviewController)
         containerView.addSubview(quickLookPreviewController.view)
         quickLookPreviewController.view.frame = containerView.bounds
-        quickLookPreviewController.didMove(toParent: self)
+        quickLookPreviewController.didMove(toParentViewController: self)
     }
 
 }
