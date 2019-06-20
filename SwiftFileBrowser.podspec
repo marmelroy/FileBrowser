@@ -7,8 +7,8 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = "FileBrowser"
-  s.version          = "1.0.0"
+  s.name             = "SwiftFileBrowser"
+  s.version          = "1.0.1"
   s.summary          = "Powerful iOS file browser in Swift."
 
 # This description is used to generate tags and improve search results.
@@ -20,11 +20,11 @@ Pod::Spec.new do |s|
                       A Swift file browser for iOS. Supports QuickLook, search and 3D touch.
                      DESC
 
-  s.homepage         = "https://github.com/marmelroy/FileBrowser"
+  s.homepage         = "https://github.com/algonrey/FileBrowser"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "Roy Marmelstein" => "marmelroy@gmail.com" }
-  s.source           = { :git => "https://github.com/marmelroy/FileBrowser.git", :tag => s.version.to_s, :submodules => true}
+  s.source           = { :git => "https://github.com/algonrey/FileBrowser.git", :tag => s.version.to_s, :submodules => true}
   s.social_media_url   = "http://twitter.com/marmelroy"
 
   s.ios.deployment_target = '8.0'
