@@ -69,5 +69,16 @@ class FileBrowserTests: XCTestCase {
         }
     }
 
-    
+    func testCaseIncludeExtension() {
+        let parser = FileParser.sharedInstance
+        parser.includesFileExtensions = ["JpG", "gIf"]
+        let directoryPath = Bundle(for: FileBrowserTests.self).bundleURL
+        let directoryContents = parser.filesForDirectory(directoryPath)
+        XCTAssertTrue(directoryContents.count > 0)
+        for file in directoryContents {
+            if let fileExtension = file.fileExtension {
+                XCTAssertTrue((fileExtension == "jpg") || (fileExtension == "gif"))
+            }
+        }
+    }
 }
