@@ -60,7 +60,7 @@ class FileParser {
         // Parse
         for filePath in filePaths {
             let file = FBFile(filePath: filePath)
-            if let excludesFileNames = excludesFileNames, excludesFileNames.contains(file.displayName) {
+            if let excludesFileNames = excludesFileNames, excludesFileNames.contains(where: file.displayName.contains) {
                 continue
             }
             if let excludesFileExtensions = excludesFileExtensions, let fileExtensions = file.fileExtension , excludesFileExtensions.contains(fileExtensions) {
