@@ -98,6 +98,10 @@ class FileListViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
     }
     
+    @objc func close() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc func dismiss(button: UIBarButtonItem = UIBarButtonItem()) {
         self.dismiss(animated: true, completion: nil)
     }

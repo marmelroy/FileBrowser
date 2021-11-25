@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FileParser {
+@objc class FileParser: NSObject {
     
     static let sharedInstance = FileParser()
     
